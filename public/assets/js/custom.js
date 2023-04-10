@@ -10,7 +10,9 @@ $.ajaxSetup({
 });
 
 //---------- DATATABLE ----------//
-$('.datatable').DataTable();
+if (typeof DataTable !== "undefined") { 
+    $('.datatable').DataTable();
+}
 
 //---------- REMOVE VALIDATION ERROR ALERT MESSAGES ----------//
 function removeErrorMessages()
@@ -55,6 +57,12 @@ function showErrorMessages(errors)
 function showAlertInTop(message)
 {
 	$('.content-header .container-fluid').append(message);
+}
+
+//---------- CHECK EMAIL IS VALID OR NOT ----------//
+function isValidEmail(email) {
+	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	return regex.test(email);
 }
 
 //---------- THEME SETTINGS SET IN LOACAL STOREAGE ----------//

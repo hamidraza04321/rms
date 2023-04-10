@@ -1,0 +1,55 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
+
+class {{ class }} extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
+    {
+        return match(Route::currentRouteName()) {
+            'example' => $this->example()
+        };
+    }
+
+    /**
+     * Validate Rules for Example Request
+     */
+    public function example()
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator $validator
+     * @return void
+     */
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->errors($validator->errors())); 
+    }
+}

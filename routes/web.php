@@ -15,17 +15,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//---------- DASHBOARD ROUTES ----------//
-Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard.index');
+Route::middleware(['auth'])->group(function () {
+	
+	//---------- DASHBOARD ROUTES ----------//
+	Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard.index');
 
-//---------- CLASS ROUTES ----------//
-Route::resource('/class', ClassController::class, ['except' => ['show']]);
-Route::controller(ClassController::class)->group(function(){
-	Route::put('/class/update-status/{id}', 'updateClassStatus')->name('class.update.status');
+	//---------- CLASS ROUTES ----------//
+	Route::resource('/class', ClassController::class, ['except' => ['show']]);
+	Route::controller(ClassController::class)->group(function(){
+		Route::put('/class/update-status/{id}', 'updateClassStatus')->name('class.update.status');
+	});
+
+	//---------- SECTION ROUTES ----------//
+	Route::resource('/section', SectionController::class, ['except' => ['show']]);
+	Route::controller(SectionController::class)->group(function(){
+		Route::put('/section/update-status/{id}', 'updateSectionStatus')->name('section.update.status');
+	});
+
 });
 
-//---------- SECTION ROUTES ----------//
-Route::resource('/section', SectionController::class, ['except' => ['show']]);
-Route::controller(SectionController::class)->group(function(){
-	Route::put('/section/update-status/{id}', 'updateSectionStatus')->name('section.update.status');
+//---------- AUTHERTICATION ROUTES ----------//
+Route::controller(AuthController::class)->group(function() {
+	Route::get('/login', 'login')->name('login');
+	Route::post('/attempt-login', 'attemptLogin')->name('attempt.login');
 });
