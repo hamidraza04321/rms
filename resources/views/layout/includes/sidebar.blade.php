@@ -13,7 +13,7 @@
         <img src="{{ url('/assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Hamid Raza</a>
+        <a href="#" class="d-block">{{ auth()->user()->name }}</a>
       </div>
     </div>
 
@@ -58,7 +58,7 @@
             <li class="nav-item">
               <a href="{{ route('class.create') }}" class="nav-link @if(Route::currentRouteName() == 'class.create') active @endif">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Add</p>
+                <p>Create</p>
               </a>
             </li>
           </ul>
@@ -81,7 +81,31 @@
             <li class="nav-item">
               <a href="{{ route('section.create') }}" class="nav-link @if(Route::currentRouteName() == 'section.create') active @endif">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Add</p>
+                <p>Create</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-header">User Management</li>
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) menu-open @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) active @endif">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Role
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('role.index') }}" class="nav-link @if(Route::currentRouteName() == 'role.index') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manage</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('role.create') }}" class="nav-link @if(Route::currentRouteName() == 'role.create') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create</p>
               </a>
             </li>
           </ul>

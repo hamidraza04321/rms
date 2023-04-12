@@ -50,7 +50,7 @@ $(document).ready(function() {
 				data: formData,
 				success: function(response) {
 					if (response.status == true) {
-						window.location.href = base_url + '/dashboard';
+						window.location.href = response.redirect;
 					} else {
 						if (response?.errors) {
 							showErrorMessages(response.errors);
@@ -63,7 +63,7 @@ $(document).ready(function() {
 					message = errorMessage();
 				},
 				complete: function() {
-					if (message != '') $('.login-logo').after(message);
+					if (message != '') $('.login-logo').after(message); $('.alert').addClass('text-center');
 					self.removeClass('disabled').html(self_html);
 				}
 			});

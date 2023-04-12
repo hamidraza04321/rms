@@ -1,7 +1,4 @@
 
-//---------- BASE URL ----------//
-var base_url = $("#base-url").val();
-
 //---------- CALL AJAX CSRF META ----------//
 $.ajaxSetup({
     headers: {
@@ -56,14 +53,36 @@ function showErrorMessages(errors)
 //---------- SHOW ALERT IN TOP ----------//
 function showAlertInTop(message)
 {
+	scrollToTop();
 	$('.content-header .container-fluid').append(message);
 }
 
 //---------- CHECK EMAIL IS VALID OR NOT ----------//
-function isValidEmail(email) {
+function isValidEmail(email)
+{
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	return regex.test(email);
 }
+
+//---------- SCROLL TO TOP ----------//
+function scrollToTop()
+{
+	$("html, body").animate({ scrollTop: 0 }, "slow");
+}
+
+//---------- ON CLICK LOGOUT ----------//
+$(document).on('click', '#btn-logout', function(e) {
+	e.preventDefault();
+	var url = $(this).attr('data-url');
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		success: function(response) {
+			window.location.href = response.redirect;
+		}
+	});
+});
 
 //---------- THEME SETTINGS SET IN LOACAL STOREAGE ----------//
 

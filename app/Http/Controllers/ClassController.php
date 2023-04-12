@@ -16,11 +16,11 @@ class ClassController extends Controller
     {
         $classes = Classes::get();
 
-        $data = array(
+        $data = [
             'classes' => $classes,
             'page_title' => 'Manage Classes',
             'menu' => 'Class'
-        );
+        ];
 
         return view('class.index', compact('data'));
     }
@@ -32,12 +32,12 @@ class ClassController extends Controller
      */
     public function create()
     {
-        $data = array(
+        $data = [
             'page_title' => 'Create Class',
             'menu' => 'Class'
-        );
+        ];
 
-        return view('class.add', compact('data'));
+        return view('class.create', compact('data'));
     }
 
     /**
@@ -62,11 +62,11 @@ class ClassController extends Controller
     {
         $class = Classes::findOrFail($id);
 
-        $data = array(
+        $data = [
             'class' => $class,
             'page_title' => 'Edit Class',
             'menu' => 'Class'
-        );
+        ];
 
         return view('class.edit', compact('data'));
     }

@@ -32,10 +32,17 @@ Route::middleware(['auth'])->group(function () {
 		Route::put('/section/update-status/{id}', 'updateSectionStatus')->name('section.update.status');
 	});
 
+	//---------- SUPER ADMIN ROUTES ----------//
+	Route::middleware(['is.super.admin'])->group(function () {
+		//---------- USER ROLES ROUTES ----------//
+		Route::resource('/role', RoleController::class, ['except' => ['show']]);
+	});
+
 });
 
 //---------- AUTHERTICATION ROUTES ----------//
 Route::controller(AuthController::class)->group(function() {
 	Route::get('/login', 'login')->name('login');
 	Route::post('/attempt-login', 'attemptLogin')->name('attempt.login');
+	Route::post('/logout', 'logout')->name('logout');
 });

@@ -16,11 +16,11 @@ class SectionController extends Controller
     {
         $sections = Section::get();
 
-        $data = array(
+        $data = [
             'sections' => $sections,
             'page_title' => 'Manage Sections',
             'menu' => 'Section'
-        );
+        ];
 
         return view('section.index', compact('data'));
     }
@@ -32,12 +32,12 @@ class SectionController extends Controller
      */
     public function create()
     {
-        $data = array(
+        $data = [
             'page_title' => 'Create Section',
             'menu' => 'Section'
-        );
+        ];
 
-        return view('section.add', compact('data'));
+        return view('section.create', compact('data'));
     }
 
     /**
@@ -62,11 +62,11 @@ class SectionController extends Controller
     {
         $section = Section::findOrFail($id);
 
-        $data = array(
+        $data = [
             'section' => $section,
             'page_title' => 'Edit Section',
             'menu' => 'Section'
-        );
+        ];
 
         return view('section.edit', compact('data'));
     }
