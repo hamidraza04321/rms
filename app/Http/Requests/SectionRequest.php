@@ -39,7 +39,7 @@ class SectionRequest extends FormRequest
     public function store()
     {
         return [
-            'name' => [ 'required', 'string', Rule::unique('sections')->whereNull('deleted_at') ]
+            'name' => [ 'required', 'string', 'max:30', Rule::unique('sections')->whereNull('deleted_at') ]
         ];
     }
 
@@ -49,7 +49,7 @@ class SectionRequest extends FormRequest
     public function update()
     {
         return [
-            'name' => [ 'required', 'string', Rule::unique('sections')->whereNull('deleted_at')->ignore($this->section) ]
+            'name' => [ 'required', 'string', 'max:30', Rule::unique('sections')->whereNull('deleted_at')->ignore($this->section) ]
         ];
     }
 

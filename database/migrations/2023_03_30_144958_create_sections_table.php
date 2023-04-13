@@ -15,11 +15,10 @@ return new class extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name', 30);
             $table->boolean('is_active')->default('1');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
-            $table->integer('deleted_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

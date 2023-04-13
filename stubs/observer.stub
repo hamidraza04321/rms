@@ -3,40 +3,41 @@
 namespace {{ namespace }};
 
 use {{ namespacedModel }};
+use Auth;
 
 class {{ class }}
 {
     /**
-     * Handle the {{ model }} "created" event.
+     * Handle the {{ model }} "creating" event.
      *
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function created({{ model }} ${{ modelVariable }})
+    public function creating({{ model }} ${{ modelVariable }})
     {
-        //
+        ${{ modelVariable }}->created_by = Auth::id();
     }
 
     /**
-     * Handle the {{ model }} "updated" event.
+     * Handle the {{ model }} "updating" event.
      *
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function updated({{ model }} ${{ modelVariable }})
+    public function updating({{ model }} ${{ modelVariable }})
     {
-        //
+        ${{ modelVariable }}->updated_by = Auth::id();
     }
 
     /**
-     * Handle the {{ model }} "deleted" event.
+     * Handle the {{ model }} "deleting" event.
      *
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function deleted({{ model }} ${{ modelVariable }})
+    public function deleting({{ model }} ${{ modelVariable }})
     {
-        //
+        ${{ modelVariable }}->deleted_by = Auth::id();
     }
 
     /**

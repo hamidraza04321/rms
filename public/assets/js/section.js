@@ -7,6 +7,7 @@ $(document).ready(function() {
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			name = $('#name').val();
 			message = '';
 			flag = true;
@@ -41,7 +42,7 @@ $(document).ready(function() {
 				},
 				complete: function() {
 					if (message != '') showAlertInTop(message);
-					self.removeClass('disabled').html('Save');
+					self.removeClass('disabled').html(self_html);
 				}
 			});
 		}
@@ -53,6 +54,7 @@ $(document).ready(function() {
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			name = $('#name').val();
 			message = '';
 			flag = true;
@@ -86,18 +88,19 @@ $(document).ready(function() {
 				},
 				complete: function() {
 					if (message != '') showAlertInTop(message);
-					self.removeClass('disabled').html('Update');
+					self.removeClass('disabled').html(self_html);
 				}
 			});
 		}
 	});
 
-	//---------- ON CLICK DELTE SECTION ----------//
-	$(document).on('click', '.btn-delete-section', function(e) {
+	//---------- ON CLICK DESTROY SECTION ----------//
+	$(document).on('click', '.btn-destroy-section', function(e) {
 		e.preventDefault();
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			url = self.attr('data-url');
 			message = '';
 
@@ -111,13 +114,16 @@ $(document).ready(function() {
 			confirmButtonText: 'Yes, delete it!'
 		}).then((result) => {
 		 	if (result.isConfirmed) {
+		 		// BUTTON LOADING
+				self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
 		 		$.ajax({
 		 			url: url,
 		 			type: 'DELETE',
 		 			success: function(response) {
 		 				if (response.status == true) {
 		 					var table = $('#section-table').DataTable();
-		 					table.row().remove(self.closest('tr')).draw();
+		 					table.row(self.parents('tr')).remove().draw();
 		 					toastr.success(response.message);
 		 				} else {
 		 					message = errorMessage(response.message);
@@ -127,7 +133,59 @@ $(document).ready(function() {
 		 				message = errorMessage();
 		 			},
 		 			complete: function() {
-		 				if (message != '') showAlertInTop(message);
+		 				if (message != '') {
+		 					showAlertInTop(message);
+		 					self.removeClass('disabled').html(self_html);	
+		 				}
+		 			}
+		 		});
+		  	}
+		});
+	});
+
+	//---------- ON CLICK DELETE SECTION ----------//
+	$(document).on('click', '.btn-delete-section', function(e) {
+		e.preventDefault();
+		removeErrorMessages();
+
+		var self = $(this);
+			self_html = self.html();
+			url = self.attr('data-url');
+			message = '';
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		 	if (result.isConfirmed) {
+		 		// BUTTON LOADING
+				self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
+		 		$.ajax({
+		 			url: url,
+		 			type: 'DELETE',
+		 			success: function(response) {
+		 				if (response.status == true) {
+		 					var table = $('#section-trash-table').DataTable();
+		 					table.row(self.parents('tr')).remove().draw();
+		 					toastr.success(response.message);
+		 				} else {
+		 					message = errorMessage(response.message);
+		 				}
+		 			},
+		 			error: function() {
+		 				message = errorMessage();
+		 			},
+		 			complete: function() {
+		 				if (message != '') {
+		 					showAlertInTop(message);
+		 					self.removeClass('disabled').html(self_html);
+		 				}
 		 			}
 		 		});
 		  	}
@@ -140,6 +198,7 @@ $(document).ready(function() {
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			url = self.attr('data-url');
 			message = '';
 
@@ -164,9 +223,61 @@ $(document).ready(function() {
 				message = errorMessage();
 			},
 			complete: function() {
-				if (message != '') showAlertInTop(message);
+				if (message != '') {
+					showAlertInTop(message);
+					self.html(self_html);	
+				}
+
 				self.removeClass('disabled');
 			}
 		});
+	});
+
+	//---------- ON CLICK RESTORE BUTTON ----------//
+	$(document).on('click', '.btn-restore-section', function(e) {
+		e.preventDefault();
+		removeErrorMessages();
+
+		var self = $(this);
+			self_html = self.html();
+			url = self.attr('data-url');
+			message = '';
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		 	if (result.isConfirmed) {
+		 		// BUTTON LOADING
+				self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
+		 		$.ajax({
+		 			url: url,
+		 			type: 'PUT',
+		 			success: function(response) {
+		 				if (response.status == true) {
+		 					var table = $('#section-trash-table').DataTable();
+		 					table.row(self.parents('tr')).remove().draw();
+		 					toastr.success(response.message);
+		 				} else {
+		 					message = errorMessage(response.message);
+		 				}
+		 			},
+		 			error: function() {
+		 				message = errorMessage();
+		 			},
+		 			complete: function() {
+		 				if (message != '') {
+		 					showAlertInTop(message);
+		 					self.removeClass('disabled').html(self_html);
+		 				}
+		 			}
+		 		});
+		 	}
+		 });
 	});
 });

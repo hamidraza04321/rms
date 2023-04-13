@@ -3,9 +3,15 @@
 namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class {{ class }} extends Model
 {
-    use HasFactory;
+    use HasFactory,
+    	SoftDeletes;
+
+    protected $table = '';
+    protected $fillable = [ 'created_by', 'updated_by', 'deleted_by' ];
+    protected $guarded = [ 'id', 'created_at', 'updated_at' ];
 }

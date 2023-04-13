@@ -45,6 +45,7 @@ $(document).ready(function() {
 
 		if (!permissions) {
 			alert('Please Assign atleast one permission to create role!');
+			flag = false;
 		}
 		
 		if (flag) {

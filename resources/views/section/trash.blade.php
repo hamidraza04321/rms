@@ -27,29 +27,26 @@
             <div class="card">
               <div class="card-header">
                 <div class="card-title">{{ $data['page_title'] }}</div>
-                <div class="card-tools">
-                  <a href="{{ route('role.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Role</a>
-                </div>
               </div>
               <div class="card-body">
-                <table id="role-table" class="table table-bordered table-hover datatable">
+                <table id="section-trash-table" class="table table-bordered table-hover datatable">
                   <thead>
                     <tr>
                       <th>S No.</th>
                       <th>Name</th>
+                      <th>Deleted At</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($data['roles'] as $role)
+                    @foreach($data['sections'] as $section)
                       <tr>
                         <td>{{ ++$loop->index }}</td>
-                        <td>{{ $role->name }}</td>
+                        <td>{{ $section->name }}</td>
+                        <td>{{ $section->deleted_at->diffForHumans() }}</td>
                         <td>
-                          @if($role->name != 'Super Admin')
-                            <a href="{{ route('role.edit', $role->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            <a class="btn btn-sm btn-danger btn-delete-role" data-url="{{ route('role.destroy', $role->id) }}"><i class="fa fa-trash"></i> Delete</a>
-                          @endif
+                          <button class="btn btn-sm btn-success btn-restore-section" data-url="{{ route('section.restore', $section->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                          <button class="btn btn-sm btn-danger btn-delete-section" data-url="{{ route('section.delete', $section->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
                         </td>
                       </tr>
                     @endforeach
@@ -69,5 +66,5 @@
   </div>
 @endsection
 @section('scripts')
-<script src="{{ url('/assets/js/role.js') }}"></script>
+<script src="{{ url('/assets/js/section.js') }}"></script>
 @endsection

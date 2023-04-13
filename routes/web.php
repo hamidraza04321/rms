@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
 	//---------- SECTION ROUTES ----------//
 	Route::resource('/section', SectionController::class, ['except' => ['show']]);
 	Route::controller(SectionController::class)->group(function(){
+		Route::get('/section/trash', 'trash')->name('section.trash');
+		Route::put('/section/restore/{id}', 'restore')->name('section.restore');
+		Route::delete('/section/delete/{id}', 'delete')->name('section.delete');
 		Route::put('/section/update-status/{id}', 'updateSectionStatus')->name('section.update.status');
 	});
 

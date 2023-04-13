@@ -15,15 +15,17 @@ class ClassTableSeeder extends Seeder
      */
     public function run()
     {
-        Classes::create([ 'name' => 'Class I' ]);
-        Classes::create([ 'name' => 'Class II' ]);
-        Classes::create([ 'name' => 'Class III' ]);
-        Classes::create([ 'name' => 'Class IV' ]);
-        Classes::create([ 'name' => 'Class V' ]);
-        Classes::create([ 'name' => 'Class VI' ]);
-        Classes::create([ 'name' => 'Class VII' ]);
-        Classes::create([ 'name' => 'Class VIII' ]);
-        Classes::create([ 'name' => 'Class IX' ]);
-        Classes::create([ 'name' => 'Class X' ]);
+        Classes::insert([
+            [ 'name' => 'Class I' ],
+            [ 'name' => 'Class II' ],
+            [ 'name' => 'Class III' ],
+            [ 'name' => 'Class IV' ],
+            [ 'name' => 'Class V' ],
+            [ 'name' => 'Class VI' ],
+            [ 'name' => 'Class VII' ],
+            [ 'name' => 'Class VIII' ],
+            [ 'name' => 'Class IX' ],
+            [ 'name' => 'Class X' ]
+        ]);
     }
 }

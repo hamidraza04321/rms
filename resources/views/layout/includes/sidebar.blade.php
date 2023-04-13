@@ -64,7 +64,7 @@
           </ul>
         </li>
         <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit' ]))) active @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit', 'section.trash' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Section

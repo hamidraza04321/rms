@@ -29,6 +29,7 @@
                 <div class="card-title">{{ $data['page_title'] }}</div>
                 <div class="card-tools">
                   <a href="{{ route('section.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Section</a>
+                  <a href="{{ route('section.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
                 </div>
               </div>
               <div class="card-body">
@@ -54,8 +55,8 @@
                           @endif
                         </td>
                         <td>
-                          <a href="{{ route('section.edit', $section->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
-                          <a class="btn btn-sm btn-danger btn-delete-section" data-url="{{ route('section.destroy', $section->id) }}"><i class="fa fa-trash"></i></a>
+                          <a href="{{ route('section.edit', $section->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                          <button class="btn btn-sm btn-danger btn-destroy-section" data-url="{{ route('section.destroy', $section->id) }}"><i class="fa fa-trash"></i> Delete</button>
                         </td>
                       </tr>
                     @endforeach

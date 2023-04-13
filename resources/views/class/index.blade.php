@@ -54,8 +54,8 @@
                           @endif
                         </td>
                         <td>
-                          <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
-                          <a class="btn btn-sm btn-danger btn-delete-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"></i></a>
+                          <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                          <a class="btn btn-sm btn-danger btn-delete-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></a>
                         </td>
                       </tr>
                     @endforeach

@@ -80,9 +80,14 @@ class SectionController extends Controller
      */
     public function update(SectionRequest $request, $id)
     {
-        $section = Section::findOrFail($id);
-        $section->update($request->validated());
-        return response()->successMessage('Section Updated Successfully !');
+        $section = Section::find($id);
+
+        if ($section) {
+            $section->update($request->validated());
+            return response()->successMessage('Section Updated Successfully !');
+        }
+
+        return response()->successMessage('Section not Found !');
     }
 
     /**
@@ -93,9 +98,75 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        $section = Section::findOrFail($id);
-        $section->delete();
-        return response()->successMessage('Section Deleted Successfully !');
+        $section = Section::find($id);
+
+        if ($section) {
+            $section->delete();
+            return response()->successMessage('Section Deleted Successfully !');
+        }
+
+        return response()->errorMessage('Section not Found !');
+    }
+
+    /**
+     * Display a listing of the Trash resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $sections = Section::onlyTrashed()->get();
+
+        $data = [
+            'sections' => $sections,
+            'page_title' => 'Section Trash',
+            'menu' => 'Section'
+        ];
+
+        return view('section.trash', compact('data'));
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $section = Section::withTrashed()->find($id);
+
+        if ($section) {
+            // Check if section exists with this name
+            $exists = Section::where('name', $section->name)->exists();
+
+            if (!$exists) {
+                $section->restore();
+                return response()->successMessage('Section Restored Successfully !');
+            }
+
+            return response()->errorMessage("The Section {$section->name} has already exists !");
+        }
+
+        return response()->errorMessage('Section not Found !');
+    }
+
+    /**
+     * Delete the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $section = Section::onlyTrashed()->find($id);
+
+        if ($section) {
+            $section->forceDelete();
+            return response()->successMessage('Section Deleted Successfully !');
+        }
+
+        return response()->errorMessage('Section not Found !');
     }
 
     /**
@@ -106,9 +177,14 @@ class SectionController extends Controller
      */
     public function updateSectionStatus($id)
     {
-        $section = Section::findOrFail($id);
-        $data['is_active'] = ($section->is_active == 1) ? 0 : 1;
-        $section->update($data);
-        return response()->success($data);
+        $section = Section::find($id);
+
+        if ($section) {
+            $data['is_active'] = ($section->is_active == 1) ? 0 : 1;
+            $section->update($data);
+            return response()->success($data);
+        }
+
+        return response()->errorMessage('Section not Found !');
     }
 }
