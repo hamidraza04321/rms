@@ -30,14 +30,14 @@ class SectionObserver
     }
 
     /**
-     * Handle the Section "deleting" event.
+     * Handle the Section "deleted" event.
      *
      * @param  \App\Models\Section  $section
      * @return void
      */
-    public function deleting(Section $section)
+    public function deleted(Section $section)
     {
-        //
+        $section->sectionClasses->each->delete();
     }
 
     /**

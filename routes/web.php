@@ -23,6 +23,9 @@ Route::middleware(['auth'])->group(function () {
 	//---------- CLASS ROUTES ----------//
 	Route::resource('/class', ClassController::class, ['except' => ['show']]);
 	Route::controller(ClassController::class)->group(function(){
+		Route::get('/class/trash', 'trash')->name('class.trash');
+		Route::put('/class/restore/{id}', 'restore')->name('class.restore');
+		Route::delete('/class/delete/{id}', 'delete')->name('class.delete');
 		Route::put('/class/update-status/{id}', 'updateClassStatus')->name('class.update.status');
 	});
 

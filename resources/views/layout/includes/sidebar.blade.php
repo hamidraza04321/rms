@@ -41,7 +41,7 @@
           </a>
         </li>
         <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit' ]))) active @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit', 'class.trash' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Class

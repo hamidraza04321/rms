@@ -30,14 +30,14 @@ class GroupObserver
     }
 
     /**
-     * Handle the Group "deleting" event.
+     * Handle the Group "deleted" event.
      *
      * @param  \App\Models\Group  $group
      * @return void
      */
-    public function deleting(Group $group)
+    public function deleted(Group $group)
     {
-        //
+        $group->groupClasses->each->delete();
     }
 
     /**

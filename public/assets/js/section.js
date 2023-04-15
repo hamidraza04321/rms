@@ -250,7 +250,7 @@ $(document).ready(function() {
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, delete it!'
+			confirmButtonText: 'Yes, Restore it!'
 		}).then((result) => {
 		 	if (result.isConfirmed) {
 		 		// BUTTON LOADING

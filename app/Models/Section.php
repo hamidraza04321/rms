@@ -16,4 +16,9 @@ class Section extends Model
     protected $table = 'sections';
     protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+
+    public function sectionClasses()
+    {
+    	return $this->hasMany(ClassSection::class, 'section_id');
+    }
 }

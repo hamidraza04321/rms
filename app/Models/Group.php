@@ -16,4 +16,9 @@ class Group extends Model
     protected $table = 'groups';
     protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+
+    public function groupClasses()
+    {
+    	return $this->hasMany(ClassGroup::class, 'group_id');
+    }
 }

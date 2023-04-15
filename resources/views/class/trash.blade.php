@@ -27,18 +27,14 @@
             <div class="card">
               <div class="card-header">
                 <div class="card-title">{{ $data['page_title'] }}</div>
-                <div class="card-tools">
-                  <a href="{{ route('class.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Class</a>
-                  <a href="{{ route('class.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
-                </div>
               </div>
               <div class="card-body">
-                <table id="class-table" class="table table-bordered table-hover datatable">
+                <table id="class-trash-table" class="table table-bordered table-hover datatable">
                   <thead>
                     <tr>
                       <th>S No.</th>
                       <th>Name</th>
-                      <th>Status</th>
+                      <th>Deleted At</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -47,16 +43,10 @@
                       <tr>
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $class->name }}</td>
+                        <td>{{ $class->deleted_at->diffForHumans() }}</td>
                         <td>
-                          @if($class->is_active)
-                            <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                          @else
-                            <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                          @endif
-                        </td>
-                        <td>
-                          <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                          <a class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></a>
+                          <button class="btn btn-sm btn-success btn-restore-class" data-url="{{ route('class.restore', $class->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                          <button class="btn btn-sm btn-danger btn-delete-class" data-url="{{ route('class.delete', $class->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
                         </td>
                       </tr>
                     @endforeach

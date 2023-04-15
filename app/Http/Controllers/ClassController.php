@@ -129,18 +129,18 @@ class ClassController extends Controller
 
             // Save class section
             collect($request->section_id)->each(function($section_id) use($class) {
-                ClassSection::firstOrCreate([
+                ClassSection::withTrashed()->firstOrCreate([
                     'class_id' => $class->id,
                     'section_id' => $section_id
-                ]);
+                ])->restore();
             });
 
             // Svae class groups
             collect($request->group_id)->each(function($group_id) use($class) {
-                ClassGroup::firstOrCreate([
+                ClassGroup::withTrashed()->firstOrCreate([
                     'class_id' => $class->id,
                     'group_id' => $group_id
-                ]);
+                ])->restore();
             });
 
             return response()->successMessage('Class Updated Successfully !');
@@ -161,6 +161,67 @@ class ClassController extends Controller
         
         if ($class) {
             $class->delete();
+            return response()->successMessage('Class Deleted Successfully !');
+        }
+
+        return response()->errorMessage('Class not Found !');
+    }
+
+    /**
+     * Display a listing of the Trash resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $classes = Classes::onlyTrashed()->get();
+
+        $data = [
+            'classes' => $classes,
+            'page_title' => 'Class Trash',
+            'menu' => 'Class'
+        ];
+
+        return view('class.trash', compact('data'));
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $class = Classes::withTrashed()->find($id);
+
+        if ($class) {
+            // Check if class exists with this name
+            $exists = Classes::where('name', $class->name)->exists();
+
+            if (!$exists) {
+                $class->restore();
+                return response()->successMessage('Class Restored Successfully !');
+            }
+
+            return response()->errorMessage("The Class {$class->name} has already exists !");
+        }
+
+        return response()->errorMessage('Class not Found !');
+    }
+
+    /**
+     * Delete the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $class = Classes::withTrashed()->find($id);
+
+        if ($class) {
+            $class->forceDelete();
             return response()->successMessage('Class Deleted Successfully !');
         }
 
