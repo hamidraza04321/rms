@@ -35,6 +35,15 @@ Route::middleware(['auth'])->group(function () {
 		Route::put('/section/update-status/{id}', 'updateSectionStatus')->name('section.update.status');
 	});
 
+	//---------- GROUP ROUTES ----------//
+	Route::resource('/group', GroupController::class, ['except' => ['show']]);
+	Route::controller(GroupController::class)->group(function(){
+		Route::get('/group/trash', 'trash')->name('group.trash');
+		Route::put('/group/restore/{id}', 'restore')->name('group.restore');
+		Route::delete('/group/delete/{id}', 'delete')->name('group.delete');
+		Route::put('/group/update-status/{id}', 'updateGroupStatus')->name('group.update.status');
+	});
+
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware(['is.super.admin'])->group(function () {
 		//---------- USER ROLES ROUTES ----------//

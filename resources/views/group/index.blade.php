@@ -28,11 +28,12 @@
               <div class="card-header">
                 <div class="card-title">{{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  <a href="{{ route('class.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Class</a>
+                  <a href="{{ route('group.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Group</a>
+                  <a href="{{ route('group.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
                 </div>
               </div>
               <div class="card-body">
-                <table id="class-table" class="table table-bordered table-hover datatable">
+                <table id="group-table" class="table table-bordered table-hover datatable">
                   <thead>
                     <tr>
                       <th>S No.</th>
@@ -42,20 +43,20 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($data['classes'] as $class)
+                    @foreach($data['groups'] as $group)
                       <tr>
                         <td>{{ ++$loop->index }}</td>
-                        <td>{{ $class->name }}</td>
+                        <td>{{ $group->name }}</td>
                         <td>
-                          @if($class->is_active)
-                            <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                          @if($group->is_active)
+                            <button data-url="{{ route('group.update.status', $group->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
                           @else
-                            <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                            <button data-url="{{ route('group.update.status', $group->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
                           @endif
                         </td>
                         <td>
-                          <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                          <a class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></a>
+                          <a href="{{ route('group.edit', $group->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                          <button class="btn btn-sm btn-danger btn-destroy-group" data-url="{{ route('group.destroy', $group->id) }}"><i class="fa fa-trash"></i> Delete</button>
                         </td>
                       </tr>
                     @endforeach
@@ -75,5 +76,5 @@
   </div>
 @endsection
 @section('scripts')
-<script src="{{ url('/assets/js/class.js') }}"></script>
+<script src="{{ url('/assets/js/group.js') }}"></script>
 @endsection

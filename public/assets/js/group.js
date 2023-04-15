@@ -1,8 +1,8 @@
 
 $(document).ready(function() {
 
-	//---------- ON CLICK SAVE SECTION ----------//
-	$(document).on('click', '#btn-save-section', function(e) {
+	//---------- ON CLICK SAVE GROUP ----------//
+	$(document).on('click', '#btn-save-group', function(e) {
 		e.preventDefault();
 		removeErrorMessages();
 
@@ -21,7 +21,7 @@ $(document).ready(function() {
 			// Button Loading
 			self.addClass('disabled').html('<div class="spinner-border"></div>');
 
-			var form = $('#create-section-form');
+			var form = $('#create-group-form');
 			    url = form.attr('action');
 			    formData = form.serialize();
 
@@ -48,8 +48,8 @@ $(document).ready(function() {
 		}
 	});
 
-	//---------- ON CLICK UPDATE SECTION ----------//
-	$(document).on('click', '#btn-update-section', function(e) {
+	//---------- ON CLICK UPDATE GROUP ----------//
+	$(document).on('click', '#btn-update-group', function(e) {
 		e.preventDefault();
 		removeErrorMessages();
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
 			// Button Loading
 			self.addClass('disabled').html('<div class="spinner-border"></div>');
 
-			var form = $('#update-section-form');
+			var form = $('#update-group-form');
 			    url = form.attr('action');
 			    formData = form.serialize();
 
@@ -94,8 +94,8 @@ $(document).ready(function() {
 		}
 	});
 
-	//---------- ON CLICK DESTROY SECTION ----------//
-	$(document).on('click', '.btn-destroy-section', function(e) {
+	//---------- ON CLICK DESTROY GROUP ----------//
+	$(document).on('click', '.btn-destroy-group', function(e) {
 		e.preventDefault();
 		removeErrorMessages();
 
@@ -122,7 +122,7 @@ $(document).ready(function() {
 		 			type: 'DELETE',
 		 			success: function(response) {
 		 				if (response.status == true) {
-		 					var table = $('#section-table').DataTable();
+		 					var table = $('#group-table').DataTable();
 		 					table.row(self.parents('tr')).remove().draw();
 		 					toastr.success(response.message);
 		 				} else {
@@ -143,8 +143,8 @@ $(document).ready(function() {
 		});
 	});
 
-	//---------- ON CLICK DELETE SECTION ----------//
-	$(document).on('click', '.btn-delete-section', function(e) {
+	//---------- ON CLICK DELETE GROUP ----------//
+	$(document).on('click', '.btn-delete-group', function(e) {
 		e.preventDefault();
 		removeErrorMessages();
 
@@ -171,7 +171,7 @@ $(document).ready(function() {
 		 			type: 'DELETE',
 		 			success: function(response) {
 		 				if (response.status == true) {
-		 					var table = $('#section-trash-table').DataTable();
+		 					var table = $('#group-trash-table').DataTable();
 		 					table.row(self.parents('tr')).remove().draw();
 		 					toastr.success(response.message);
 		 				} else {
@@ -234,7 +234,7 @@ $(document).ready(function() {
 	});
 
 	//---------- ON CLICK RESTORE BUTTON ----------//
-	$(document).on('click', '.btn-restore-section', function(e) {
+	$(document).on('click', '.btn-restore-group', function(e) {
 		e.preventDefault();
 		removeErrorMessages();
 
@@ -261,7 +261,7 @@ $(document).ready(function() {
 		 			type: 'PUT',
 		 			success: function(response) {
 		 				if (response.status == true) {
-		 					var table = $('#section-trash-table').DataTable();
+		 					var table = $('#group-trash-table').DataTable();
 		 					table.row(self.parents('tr')).remove().draw();
 		 					toastr.success(response.message);
 		 				} else {

@@ -7,12 +7,19 @@ $(document).ready(function() {
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			name = $('#name').val();
+			section_id = $('#section-id').val();
 			message = '';
 			flag = true;
 
 		if (name == '') {
 			$("#name").addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			flag = false;
+		}
+
+		if (!section_id.length) {
+			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
 			flag = false;
 		}
 
@@ -31,6 +38,7 @@ $(document).ready(function() {
 				success: function(response) {
 					if (response.status == true) {
 				      	form[0].reset();
+				      	$('.select2').val('').change();
 						toastr.success(response.message);
 					} else {
 						showErrorMessages(response.errors);
@@ -41,7 +49,7 @@ $(document).ready(function() {
 				},
 				complete: function() {
 					if (message != '') showAlertInTop(message);
-					self.removeClass('disabled').html('Save');
+					self.removeClass('disabled').html(self_html);
 				}
 			});
 		}
@@ -53,12 +61,19 @@ $(document).ready(function() {
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			name = $('#name').val();
+			section_id = $('#section-id').val();
 			message = '';
 			flag = true;
 
 		if (name == '') {
 			$("#name").addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			flag = false;
+		}
+
+		if (!section_id.length) {
+			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
 			flag = false;
 		}
 
@@ -86,18 +101,19 @@ $(document).ready(function() {
 				},
 				complete: function() {
 					if (message != '') showAlertInTop(message);
-					self.removeClass('disabled').html('Update');
+					self.removeClass('disabled').html(self_html);
 				}
 			});
 		}
 	});
 
-	//---------- ON CLICK DELTE CLASS ----------//
-	$(document).on('click', '.btn-delete-class', function(e) {
+	//---------- ON CLICK DESTROY CLASS ----------//
+	$(document).on('click', '.btn-destroy-class', function(e) {
 		e.preventDefault();
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			url = self.attr('data-url');
 			message = '';
 
@@ -111,13 +127,16 @@ $(document).ready(function() {
 			confirmButtonText: 'Yes, delete it!'
 		}).then((result) => {
 		 	if (result.isConfirmed) {
+		 		// BUTTON LOADING
+				self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
 		 		$.ajax({
 		 			url: url,
 		 			type: 'DELETE',
 		 			success: function(response) {
 		 				if (response.status == true) {
 		 					var table = $('#class-table').DataTable();
-		 					table.row().remove(self.closest('tr')).draw();
+		 					table.row(self.parents('tr')).remove().draw();
 		 					toastr.success(response.message);
 		 				} else {
 		 					message = errorMessage(response.message);
@@ -127,7 +146,10 @@ $(document).ready(function() {
 		 				message = errorMessage();
 		 			},
 		 			complete: function() {
-		 				if (message != '') showAlertInTop(message);
+		 				if (message != '') {
+		 					showAlertInTop(message);
+		 					self.removeClass('disabled').html(self_html);
+		 				}
 		 			}
 		 		});
 		  	}

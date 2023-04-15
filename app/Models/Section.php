@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\ActiveRecords;
 
 class Section extends Model
@@ -14,6 +14,6 @@ class Section extends Model
     	ActiveRecords;
 
     protected $table = 'sections';
-    protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by', 'deleted_by' ];
+    protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
 }

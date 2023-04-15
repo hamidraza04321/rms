@@ -86,6 +86,29 @@
             </li>
           </ul>
         </li>
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create', 'group.edit' ]))) menu-open @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create', 'group.edit', 'group.trash' ]))) active @endif">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Group
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('group.index') }}" class="nav-link @if(Route::currentRouteName() == 'group.index') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manage</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('group.create') }}" class="nav-link @if(Route::currentRouteName() == 'group.create') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create</p>
+              </a>
+            </li>
+          </ul>
+        </li>
         <li class="nav-header">User Management</li>
         <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) menu-open @endif">
           <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) active @endif">

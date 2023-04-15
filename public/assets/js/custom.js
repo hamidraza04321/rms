@@ -11,6 +11,13 @@ if (typeof DataTable !== "undefined") {
     $('.datatable').DataTable();
 }
 
+//---------- SELECT 2 ----------//
+$('.select2').select2({
+	width: '100%',
+	placeholder: "Select",
+	allowClear: true
+});
+
 //---------- REMOVE VALIDATION ERROR ALERT MESSAGES ----------//
 function removeErrorMessages()
 {

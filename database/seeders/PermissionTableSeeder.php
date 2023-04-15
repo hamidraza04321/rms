@@ -31,7 +31,15 @@ class PermissionTableSeeder extends Seeder
         	'edit-section',
         	'delete-section',
         	'view-section-trash',
-        	'restore-section'
+        	'restore-section',
+
+            // GROUP
+            'view-group',
+            'create-group',
+            'edit-group',
+            'delete-group',
+            'view-group-trash',
+            'restore-group'
 
         ]);
 

@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ClassSection extends Model
+class ClassGroup extends Model
 {
     use HasFactory,
     	SoftDeletes;
 
-    protected $table = 'class_sections';
-    protected $fillable = [ 'class_id', 'section_id' ];
+    protected $table = 'class_groups';
+    protected $fillable = [ 'class_id', 'group_id' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
 
-    public function section()
+    public function group()
     {
-    	return $this->belongsTo(Section::class);
+    	return $this->belongsTo(Group::class);
     }
 }

@@ -13,6 +13,18 @@ $(document).ready(function() {
 		}
 	});
 
+	//---------- ON CHANGE ALL CHECKBOX ----------//	
+	$(document).on('change', '#check-all-permissions', function(e) {
+		e.preventDefault();
+		var permissions = $('#permissions-table').find('input[type="checkbox"]');
+		
+		if ($(this).is(':checked')) {
+			permissions.prop('checked', true);
+		} else {
+			permissions.prop('checked', false);
+		}
+	});
+
 	//---------- ON CHANGE PERMISSION CHECKBOX ----------//
 	$(document).on('change', '.permission', function(e) {
 		e.preventDefault();

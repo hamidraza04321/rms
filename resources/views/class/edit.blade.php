@@ -34,6 +34,22 @@
                     <label>Name</label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Class Name" value="{{ $data['class']->name }}">
                   </div>
+                  <div class="form-group">
+                    <label>Sections</label>
+                    <select name="section_id[]" id="section-id" class="form-control select2" multiple>
+                      @foreach($data['sections'] as $section)
+                        <option @selected(in_array($section->id, $data['section_ids'])) value="{{ $section->id }}">{{ $section->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Groups</label>
+                    <select name="group_id[]" id="group-id" class="form-control select2" multiple>
+                      @foreach($data['groups'] as $group)
+                        <option @selected(in_array($group->id, $data['group_ids'])) value="{{ $group->id }}">{{ $group->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                   <button class="btn btn-success" id="btn-update-class">Update</button>
                   <a class="btn btn-danger" href="{{ route('class.index') }}">Back</a>
                 </form>

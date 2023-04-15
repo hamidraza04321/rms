@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ActiveRecords;
 
-class ClassSection extends Model
+class Group extends Model
 {
     use HasFactory,
-    	SoftDeletes;
+    	SoftDeletes,
+    	ActiveRecords;
 
-    protected $table = 'class_sections';
-    protected $fillable = [ 'class_id', 'section_id' ];
+    protected $table = 'groups';
+    protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
-
-    public function section()
-    {
-    	return $this->belongsTo(Section::class);
-    }
 }

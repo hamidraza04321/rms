@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
-class ClassRequest extends FormRequest
+class GroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,8 @@ class ClassRequest extends FormRequest
     public function rules()
     {
         return match(Route::currentRouteName()) {
-            'class.store' => $this->store(),
-            'class.update' => $this->update()
+            'group.store' => $this->store(),
+            'group.update' => $this->update()
         };
     }
 
@@ -39,9 +39,7 @@ class ClassRequest extends FormRequest
     public function store()
     {
         return [
-            'name' => [ 'required', 'string', Rule::unique('classes')->whereNull('deleted_at') ],
-            'section_id.*' => 'required|exists:sections,id',
-            'group_id.*' => 'nullable|exists:groups,id'
+            'name' => [ 'required', 'string', 'max:30', Rule::unique('groups')->whereNull('deleted_at') ]
         ];
     }
 
@@ -51,9 +49,7 @@ class ClassRequest extends FormRequest
     public function update()
     {
         return [
-            'name' => [ 'required', 'string', Rule::unique('classes')->whereNull('deleted_at')->ignore($this->class) ],
-            'section_id.*' => 'required|exists:sections,id',
-            'group_id.*' => 'nullable|exists:groups,id'
+            'name' => [ 'required', 'string', 'max:30', Rule::unique('groups')->whereNull('deleted_at')->ignore($this->group) ]
         ];
     }
 

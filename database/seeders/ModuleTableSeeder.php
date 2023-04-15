@@ -17,7 +17,8 @@ class ModuleTableSeeder extends Seeder
     {
         $modules = collect([
         	'Class',
-        	'Section'
+        	'Section',
+            'Group'
         ]);
 
         $modules->each(function($name) {

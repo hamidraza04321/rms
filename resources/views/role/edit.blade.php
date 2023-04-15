@@ -39,9 +39,13 @@
                       <div class="accordion" id="permissionAccordion">
                         <div class="card">
                           <div class="card-header" id="permission-heading">
-                            <h2 class="mb-0">
+                            <div class="d-flex">
                               <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#permissions-table" aria-expanded="true" aria-controls="permissions-table">Assign Permissions</button>
-                            </h2>
+                              <div class="form-check float-right p-2">
+                                <input class="form-check-input" id="check-all-permissions" {{ ($data['role']->hasAllPermissions()) ? 'checked' : '' }} type="checkbox">
+                                <label class="form-check-label">All</label>
+                              </div>
+                            </div>
                           </div>
                           <div id="permissions-table" class="collapse show" aria-labelledby="permission-heading" data-parent="#permissionAccordion">
                             <div class="card-body">

@@ -29,29 +29,13 @@
                 <div class="card-title">{{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
-                <form action="{{ route('class.store') }}" id="create-class-form">
+                <form action="{{ route('group.store') }}" id="create-group-form">
                   <div class="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter Class Name">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter Group Name">
                   </div>
-                  <div class="form-group">
-                    <label>Sections</label>
-                    <select name="section_id[]" id="section-id" class="form-control select2" multiple>
-                      @foreach($data['sections'] as $section)
-                        <option value="{{ $section->id }}">{{ $section->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Groups</label>
-                    <select name="group_id[]" id="group-id" class="form-control select2" multiple>
-                      @foreach($data['groups'] as $group)
-                        <option value="{{ $group->id }}">{{ $group->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <button class="btn btn-success" id="btn-save-class">Save</button>
-                  <a class="btn btn-danger" href="{{ route('class.index') }}">Back</a>
+                  <button class="btn btn-success" id="btn-save-group">Save</button>
+                  <a class="btn btn-danger" href="{{ route('group.index') }}">Back</a>
                 </form>
               </div>
               <!-- /.card-body -->
@@ -67,5 +51,5 @@
   </div>
 @endsection
 @section('scripts')
-<script src="{{ url('/assets/js/class.js') }}"></script>
+<script src="{{ url('/assets/js/group.js') }}"></script>
 @endsection

@@ -30,14 +30,14 @@ class {{ class }}
     }
 
     /**
-     * Handle the {{ model }} "deleting" event.
+     * Handle the {{ model }} "deleted" event.
      *
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function deleting({{ model }} ${{ modelVariable }})
+    public function deleted({{ model }} ${{ modelVariable }})
     {
-        ${{ modelVariable }}->deleted_by = Auth::id();
+        //
     }
 
     /**

@@ -12,6 +12,6 @@ class {{ class }} extends Model
     	SoftDeletes;
 
     protected $table = '';
-    protected $fillable = [ 'created_by', 'updated_by', 'deleted_by' ];
+    protected $fillable = [ 'created_by', 'updated_by' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
 }

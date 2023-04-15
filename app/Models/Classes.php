@@ -16,4 +16,14 @@ class Classes extends Model
     protected $table = 'classes';
     protected $fillable = [ 'id', 'name', 'is_active' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+
+    public function sections()
+    {
+    	return $this->hasMany(ClassSection::class, 'class_id');
+    }
+
+    public function groups()
+    {
+    	return $this->hasMany(ClassGroup::class, 'class_id');
+    }
 }
