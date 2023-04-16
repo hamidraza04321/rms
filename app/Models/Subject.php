@@ -7,23 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\ActiveScopeTrait;
 
-class Classes extends Model
+class Subject extends Model
 {
     use HasFactory,
     	SoftDeletes,
-        ActiveScopeTrait;
+    	ActiveScopeTrait;
 
-    protected $table = 'classes';
+    protected $table = 'subjects';
     protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
-
-    public function sections()
-    {
-    	return $this->hasMany(ClassSection::class, 'class_id');
-    }
-
-    public function groups()
-    {
-    	return $this->hasMany(ClassGroup::class, 'class_id');
-    }
 }

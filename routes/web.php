@@ -47,6 +47,15 @@ Route::middleware(['auth'])->group(function () {
 		Route::put('/group/update-status/{id}', 'updateGroupStatus')->name('group.update.status');
 	});
 
+	//---------- SUBJECT ROUTES ----------//
+	Route::resource('/subject', SubjectController::class, ['except' => ['show']]);
+	Route::controller(SubjectController::class)->group(function(){
+		Route::get('/subject/trash', 'trash')->name('subject.trash');
+		Route::put('/subject/restore/{id}', 'restore')->name('subject.restore');
+		Route::delete('/subject/delete/{id}', 'delete')->name('subject.delete');
+		Route::put('/subject/update-status/{id}', 'updateSubjectStatus')->name('subject.update.status');
+	});
+
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware(['is.super.admin'])->group(function () {
 		//---------- USER ROLES ROUTES ----------//
