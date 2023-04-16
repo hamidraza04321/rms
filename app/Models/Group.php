@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\ActiveRecords;
+use App\Traits\ActiveScopeTrait;
 
 class Group extends Model
 {
     use HasFactory,
     	SoftDeletes,
-    	ActiveRecords;
+        ActiveScopeTrait;
 
     protected $table = 'groups';
     protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by' ];

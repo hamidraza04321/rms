@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassRequest;
+use App\Models\Scopes\ActiveScope;
 use App\Models\Classes;
 use App\Models\ClassSection;
 use App\Models\ClassGroup;
@@ -18,7 +19,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        $classes = Classes::get();
+        $classes = Classes::withoutGlobalScope(ActiveScope::class)->get();
 
         $data = [
             'classes' => $classes,
@@ -37,8 +38,8 @@ class ClassController extends Controller
     public function create()
     {
         $selected = [ 'id', 'name' ];
-        $sections = Section::active()->get($selected);
-        $groups = Group::active()->get($selected);
+        $sections = Section::get($selected);
+        $groups = Group::get($selected);
 
         $data = [
             'sections' => $sections,
@@ -59,7 +60,10 @@ class ClassController extends Controller
     public function store(ClassRequest $request)
     {
         // CREATE CLASS
-        $class = Classes::create([ 'name' => $request->name ]);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)
+            ->create([
+                'name' => $request->name 
+            ]);
         
         // Save class section
         collect($request->section_id)->each(function($section_id) use($class) {
@@ -88,13 +92,13 @@ class ClassController extends Controller
      */
     public function edit($id)
     {
-        $class = Classes::findOrFail($id);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $section_ids = $class->sections->pluck('section_id')->toArray();
         $group_ids = $class->groups->pluck('group_id')->toArray();
 
         $selected = [ 'id', 'name' ];
-        $sections = Section::active()->get($selected);
-        $groups = Group::active()->get($selected);
+        $sections = Section::get($selected);
+        $groups = Group::get($selected);
 
         $data = [
             'class' => $class,
@@ -118,10 +122,12 @@ class ClassController extends Controller
      */
     public function update(ClassRequest $request, $id)
     {
-        $class = Classes::find($id);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($class) {
-            $class->update([ 'name' => $request->name ]);
+            $class->update([
+                'name' => $request->name
+            ]);
 
             // Delete where id not exists in request
             $class->sections->whereNotIn('section_id', $request->section_id)->each->delete();
@@ -157,7 +163,7 @@ class ClassController extends Controller
      */
     public function destroy($id)
     {
-        $class = Classes::find($id);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)->find($id);
         
         if ($class) {
             $class->delete();
@@ -174,7 +180,9 @@ class ClassController extends Controller
      */
     public function trash()
     {
-        $classes = Classes::onlyTrashed()->get();
+        $classes = Classes::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->get();
 
         $data = [
             'classes' => $classes,
@@ -193,11 +201,15 @@ class ClassController extends Controller
      */
     public function restore($id)
     {
-        $class = Classes::withTrashed()->find($id);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)
+            ->withTrashed()
+            ->find($id);
 
         if ($class) {
             // Check if class exists with this name
-            $exists = Classes::where('name', $class->name)->exists();
+            $exists = Classes::withoutGlobalScope(ActiveScope::class)
+                ->where('name', $class->name)
+                ->exists();
 
             if (!$exists) {
                 $class->restore();
@@ -218,7 +230,9 @@ class ClassController extends Controller
      */
     public function delete($id)
     {
-        $class = Classes::withTrashed()->find($id);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)
+            ->withTrashed()
+            ->find($id);
 
         if ($class) {
             $class->forceDelete();
@@ -236,7 +250,7 @@ class ClassController extends Controller
      */
     public function updateClassStatus($id)
     {
-        $class = Classes::findOrFail($id);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $data['is_active'] = ($class->is_active == 1) ? 0 : 1;
         $class->update($data);
         return response()->success($data);

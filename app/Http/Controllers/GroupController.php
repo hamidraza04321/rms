@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Scopes\ActiveScope;
 use App\Http\Requests\GroupRequest;
 use App\Models\Group;
 
@@ -14,7 +15,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::get();
+        $groups = Group::withoutGlobalScope(ActiveScope::class)->get();
 
         $data = [
             'groups' => $groups,
@@ -60,7 +61,7 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        $group = Group::findOrFail($id);
+        $group = Group::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
 
         $data = [
             'group' => $group,
@@ -80,7 +81,7 @@ class GroupController extends Controller
      */
     public function update(GroupRequest $request, $id)
     {
-        $group = Group::find($id);
+        $group = Group::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($group) {
             $group->update($request->validated());
@@ -98,7 +99,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        $group = Group::find($id);
+        $group = Group::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($group) {
             $group->delete();
@@ -115,7 +116,9 @@ class GroupController extends Controller
      */
     public function trash()
     {
-        $groups = Group::onlyTrashed()->get();
+        $groups = Group::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->get();
 
         $data = [
             'groups' => $groups,
@@ -134,11 +137,15 @@ class GroupController extends Controller
      */
     public function restore($id)
     {
-        $group = Group::withTrashed()->find($id);
+        $group = Group::withoutGlobalScope(ActiveScope::class)
+            ->withTrashed()
+            ->find($id);
 
         if ($group) {
             // Check if group exists with this name
-            $exists = Group::where('name', $group->name)->exists();
+            $exists = Group::withoutGlobalScope(ActiveScope::class)
+                ->where('name', $group->name)
+                ->exists();
 
             if (!$exists) {
                 $group->restore();
@@ -159,7 +166,9 @@ class GroupController extends Controller
      */
     public function delete($id)
     {
-        $group = Group::onlyTrashed()->find($id);
+        $group = Group::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->find($id);
 
         if ($group) {
             $group->forceDelete();
@@ -177,7 +186,7 @@ class GroupController extends Controller
      */
     public function updateGroupStatus($id)
     {
-        $group = Group::find($id);
+        $group = Group::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($group) {
             $data['is_active'] = ($group->is_active == 1) ? 0 : 1;

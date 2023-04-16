@@ -40,7 +40,8 @@
             <p>Dashboard</p>
           </a>
         </li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit' ]))) menu-open @endif">
+        <li class="nav-header">Student Management</li>
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create' ]))) menu-open @endif">
           <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit', 'class.trash' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
@@ -63,7 +64,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit' ]))) menu-open @endif">
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create' ]))) menu-open @endif">
           <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit', 'section.trash' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
@@ -86,7 +87,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create', 'group.edit' ]))) menu-open @endif">
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create' ]))) menu-open @endif">
           <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create', 'group.edit', 'group.trash' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
@@ -110,7 +111,7 @@
           </ul>
         </li>
         <li class="nav-header">User Management</li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) menu-open @endif">
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create' ]))) menu-open @endif">
           <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>

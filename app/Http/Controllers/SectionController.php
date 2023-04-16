@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SectionRequest;
 use App\Models\Section;
+use App\Models\Scopes\ActiveScope;
 
 class SectionController extends Controller
 {
@@ -14,7 +15,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections = Section::get();
+        $sections = Section::withoutGlobalScope(ActiveScope::class)->get();
 
         $data = [
             'sections' => $sections,
@@ -60,7 +61,7 @@ class SectionController extends Controller
      */
     public function edit($id)
     {
-        $section = Section::findOrFail($id);
+        $section = Section::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
 
         $data = [
             'section' => $section,
@@ -80,7 +81,7 @@ class SectionController extends Controller
      */
     public function update(SectionRequest $request, $id)
     {
-        $section = Section::find($id);
+        $section = Section::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($section) {
             $section->update($request->validated());
@@ -98,7 +99,7 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        $section = Section::find($id);
+        $section = Section::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($section) {
             $section->delete();
@@ -115,7 +116,9 @@ class SectionController extends Controller
      */
     public function trash()
     {
-        $sections = Section::onlyTrashed()->get();
+        $sections = Section::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->get();
 
         $data = [
             'sections' => $sections,
@@ -134,11 +137,15 @@ class SectionController extends Controller
      */
     public function restore($id)
     {
-        $section = Section::withTrashed()->find($id);
+        $section = Section::withoutGlobalScope(ActiveScope::class)
+            ->withTrashed()
+            ->find($id);
 
         if ($section) {
             // Check if section exists with this name
-            $exists = Section::where('name', $section->name)->exists();
+            $exists = Section::withoutGlobalScope(ActiveScope::class)
+                ->where('name', $section->name)
+                ->exists();
 
             if (!$exists) {
                 $section->restore();
@@ -159,7 +166,9 @@ class SectionController extends Controller
      */
     public function delete($id)
     {
-        $section = Section::onlyTrashed()->find($id);
+        $section =Section::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->find($id);
 
         if ($section) {
             $section->forceDelete();
@@ -177,7 +186,7 @@ class SectionController extends Controller
      */
     public function updateSectionStatus($id)
     {
-        $section = Section::find($id);
+        $section = Section::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($section) {
             $data['is_active'] = ($section->is_active == 1) ? 0 : 1;

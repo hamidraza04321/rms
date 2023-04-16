@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\ActiveRecords;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ActiveScopeTrait;
 
 class Classes extends Model
 {
     use HasFactory,
     	SoftDeletes,
-    	ActiveRecords;
+        ActiveScopeTrait;
 
     protected $table = 'classes';
     protected $fillable = [ 'id', 'name', 'is_active' ];

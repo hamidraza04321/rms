@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use App\Traits\ActiveRecords;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ActiveScopeTrait;
 
 class Student extends Model
 {
     use HasFactory,
     	SoftDeletes,
-    	ActiveRecords;
+        ActiveScopeTrait;
 
     protected $table = 'students';
     protected $fillable = [ 'is_active' ];
