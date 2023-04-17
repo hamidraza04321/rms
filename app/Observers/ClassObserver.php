@@ -39,6 +39,7 @@ class ClassObserver
     {
         $class->sections->each->delete();   
         $class->groups->each->delete();
+        $class->subjects->each->delete();
     }
 
     /**
@@ -51,6 +52,7 @@ class ClassObserver
     {
         $class->sections()->withTrashed()->restore();   
         $class->groups()->withTrashed()->restore();
+        $class->subjects()->withTrashed()->restore();
     }
 
     /**
@@ -63,5 +65,6 @@ class ClassObserver
     {
         $class->sections->each->forceDelete();   
         $class->groups->each->forceDelete();
+        $class->subjects->each->forceDelete();
     }
 }

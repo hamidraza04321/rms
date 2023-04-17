@@ -10,6 +10,7 @@ $(document).ready(function() {
 			self_html = self.html();
 			name = $('#name').val();
 			section_id = $('#section-id').val();
+			subject_id = $('#subject-id').val();
 			message = '';
 			flag = true;
 
@@ -20,6 +21,11 @@ $(document).ready(function() {
 
 		if (!section_id.length) {
 			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			flag = false;
+		}
+
+		if (!subject_id.length) {
+			$("#subject-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
 			flag = false;
 		}
 
@@ -64,6 +70,7 @@ $(document).ready(function() {
 			self_html = self.html();
 			name = $('#name').val();
 			section_id = $('#section-id').val();
+			subject_id = $('#subject-id').val();
 			message = '';
 			flag = true;
 
@@ -74,6 +81,11 @@ $(document).ready(function() {
 
 		if (!section_id.length) {
 			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			flag = false;
+		}
+
+		if (!subject_id.length) {
+			$("#subject-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
 			flag = false;
 		}
 

@@ -9,6 +9,8 @@ use App\Models\ClassSection;
 use App\Models\ClassGroup;
 use App\Models\Section;
 use App\Models\Group;
+use App\Models\Subject;
+use App\Models\ClassSubject;
 
 class ClassController extends Controller
 {
@@ -40,10 +42,12 @@ class ClassController extends Controller
         $selected = [ 'id', 'name' ];
         $sections = Section::get($selected);
         $groups = Group::get($selected);
+        $subjects = Subject::get($selected);
 
         $data = [
             'sections' => $sections,
             'groups' => $groups,
+            'subjects' => $subjects,
             'page_title' => 'Create Class',
             'menu' => 'Class'
         ];
@@ -81,6 +85,14 @@ class ClassController extends Controller
             ]);
         });
 
+        // Save class subjects
+        collect($request->subject_id)->each(function($subject_id) use($class) {
+            ClassSubject::create([
+                'class_id' => $class->id,
+                'subject_id' => $subject_id
+            ]);
+        });
+
         return response()->successMessage('Class Created Successfully');
     }
 
@@ -95,17 +107,21 @@ class ClassController extends Controller
         $class = Classes::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $section_ids = $class->sections->pluck('section_id')->toArray();
         $group_ids = $class->groups->pluck('group_id')->toArray();
+        $subject_ids = $class->subjects->pluck('subject_id')->toArray();
 
         $selected = [ 'id', 'name' ];
         $sections = Section::get($selected);
         $groups = Group::get($selected);
+        $subjects = Subject::get($selected);
 
         $data = [
             'class' => $class,
             'sections' => $sections,
             'groups' => $groups,
+            'subjects' => $subjects,
             'section_ids' => $section_ids,
             'group_ids' => $group_ids,
+            'subject_ids' => $subject_ids,
             'page_title' => 'Edit Class',
             'menu' => 'Class'
         ];
@@ -132,6 +148,7 @@ class ClassController extends Controller
             // Delete where id not exists in request
             $class->sections->whereNotIn('section_id', $request->section_id)->each->delete();
             $class->groups->whereNotIn('group_id', $request->group_id)->each->delete();
+            $class->subjects->whereNotIn('subject_id', $request->subject_id)->each->delete();
 
             // Save class section
             collect($request->section_id)->each(function($section_id) use($class) {
@@ -146,6 +163,14 @@ class ClassController extends Controller
                 ClassGroup::withTrashed()->firstOrCreate([
                     'class_id' => $class->id,
                     'group_id' => $group_id
+                ])->restore();
+            });
+
+            // Svae class subjects
+            collect($request->subject_id)->each(function($subject_id) use($class) {
+                ClassSubject::withTrashed()->firstOrCreate([
+                    'class_id' => $class->id,
+                    'subject_id' => $subject_id
                 ])->restore();
             });
 

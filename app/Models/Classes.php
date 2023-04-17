@@ -19,11 +19,19 @@ class Classes extends Model
 
     public function sections()
     {
-    	return $this->hasMany(ClassSection::class, 'class_id');
+    	return $this->hasMany(ClassSection::class, 'class_id')
+            ->has('section');
     }
 
     public function groups()
     {
-    	return $this->hasMany(ClassGroup::class, 'class_id');
+    	return $this->hasMany(ClassGroup::class, 'class_id')
+            ->has('group');
+    }
+
+    public function subjects()
+    {
+        return $this->hasMany(ClassSubject::class, 'class_id')
+            ->has('subject');
     }
 }

@@ -50,6 +50,14 @@
                       @endforeach
                     </select>
                   </div>
+                  <div class="form-group">
+                    <label>Subjects</label>
+                    <select name="subject_id[]" id="subject-id" class="form-control select2" multiple>
+                      @foreach($data['subjects'] as $subject)
+                        <option @selected(in_array($subject->id, $data['subject_ids'])) value="{{ $subject->id }}">{{ $subject->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                   <button class="btn btn-success" id="btn-update-class">Update</button>
                   <a class="btn btn-danger" href="{{ route('class.index') }}">Back</a>
                 </form>

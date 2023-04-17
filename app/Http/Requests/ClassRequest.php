@@ -41,7 +41,8 @@ class ClassRequest extends FormRequest
         return [
             'name' => [ 'required', 'string', Rule::unique('classes')->whereNull('deleted_at') ],
             'section_id.*' => 'required|exists:sections,id',
-            'group_id.*' => 'nullable|exists:groups,id'
+            'group_id.*' => 'nullable|exists:groups,id',
+            'subject_id.*' => 'required|exists:subjects,id'
         ];
     }
 
@@ -53,7 +54,8 @@ class ClassRequest extends FormRequest
         return [
             'name' => [ 'required', 'string', Rule::unique('classes')->whereNull('deleted_at')->ignore($this->class) ],
             'section_id.*' => 'required|exists:sections,id',
-            'group_id.*' => 'nullable|exists:groups,id'
+            'group_id.*' => 'nullable|exists:groups,id',
+            'subject_id.*' => 'required|exists:subjects,id'
         ];
     }
 
