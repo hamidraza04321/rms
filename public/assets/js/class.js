@@ -15,17 +15,17 @@ $(document).ready(function() {
 			flag = true;
 
 		if (name == '') {
-			$("#name").addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
 		if (!section_id.length) {
-			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
 		if (!subject_id.length) {
-			$("#subject-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#subject-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
@@ -75,17 +75,17 @@ $(document).ready(function() {
 			flag = true;
 
 		if (name == '') {
-			$("#name").addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
 		if (!section_id.length) {
-			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
 		if (!subject_id.length) {
-			$("#subject-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#subject-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 

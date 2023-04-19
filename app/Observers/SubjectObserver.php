@@ -37,7 +37,7 @@ class SubjectObserver
      */
     public function deleted(Subject $subject)
     {
-        //
+        $subject->subjectClasses->each->delete();
     }
 
     /**
@@ -48,7 +48,7 @@ class SubjectObserver
      */
     public function restored(Subject $subject)
     {
-        //
+        $subject->subjectClasses()->withTrashed()->restore();
     }
 
     /**
@@ -59,6 +59,6 @@ class SubjectObserver
      */
     public function forceDeleted(Subject $subject)
     {
-        //
+        $subject->subjectClasses->each->forceDelete(); 
     }
 }

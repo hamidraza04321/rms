@@ -51,7 +51,7 @@ $(document).ready(function() {
 			flag = true;
 
 		if (name == '') {
-			$("#name").addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
@@ -108,7 +108,7 @@ $(document).ready(function() {
 			flag = true;
 
 		if (name == '') {
-			$("#name").addClass('is-invalid').after('<span class="error">The field is required !</span>');
+			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 

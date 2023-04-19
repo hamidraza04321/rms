@@ -60,6 +60,9 @@ Route::middleware(['auth'])->group(function () {
 	Route::middleware(['is.super.admin'])->group(function () {
 		//---------- USER ROLES ROUTES ----------//
 		Route::resource('/role', RoleController::class, ['except' => ['show']]);
+		
+		//---------- USER ROUTES ----------//
+		Route::resource('/user', UserController::class, ['except' => ['show']]);
 	});
 
 });

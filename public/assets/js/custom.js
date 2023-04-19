@@ -22,7 +22,7 @@ $('.select2').select2({
 function removeErrorMessages()
 {
 	$('.is-invalid').removeClass('is-invalid');
-	$('span.error').remove();
+	$('span.invalid-feedback').remove();
 	$('.alert').remove();
 }
 
@@ -50,9 +50,9 @@ function showErrorMessages(errors)
 {
 	$.each(errors, function(key, value) {
 		if ($('input[name="'+key+'"]').length) { // IF INPUT EXISTS
-			$('input[name="'+key+'"]').addClass('is-invalid').after('<span class="error">'+value.toString()+'</span>');
+			$('input[name="'+key+'"]').addClass('is-invalid').after('<span class="invalid-feedback">'+value.toString()+'</span>');
 		} else {
-			$('select[name="'+key+'"]').addClass('is-invalid').after('<span class="error">'+value.toString()+'</span>');
+			$('select[name="'+key+'"]').siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">'+value.toString()+'</span>');
 		}
 	});
 }

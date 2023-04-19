@@ -70,28 +70,31 @@ class ClassController extends Controller
             ]);
         
         // Save class section
-        collect($request->section_id)->each(function($section_id) use($class) {
-            ClassSection::create([
-                'class_id' => $class->id,
-                'section_id' => $section_id
-            ]);
-        });
+        collect($request->section_id)
+            ->each(function($section_id) use($class) {
+                ClassSection::create([
+                    'class_id' => $class->id,
+                    'section_id' => $section_id
+                ]);
+            });
 
         // Svae class groups
-        collect($request->group_id)->each(function($group_id) use($class) {
-            ClassGroup::create([
-                'class_id' => $class->id,
-                'group_id' => $group_id
-            ]);
-        });
+        collect($request->group_id)
+            ->each(function($group_id) use($class) {
+                ClassGroup::create([
+                    'class_id' => $class->id,
+                    'group_id' => $group_id
+                ]);
+            });
 
         // Save class subjects
-        collect($request->subject_id)->each(function($subject_id) use($class) {
-            ClassSubject::create([
-                'class_id' => $class->id,
-                'subject_id' => $subject_id
-            ]);
-        });
+        collect($request->subject_id)
+            ->each(function($subject_id) use($class) {
+                ClassSubject::create([
+                    'class_id' => $class->id,
+                    'subject_id' => $subject_id
+                ]);
+            });
 
         return response()->successMessage('Class Created Successfully');
     }
@@ -151,28 +154,31 @@ class ClassController extends Controller
             $class->subjects->whereNotIn('subject_id', $request->subject_id)->each->delete();
 
             // Save class section
-            collect($request->section_id)->each(function($section_id) use($class) {
-                ClassSection::withTrashed()->firstOrCreate([
-                    'class_id' => $class->id,
-                    'section_id' => $section_id
-                ])->restore();
-            });
+            collect($request->section_id)
+                ->each(function($section_id) use($class) {
+                    ClassSection::withTrashed()->firstOrCreate([
+                        'class_id' => $class->id,
+                        'section_id' => $section_id
+                    ])->restore();
+                });
 
             // Svae class groups
-            collect($request->group_id)->each(function($group_id) use($class) {
-                ClassGroup::withTrashed()->firstOrCreate([
-                    'class_id' => $class->id,
-                    'group_id' => $group_id
-                ])->restore();
-            });
+            collect($request->group_id)
+                ->each(function($group_id) use($class) {
+                    ClassGroup::withTrashed()->firstOrCreate([
+                        'class_id' => $class->id,
+                        'group_id' => $group_id
+                    ])->restore();
+                });
 
             // Svae class subjects
-            collect($request->subject_id)->each(function($subject_id) use($class) {
-                ClassSubject::withTrashed()->firstOrCreate([
-                    'class_id' => $class->id,
-                    'subject_id' => $subject_id
-                ])->restore();
-            });
+            collect($request->subject_id)
+                ->each(function($subject_id) use($class) {
+                    ClassSubject::withTrashed()->firstOrCreate([
+                        'class_id' => $class->id,
+                        'subject_id' => $subject_id
+                    ])->restore();
+                });
 
             return response()->successMessage('Class Updated Successfully !');
         }

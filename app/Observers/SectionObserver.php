@@ -48,7 +48,7 @@ class SectionObserver
      */
     public function restored(Section $section)
     {
-        //
+        $section->sectionClasses()->withTrashed()->restore();
     }
 
     /**
@@ -59,6 +59,6 @@ class SectionObserver
      */
     public function forceDeleted(Section $section)
     {
-        //
+        $section->sectionClasses->each->forceDelete();
     }
 }

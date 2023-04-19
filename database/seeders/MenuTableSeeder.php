@@ -96,6 +96,33 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 3,
 	        	'name' => 'Restore',
 	        	'permission' => 'restore-group'
+	        ],
+
+	        // SUBJECT MODULE
+	        [
+	        	'module_id' => 4,
+	        	'name' => 'View',
+	        	'permission' => 'view-subject'
+	        ], [
+	        	'module_id' => 4,
+	        	'name' => 'Create',
+	        	'permission' => 'create-subject'
+	        ], [
+	        	'module_id' => 4,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-subject'
+	        ], [
+	        	'module_id' => 4,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-subject'
+	        ], [
+	        	'module_id' => 4,
+	        	'name' => 'View Trash',
+	        	'permission' => 'view-subject-trash'
+	        ], [
+	        	'module_id' => 4,
+	        	'name' => 'Restore',
+	        	'permission' => 'restore-subject'
 	        ]
 
     	]);

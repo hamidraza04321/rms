@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\ActiveScopeTrait;
+use App\Models\UserClassPermission;
+use Auth;
 
 class Classes extends Model
 {
@@ -33,5 +35,13 @@ class Classes extends Model
     {
         return $this->hasMany(ClassSubject::class, 'class_id')
             ->has('subject');
+    }
+
+    public function hasClassPermission($user_id)
+    {
+        return UserClassPermission::where([
+            'class_id' => $this->id,
+            'user_id' => $user_id
+        ])->exists();
     }
 }

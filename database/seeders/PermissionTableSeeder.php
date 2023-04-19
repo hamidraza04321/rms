@@ -39,7 +39,15 @@ class PermissionTableSeeder extends Seeder
             'edit-group',
             'delete-group',
             'view-group-trash',
-            'restore-group'
+            'restore-group',
+
+            // SUBJECT
+            'view-subject',
+            'create-subject',
+            'edit-subject',
+            'delete-subject',
+            'view-subject-trash',
+            'restore-subject'
 
         ]);
 

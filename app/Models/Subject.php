@@ -16,4 +16,9 @@ class Subject extends Model
     protected $table = 'subjects';
     protected $fillable = [ 'id', 'name', 'is_active', 'created_by', 'updated_by' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+
+    public function subjectClasses()
+    {
+    	return $this->hasMany(ClassSubject::class, 'subject_id');
+    }
 }

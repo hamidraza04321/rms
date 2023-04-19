@@ -48,7 +48,7 @@ class GroupObserver
      */
     public function restored(Group $group)
     {
-        //
+        $group->groupClasses()->withTrashed()->restore();
     }
 
     /**
@@ -59,6 +59,6 @@ class GroupObserver
      */
     public function forceDeleted(Group $group)
     {
-        //
+        $group->groupClasses->each->forceDelete();
     }
 }
