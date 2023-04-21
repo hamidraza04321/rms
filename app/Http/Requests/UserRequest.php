@@ -28,7 +28,8 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return match(Route::currentRouteName()) {
-            'user.store' => $this->store()
+            'user.store' => $this->store(),
+            'user.update' => $this->update()
         };
     }
 
@@ -41,6 +42,20 @@ class UserRequest extends FormRequest
             'name' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at') ],
             'email' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at') ],
             'password' => 'required|min:6|string',
+            'role_id' => 'required|exists:roles,id',
+            'permissions' => 'nullable|array'
+        ];
+    }
+
+    /**
+     * Validate Rules for Update Request
+     */
+    public function update()
+    {
+        return [
+            'name' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
+            'email' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
+            'password' => 'nullable|min:6|string',
             'role_id' => 'required|exists:roles,id',
             'permissions' => 'nullable|array'
         ];

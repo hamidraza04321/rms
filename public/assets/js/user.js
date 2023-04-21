@@ -106,4 +106,67 @@ $(document).ready(function() {
 			});
 		}
 	});
+
+	//---------- ON CLICK UPDATE USER ----------//
+	$(document).on('click', '#btn-update-user', function(e) {
+		e.preventDefault();
+		removeErrorMessages();
+		
+		var self = $(this);
+			self_html = self.html();
+			name = $('#name').val();
+			email = $('#email').val();
+			role_id = $('#role-id').val();
+			message = '';
+			flag = true;
+
+		if (name == '') {
+			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (email == '') {
+			$("#email").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (role_id == '') {
+			$("#role-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (flag) {
+			// Button Loading
+			self.addClass('disabled').html('<div class="spinner-border"></div>');
+			
+			var form = $('#update-user-form');
+				url = form.attr('action');
+				formData = form.serialize();
+			
+			$.ajax({
+				url: url,
+				type: 'PUT',
+				data: formData,
+				success: function (response) {
+					if (response.status == true) {
+						if (password != '') $('#password').val('');
+						toastr.success(response.message);
+					} else {
+						if (response?.errors) {
+							showErrorMessages(response.errors);
+						} else {
+							message = errorMessage(response.message);
+						}
+					}
+				},
+				error: function() {
+					message = errorMessage();
+				},
+				complete: function() {
+					if (message != '') showAlertInTop(message);
+					self.removeClass('disabled').html(self_html);
+				}
+			});
+		}
+	});
 });

@@ -44,7 +44,7 @@
                             </button>
                             <div class="form-check float-right p-2">
                               <input class="form-check-input" id="check-all-permissions" type="checkbox">
-                              <label class="form-check-label">All</label>
+                              <label class="form-check-label" for="check-all-permissions">All</label>
                             </div>
                           </div>
                         </div>
@@ -57,19 +57,19 @@
                                   <th>Permissions</th>
                                 </tr>
                                 <tbody>
-                                  @foreach($data['modules'] as $module)
+                                  @foreach($data['modules'] as $moduleKey => $module)
                                     <tr>
                                       <td>
                                         <div class="form-check">
-                                          <input class="form-check-input module" type="checkbox">
-                                          <label class="form-check-label">{{ $module->name }}</label>
+                                          <input class="form-check-input module" type="checkbox" id="module-{{ $moduleKey }}">
+                                          <label class="form-check-label" for="module-{{ $moduleKey }}">{{ $module->name }}</label>
                                         </div>
                                       </td>
                                       <td>
-                                        @foreach($module->menus as $menu)
+                                        @foreach($module->menus as $menuKey => $menu)
                                           <div class="form-check">
-                                            <input name="permissions[]" class="form-check-input permission" type="checkbox" value="{{ $menu->permission }}">
-                                            <label class="form-check-label">{{ $menu->name }}</label>
+                                            <input name="permissions[]" class="form-check-input permission" type="checkbox" value="{{ $menu->permission }}" id="menu-{{ "{$moduleKey}-{$menuKey}" }}">
+                                            <label class="form-check-label" for="menu-{{ "{$moduleKey}-{$menuKey}" }}">{{ $menu->name }}</label>
                                           </div>
                                         @endforeach
                                       </td>

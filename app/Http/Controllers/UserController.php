@@ -70,16 +70,30 @@ class UserController extends Controller
         $role_name = Role::findById($request->role_id)->name;
         $user->assignRole($role_name);
 
+        // Assign Class permissions to user
+        $this->assignClassPermissionsToUser($user->id, $request->permissions);
+
+        return response()->successMessage('User Created Successfully!');
+    }
+
+    /**
+     * Assign class permissions to user.
+     *
+     * @param  $user_id int
+     * @param $permissions array
+     */
+    public function assignClassPermissionsToUser($user_id, $permissions)
+    {
         $sections = [];
         $groups = [];
         $subjects = [];
 
         // Save User Permissions
-        foreach ((array)$request->permissions as $class_id => $permission) {
+        foreach ((array)$permissions as $class_id => $permission) {
             // Assign class permission to user
             $class_permission = UserClassPermission::create([
                 'class_id' => $class_id,
-                'user_id' => $user->id
+                'user_id' => $user_id
             ]);
 
             // Store section in sections array
@@ -123,8 +137,6 @@ class UserController extends Controller
         UserClassSectionPermission::insert($sections);
         UserClassGroupPermission::insert($groups);
         UserClassSubjectPermission::insert($subjects);
-
-        return response()->successMessage('User Created Successfully!');
     }
 
     /**
@@ -161,7 +173,33 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        if ($user) {
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email
+            ];
+
+            // If password exists in request update password
+            if ($request->password) $data['password'] = bcrypt($request->password);
+
+            // Update User
+            $user->update($data);
+
+            // Sync User Role
+            $user->syncRoles($request->role_id);
+
+            // Delete all permissions of classes for user
+            $user->classPermissions->each->delete();
+
+            // Assing Permissions
+            $this->assignClassPermissionsToUser($id, $request->permissions);
+
+            return response()->successMessage('User Updated Successfully!');
+        }
+
+        return response()->errorMessage('User not Found !');
     }
 
     /**
