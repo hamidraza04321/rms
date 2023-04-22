@@ -22,32 +22,40 @@ class PermissionTableSeeder extends Seeder
             'create-class',
             'edit-class',
             'delete-class',
+            'update-class-status',
             'view-class-trash',
             'restore-class',
+            'permanent-delete-class',
 
         	// SECTION
         	'view-section',
         	'create-section',
         	'edit-section',
         	'delete-section',
+            'update-section-status',
         	'view-section-trash',
         	'restore-section',
+            'permanent-delete-section',
 
             // GROUP
             'view-group',
             'create-group',
             'edit-group',
             'delete-group',
+            'update-group-status',
             'view-group-trash',
             'restore-group',
+            'permanent-delete-group',
 
             // SUBJECT
             'view-subject',
             'create-subject',
             'edit-subject',
             'delete-subject',
+            'update-subject-status',
             'view-subject-trash',
-            'restore-subject'
+            'restore-subject',
+            'permanent-delete-subject'
 
         ]);
 

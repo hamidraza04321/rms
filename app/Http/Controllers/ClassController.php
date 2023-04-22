@@ -14,6 +14,18 @@ use App\Models\ClassSubject;
 
 class ClassController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view-class', [ 'only' => 'index' ]);
+        $this->middleware('permission:create-class', [ 'only' => [ 'create', 'store' ]]);
+        $this->middleware('permission:edit-class',   [ 'only' => [ 'edit', 'update' ]]);
+        $this->middleware('permission:delete-class', [ 'only' => 'destroy' ]);
+        $this->middleware('permission:update-class-status', [ 'only' => 'updateClassStatus' ]);
+        $this->middleware('permission:view-class-trash', [ 'only' => 'trash' ]);
+        $this->middleware('permission:restore-class', [ 'only' => 'restore' ]);
+        $this->middleware('permission:permanent-delete-class', [ 'only' => 'delete' ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -282,8 +294,13 @@ class ClassController extends Controller
     public function updateClassStatus($id)
     {
         $class = Classes::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-        $data['is_active'] = ($class->is_active == 1) ? 0 : 1;
-        $class->update($data);
-        return response()->success($data);
+
+        if ($class) {
+            $data['is_active'] = ($class->is_active == 1) ? 0 : 1;
+            $class->update($data);
+            return response()->success($data);
+        }
+
+        return response()->errorMessage('Class not Found !');
     }
 }

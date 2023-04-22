@@ -40,146 +40,174 @@
             <p>Dashboard</p>
           </a>
         </li>
-        <li class="nav-header">Student Management</li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit', 'class.trash' ]))) active @endif">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Class
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('class.index') }}" class="nav-link @if(Route::currentRouteName() == 'class.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('class.create') }}" class="nav-link @if(Route::currentRouteName() == 'class.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit', 'section.trash' ]))) active @endif">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Section
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('section.index') }}" class="nav-link @if(Route::currentRouteName() == 'section.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('section.create') }}" class="nav-link @if(Route::currentRouteName() == 'section.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create', 'group.edit', 'group.trash' ]))) active @endif">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Group
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('group.index') }}" class="nav-link @if(Route::currentRouteName() == 'group.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('group.create') }}" class="nav-link @if(Route::currentRouteName() == 'group.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'subject.index', 'subject.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'subject.index', 'subject.create', 'subject.edit', 'subject.trash' ]))) active @endif">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Subject
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('subject.index') }}" class="nav-link @if(Route::currentRouteName() == 'subject.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('subject.create') }}" class="nav-link @if(Route::currentRouteName() == 'subject.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-header">User Management</li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) active @endif">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Role
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('role.index') }}" class="nav-link @if(Route::currentRouteName() == 'role.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('role.create') }}" class="nav-link @if(Route::currentRouteName() == 'role.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create', 'user.edit' ]))) active @endif">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              User
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('user.index') }}" class="nav-link @if(Route::currentRouteName() == 'user.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('user.create') }}" class="nav-link @if(Route::currentRouteName() == 'user.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+        @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
+          <li class="nav-header">Academics</li>
+        @endcanany
+        @canany(['view-class', 'create-class'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit', 'class.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Class
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-class')
+                <li class="nav-item">
+                  <a href="{{ route('class.index') }}" class="nav-link @if(Route::currentRouteName() == 'class.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-class')
+                <li class="nav-item">
+                  <a href="{{ route('class.create') }}" class="nav-link @if(Route::currentRouteName() == 'class.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcanany
+        @canany(['view-section', 'create-section'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit', 'section.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Section
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-section')
+                <li class="nav-item">
+                  <a href="{{ route('section.index') }}" class="nav-link @if(Route::currentRouteName() == 'section.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-section')
+                <li class="nav-item">
+                  <a href="{{ route('section.create') }}" class="nav-link @if(Route::currentRouteName() == 'section.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcanany
+        @canany(['view-group', 'create-group'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create', 'group.edit', 'group.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Group
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-group')
+                <li class="nav-item">
+                  <a href="{{ route('group.index') }}" class="nav-link @if(Route::currentRouteName() == 'group.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-group')
+                <li class="nav-item">
+                  <a href="{{ route('group.create') }}" class="nav-link @if(Route::currentRouteName() == 'group.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcan
+        @canany(['view-subject', 'create-subject'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'subject.index', 'subject.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'subject.index', 'subject.create', 'subject.edit', 'subject.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Subject
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-subject')
+                <li class="nav-item">
+                  <a href="{{ route('subject.index') }}" class="nav-link @if(Route::currentRouteName() == 'subject.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-subject')
+                <li class="nav-item">
+                  <a href="{{ route('subject.create') }}" class="nav-link @if(Route::currentRouteName() == 'subject.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcan
+        @role('Super Admin')
+          <li class="nav-header">User Management</li>
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Role
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('role.index') }}" class="nav-link @if(Route::currentRouteName() == 'role.index') active @endif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('role.create') }}" class="nav-link @if(Route::currentRouteName() == 'role.create') active @endif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create', 'user.edit', 'user.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                User
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('user.index') }}" class="nav-link @if(Route::currentRouteName() == 'user.index') active @endif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('user.create') }}" class="nav-link @if(Route::currentRouteName() == 'user.create') active @endif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        @endrole
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

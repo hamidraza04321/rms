@@ -42,7 +42,7 @@ class UserRequest extends FormRequest
             'name' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at') ],
             'email' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at') ],
             'password' => 'required|min:6|string',
-            'role_id' => 'required|exists:roles,id',
+            'role_id' => 'required|exists:roles,id|not_in:1', // Ignore Super Admin
             'class_id.*' => 'nullable|exists:classes,id',
             'class_section_id.*' => 'nullable|exists:class_sections,id',
             'class_subject_id.*' => 'nullable|exists:class_subjects,id',
@@ -59,7 +59,7 @@ class UserRequest extends FormRequest
             'name' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
             'email' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
             'password' => 'nullable|min:6|string',
-            'role_id' => 'required|exists:roles,id',
+            'role_id' => 'required|exists:roles,id|not_in:1', // Ignore Super Admin
             'class_id.*' => 'nullable|exists:classes,id',
             'class_section_id.*' => 'nullable|exists:class_sections,id',
             'class_subject_id.*' => 'nullable|exists:class_subjects,id',

@@ -35,7 +35,9 @@
                       <th>S No.</th>
                       <th>Name</th>
                       <th>Deleted At</th>
-                      <th>Action</th>
+                      @canany(['restore-section', 'permanent-delete-section'])
+                        <th>Action</th>
+                      @endcanany
                     </tr>
                   </thead>
                   <tbody>
@@ -44,10 +46,16 @@
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $section->name }}</td>
                         <td>{{ $section->deleted_at->diffForHumans() }}</td>
-                        <td>
-                          <button class="btn btn-sm btn-success btn-restore-section" data-url="{{ route('section.restore', $section->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                          <button class="btn btn-sm btn-danger btn-delete-section" data-url="{{ route('section.delete', $section->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                        </td>
+                        @canany(['restore-section', 'permanent-delete-section'])
+                          <td>
+                            @can('restore-section')
+                              <button class="btn btn-sm btn-success btn-restore-section" data-url="{{ route('section.restore', $section->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                            @endcan
+                            @can('permanent-delete-section')
+                              <button class="btn btn-sm btn-danger btn-delete-section" data-url="{{ route('section.delete', $section->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                            @endcan
+                          </td>
+                        @endcanany
                       </tr>
                     @endforeach
                   </tbody>

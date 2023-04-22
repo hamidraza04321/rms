@@ -272,6 +272,7 @@ $(document).ready(function() {
 		removeErrorMessages();
 
 		var self = $(this);
+			self_html = self.html();
 			url = self.attr('data-url');
 			message = '';
 
@@ -296,7 +297,11 @@ $(document).ready(function() {
 				message = errorMessage();
 			},
 			complete: function() {
-				if (message != '') showAlertInTop(message);
+				if (message != '') {
+					showAlertInTop(message);
+					self.html(self_html);	
+				}
+
 				self.removeClass('disabled');
 			}
 		});

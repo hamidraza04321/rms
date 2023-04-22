@@ -90,7 +90,7 @@
               </div>
             @else
               <div class="alert alert-warning w-100">
-                <strong>Warning</strong> The Super Admin Role can't be Edit.
+                <strong>Warning</strong> The Super Admin Role can not be Edit.
               </div>
             @endif
             <!-- /.card -->

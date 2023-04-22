@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_class_permissions');
+        Schema::dropIfExists('user_classes');
     }
 };

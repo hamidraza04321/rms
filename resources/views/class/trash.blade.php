@@ -35,7 +35,9 @@
                       <th>S No.</th>
                       <th>Name</th>
                       <th>Deleted At</th>
-                      <th>Action</th>
+                      @canany(['restore-class', 'permanent-delete-class'])
+                        <th>Action</th>
+                      @endcanany
                     </tr>
                   </thead>
                   <tbody>
@@ -44,10 +46,16 @@
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $class->name }}</td>
                         <td>{{ $class->deleted_at->diffForHumans() }}</td>
-                        <td>
-                          <button class="btn btn-sm btn-success btn-restore-class" data-url="{{ route('class.restore', $class->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                          <button class="btn btn-sm btn-danger btn-delete-class" data-url="{{ route('class.delete', $class->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                        </td>
+                        @canany(['restore-class', 'permanent-delete-class'])
+                          <td>
+                            @can('restore-class')
+                              <button class="btn btn-sm btn-success btn-restore-class" data-url="{{ route('class.restore', $class->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                            @endcanany
+                            @can('permanent-delete-class')
+                              <button class="btn btn-sm btn-danger btn-delete-class" data-url="{{ route('class.delete', $class->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                            @endcanany
+                          </td>
+                        @endcanany
                       </tr>
                     @endforeach
                   </tbody>

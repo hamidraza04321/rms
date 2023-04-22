@@ -8,6 +8,18 @@ use App\Models\Group;
 
 class GroupController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view-group', [ 'only' => 'index' ]);
+        $this->middleware('permission:create-group', [ 'only' => [ 'create', 'store' ]]);
+        $this->middleware('permission:edit-group',   [ 'only' => [ 'edit', 'update' ]]);
+        $this->middleware('permission:delete-group', [ 'only' => 'destroy' ]);
+        $this->middleware('permission:update-group-status', [ 'only' => 'updateGroupStatus' ]);
+        $this->middleware('permission:view-group-trash', [ 'only' => 'trash' ]);
+        $this->middleware('permission:restore-group', [ 'only' => 'restore' ]);
+        $this->middleware('permission:permanent-delete-group', [ 'only' => 'delete' ]);
+    }
+
     /**
      * Display a listing of the resource.
      *

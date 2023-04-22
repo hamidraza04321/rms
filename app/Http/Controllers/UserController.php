@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Role;
+use App\Models\Scopes\ActiveScope;
 use App\Models\User;
 use App\Models\Classes;
 use App\Models\UserClass;
@@ -17,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::withoutGlobalScope(ActiveScope::class)->get();
 
         $data = [
             'users' => $users,
@@ -84,7 +85,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $role_id = $user->roles->first()->id;
         $roles = Role::where('name', '!=', 'Super Admin')->get();
         $classes = Classes::with('sections', 'groups', 'subjects')->get();
@@ -134,7 +135,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $user = User::find($id);
+        $user = User::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($user) {
             $data = [
@@ -171,6 +172,110 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::withoutGlobalScope(ActiveScope::class)->find($id);
+        
+        if ($user) {
+            if ($user->hasRole('Super Admin')) {
+                return response()->errorMessage('The Super Admin can not be delete!');
+            }
+
+            $user->delete();
+            return response()->successMessage('User Deleted Successfully !');
+        }
+
+        return response()->errorMessage('User not Found !');
+    }
+
+    /**
+     * Display a listing of the Trash resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $users = User::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->get();
+
+        $data = [
+            'users' => $users,
+            'page_title' => 'User Trash',
+            'menu' => 'User'
+        ];
+
+        return view('user.trash', compact('data'));
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $user = User::withoutGlobalScope(ActiveScope::class)
+            ->withTrashed()
+            ->find($id);
+
+        if ($user) {
+            // Check if user exists with this name
+            $exists = User::withoutGlobalScope(ActiveScope::class)
+                ->where('name', $user->name)
+                ->orWhere('email', $user->email)
+                ->exists();
+
+            if (!$exists) {
+                $user->restore();
+                return response()->successMessage('User Restored Successfully !');
+            }
+
+            return response()->errorMessage("The User has already exists !");
+        }
+
+        return response()->errorMessage('User not Found !');
+    }
+
+    /**
+     * Delete the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $user = User::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->find($id);
+
+        if ($user) {
+            $user->forceDelete();
+            return response()->successMessage('User Deleted Successfully !');
+        }
+
+        return response()->errorMessage('User not Found !');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUserStatus($id)
+    {
+        $user = User::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+
+        if ($user) {
+            if ($user->hasRole('Super Admin')) {
+                return response()->errorMessage('The Super Admin status can not be update!');
+            }
+
+            $data['is_active'] = ($user->is_active == 1) ? 0 : 1;
+            $user->update($data);
+            return response()->success($data);
+        }
+
+        return response()->errorMessage('User not Found !');
     }
 }

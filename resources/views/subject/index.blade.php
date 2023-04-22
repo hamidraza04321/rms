@@ -28,8 +28,12 @@
               <div class="card-header">
                 <div class="card-title">{{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  <a href="{{ route('subject.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Subject</a>
-                  <a href="{{ route('subject.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @can('create-subject')
+                    <a href="{{ route('subject.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Subject</a>
+                  @endcan
+                  @can('view-subject-trash')
+                    <a href="{{ route('subject.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @endcan
                 </div>
               </div>
               <div class="card-body">
@@ -38,8 +42,12 @@
                     <tr>
                       <th>S No.</th>
                       <th>Name</th>
-                      <th>Status</th>
-                      <th>Action</th>
+                      @can('update-subject-status')
+                        <th>Status</th>
+                      @endcan
+                      @canany(['edit-subject', 'delete-subject'])
+                        <th>Action</th>
+                      @endcanany
                     </tr>
                   </thead>
                   <tbody>
@@ -47,17 +55,25 @@
                       <tr>
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $subject->name }}</td>
-                        <td>
-                          @if($subject->is_active)
-                            <button data-url="{{ route('subject.update.status', $subject->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                          @else
-                            <button data-url="{{ route('subject.update.status', $subject->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                          @endif
-                        </td>
-                        <td>
-                          <a href="{{ route('subject.edit', $subject->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                          <button class="btn btn-sm btn-danger btn-destroy-subject" data-url="{{ route('subject.destroy', $subject->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                        </td>
+                        @can('update-subject-status')
+                          <td>
+                            @if($subject->is_active)
+                              <button data-url="{{ route('subject.update.status', $subject->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                            @else
+                              <button data-url="{{ route('subject.update.status', $subject->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                            @endif
+                          </td>
+                        @endcan
+                        @canany(['edit-subject', 'delete-subject'])
+                          <td>
+                            @can('edit-subject')
+                              <a href="{{ route('subject.edit', $subject->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            @endcan
+                            @can('delete-subject')
+                              <button class="btn btn-sm btn-danger btn-destroy-subject" data-url="{{ route('subject.destroy', $subject->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                            @endcan
+                          </td>
+                        @endcanany
                       </tr>
                     @endforeach
                   </tbody>

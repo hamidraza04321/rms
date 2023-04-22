@@ -8,6 +8,18 @@ use App\Models\Subject;
 
 class SubjectController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view-subject', [ 'only' => 'index' ]);
+        $this->middleware('permission:create-subject', [ 'only' => [ 'create', 'store' ]]);
+        $this->middleware('permission:edit-subject',   [ 'only' => [ 'edit', 'update' ]]);
+        $this->middleware('permission:delete-subject', [ 'only' => 'destroy' ]);
+        $this->middleware('permission:update-subject-status', [ 'only' => 'updateSubjectStatus' ]);
+        $this->middleware('permission:view-subject-trash', [ 'only' => 'trash' ]);
+        $this->middleware('permission:restore-subject', [ 'only' => 'restore' ]);
+        $this->middleware('permission:permanent-delete-subject', [ 'only' => 'delete' ]);
+    }
+
     /**
      * Display a listing of the resource.
      *

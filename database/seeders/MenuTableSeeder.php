@@ -36,12 +36,20 @@ class MenuTableSeeder extends Seeder
 	        	'permission' => 'delete-class'
 	        ], [
 	        	'module_id' => 1,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-class-status'
+	        ], [
+	        	'module_id' => 1,
 	        	'name' => 'View Trash',
 	        	'permission' => 'view-class-trash'
 	        ], [
 	        	'module_id' => 1,
 	        	'name' => 'Restore',
 	        	'permission' => 'restore-class'
+	        ], [
+	        	'module_id' => 1,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-class'
 	        ],
 
 	        // SECTION MODULE
@@ -63,12 +71,20 @@ class MenuTableSeeder extends Seeder
 	        	'permission' => 'delete-section'
 	        ], [
 	        	'module_id' => 2,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-section-status'
+	        ], [
+	        	'module_id' => 2,
 	        	'name' => 'View Trash',
 	        	'permission' => 'view-section-trash'
 	        ], [
 	        	'module_id' => 2,
 	        	'name' => 'Restore',
 	        	'permission' => 'restore-section'
+	        ], [
+	        	'module_id' => 2,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-section'
 	        ],
 
 	        // GROUP MODULE
@@ -90,12 +106,20 @@ class MenuTableSeeder extends Seeder
 	        	'permission' => 'delete-group'
 	        ], [
 	        	'module_id' => 3,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-group-status'
+	        ], [
+	        	'module_id' => 3,
 	        	'name' => 'View Trash',
 	        	'permission' => 'view-group-trash'
 	        ], [
 	        	'module_id' => 3,
 	        	'name' => 'Restore',
 	        	'permission' => 'restore-group'
+	        ], [
+	        	'module_id' => 3,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-group'
 	        ],
 
 	        // SUBJECT MODULE
@@ -117,12 +141,20 @@ class MenuTableSeeder extends Seeder
 	        	'permission' => 'delete-subject'
 	        ], [
 	        	'module_id' => 4,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-subject-status'
+	        ], [
+	        	'module_id' => 4,
 	        	'name' => 'View Trash',
 	        	'permission' => 'view-subject-trash'
 	        ], [
 	        	'module_id' => 4,
 	        	'name' => 'Restore',
 	        	'permission' => 'restore-subject'
+	        ], [
+	        	'module_id' => 4,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-subject'
 	        ]
 
     	]);

@@ -131,6 +131,7 @@ $(document).ready(function() {
 
 		if (!permissions) {
 			alert('Please Assign atleast one permission to update role!');
+			flag = false;
 		}
 		
 		if (flag) {

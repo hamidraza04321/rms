@@ -28,8 +28,12 @@
               <div class="card-header">
                 <div class="card-title">{{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  <a href="{{ route('section.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Section</a>
-                  <a href="{{ route('section.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @can('create-section')
+                    <a href="{{ route('section.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Section</a>
+                  @endcan
+                  @can('view-section-trash')
+                    <a href="{{ route('section.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @endcan
                 </div>
               </div>
               <div class="card-body">
@@ -38,8 +42,12 @@
                     <tr>
                       <th>S No.</th>
                       <th>Name</th>
-                      <th>Status</th>
-                      <th>Action</th>
+                      @can('update-section-status')
+                        <th>Status</th>
+                      @endcan
+                      @canany(['edit-section', 'delete-section'])
+                        <th>Action</th>
+                      @endcanany
                     </tr>
                   </thead>
                   <tbody>
@@ -47,17 +55,25 @@
                       <tr>
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $section->name }}</td>
-                        <td>
-                          @if($section->is_active)
-                            <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                          @else
-                            <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                          @endif
-                        </td>
-                        <td>
-                          <a href="{{ route('section.edit', $section->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                          <button class="btn btn-sm btn-danger btn-destroy-section" data-url="{{ route('section.destroy', $section->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                        </td>
+                        @can('update-section-status')
+                          <td>
+                            @if($section->is_active)
+                              <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                            @else
+                              <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                            @endif
+                          </td>
+                        @endcan
+                        @canany(['edit-section', 'delete-section'])
+                          <td>
+                            @can('edit-section')
+                              <a href="{{ route('section.edit', $section->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            @endcan
+                            @can('delete-section')
+                              <button class="btn btn-sm btn-danger btn-destroy-section" data-url="{{ route('section.destroy', $section->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                            @endcan
+                          </td>
+                        @endcanany
                       </tr>
                     @endforeach
                   </tbody>

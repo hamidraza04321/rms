@@ -29,33 +29,27 @@
                 <div class="card-title">{{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
-                <table id="subject-trash-table" class="table table-bordered table-hover datatable">
+                <table id="user-trash-table" class="table table-bordered table-hover datatable">
                   <thead>
                     <tr>
                       <th>S No.</th>
                       <th>Name</th>
+                      <th>Email</th>
                       <th>Deleted At</th>
-                      @canany(['restore-subject', 'permanent-delete-subject'])
-                        <th>Action</th>
-                      @endcanany
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($data['subjects'] as $subject)
+                    @foreach($data['users'] as $user)
                       <tr>
                         <td>{{ ++$loop->index }}</td>
-                        <td>{{ $subject->name }}</td>
-                        <td>{{ $subject->deleted_at->diffForHumans() }}</td>
-                        @canany(['restore-subject', 'permanent-delete-subject'])
-                          <td>
-                            @can('restore-subject')
-                              <button class="btn btn-sm btn-success btn-restore-subject" data-url="{{ route('subject.restore', $subject->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                            @endcan
-                            @can('permanent-delete-subject')
-                              <button class="btn btn-sm btn-danger btn-delete-subject" data-url="{{ route('subject.delete', $subject->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                            @endcan
-                          </td>
-                        @endcanany
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->deleted_at->diffForHumans() }}</td>
+                        <td>
+                          <button class="btn btn-sm btn-success btn-restore-user" data-url="{{ route('user.restore', $user->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                          <button class="btn btn-sm btn-danger btn-delete-user" data-url="{{ route('user.delete', $user->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                        </td>
                       </tr>
                     @endforeach
                   </tbody>
@@ -74,5 +68,5 @@
   </div>
 @endsection
 @section('scripts')
-<script src="{{ url('/assets/js/subject.js') }}"></script>
+<script src="{{ url('/assets/js/user.js') }}"></script>
 @endsection

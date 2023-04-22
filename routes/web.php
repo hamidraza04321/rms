@@ -63,6 +63,12 @@ Route::middleware(['auth'])->group(function () {
 		
 		//---------- USER ROUTES ----------//
 		Route::resource('/user', UserController::class, ['except' => ['show']]);
+		Route::controller(UserController::class)->group(function(){
+			Route::get('/user/trash', 'trash')->name('user.trash');
+			Route::put('/user/restore/{id}', 'restore')->name('user.restore');
+			Route::delete('/user/delete/{id}', 'delete')->name('user.delete');
+			Route::put('/user/update-status/{id}', 'updateUserStatus')->name('user.update.status');
+		});
 	});
 
 });

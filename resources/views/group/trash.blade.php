@@ -35,7 +35,9 @@
                       <th>S No.</th>
                       <th>Name</th>
                       <th>Deleted At</th>
-                      <th>Action</th>
+                      @canany(['restore-group', 'permanent-delete-group'])
+                        <th>Action</th>
+                      @endcanany
                     </tr>
                   </thead>
                   <tbody>
@@ -44,10 +46,16 @@
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $group->name }}</td>
                         <td>{{ $group->deleted_at->diffForHumans() }}</td>
-                        <td>
-                          <button class="btn btn-sm btn-success btn-restore-group" data-url="{{ route('group.restore', $group->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                          <button class="btn btn-sm btn-danger btn-delete-group" data-url="{{ route('group.delete', $group->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                        </td>
+                        @canany(['restore-group', 'permanent-delete-group'])
+                          <td>
+                            @can('restore-group')
+                              <button class="btn btn-sm btn-success btn-restore-group" data-url="{{ route('group.restore', $group->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                            @endcan
+                            @can('permanent-delete-group')
+                              <button class="btn btn-sm btn-danger btn-delete-group" data-url="{{ route('group.delete', $group->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                            @endcan
+                          </td>
+                        @endcanany
                       </tr>
                     @endforeach
                   </tbody>

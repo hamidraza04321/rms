@@ -29,16 +29,17 @@
                 <div class="card-title">{{ $data['page_title'] }}</div>
                 <div class="card-tools">
                   <a href="{{ route('user.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create User</a>
-                  {{-- <a href="{{ route('subject.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a> --}}
+                  <a href="{{ route('user.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
                 </div>
               </div>
               <div class="card-body">
-                <table id="subject-table" class="table table-bordered table-hover datatable">
+                <table id="user-table" class="table table-bordered table-hover datatable">
                   <thead>
                     <tr>
                       <th>S No.</th>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -49,8 +50,19 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                          <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                          <button class="btn btn-sm btn-danger btn-destroy-user" data-url="{{ route('user.destroy', $user->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                          @if(!$user->hasRole('Super Admin'))
+                            @if($user->is_active)
+                              <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                            @else
+                              <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                            @endif
+                          @endif
+                        </td>
+                        <td>
+                          @if(!$user->hasRole('Super Admin'))
+                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            <button class="btn btn-sm btn-danger btn-destroy-user" data-url="{{ route('user.destroy', $user->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                          @endif
                         </td>
                       </tr>
                     @endforeach

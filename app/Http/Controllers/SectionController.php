@@ -8,6 +8,18 @@ use App\Models\Scopes\ActiveScope;
 
 class SectionController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view-section', [ 'only' => 'index' ]);
+        $this->middleware('permission:create-section', [ 'only' => [ 'create', 'store' ]]);
+        $this->middleware('permission:edit-section',   [ 'only' => [ 'edit', 'update' ]]);
+        $this->middleware('permission:delete-section', [ 'only' => 'destroy' ]);
+        $this->middleware('permission:update-section-status', [ 'only' => 'updateSectionStatus' ]);
+        $this->middleware('permission:view-section-trash', [ 'only' => 'trash' ]);
+        $this->middleware('permission:restore-section', [ 'only' => 'restore' ]);
+        $this->middleware('permission:permanent-delete-section', [ 'only' => 'delete' ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -166,7 +178,7 @@ class SectionController extends Controller
      */
     public function delete($id)
     {
-        $section =Section::withoutGlobalScope(ActiveScope::class)
+        $section = Section::withoutGlobalScope(ActiveScope::class)
             ->onlyTrashed()
             ->find($id);
 

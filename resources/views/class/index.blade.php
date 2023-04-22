@@ -28,8 +28,12 @@
               <div class="card-header">
                 <div class="card-title">{{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  <a href="{{ route('class.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Class</a>
-                  <a href="{{ route('class.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @can('create-class')
+                    <a href="{{ route('class.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Class</a>
+                  @endcan
+                  @can('view-class-trash')
+                    <a href="{{ route('class.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @endcan
                 </div>
               </div>
               <div class="card-body">
@@ -38,8 +42,12 @@
                     <tr>
                       <th>S No.</th>
                       <th>Name</th>
-                      <th>Status</th>
-                      <th>Action</th>
+                      @can('update-class-status')
+                        <th>Status</th>
+                      @endcan
+                      @canany(['edit-class', 'delete-class'])
+                        <th>Action</th>
+                      @endcanany
                     </tr>
                   </thead>
                   <tbody>
@@ -47,17 +55,25 @@
                       <tr>
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $class->name }}</td>
-                        <td>
-                          @if($class->is_active)
-                            <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                          @else
-                            <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                          @endif
-                        </td>
-                        <td>
-                          <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                          <a class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></a>
-                        </td>
+                        @can('update-class-status')
+                          <td>
+                            @if($class->is_active)
+                              <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                            @else
+                              <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                            @endif
+                          </td>
+                        @endcan
+                        @canany(['edit-class', 'delete-class'])
+                          <td>
+                            @can('edit-class')
+                              <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            @endcan
+                            @can('delete-class')
+                              <a class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></a>
+                            @endcan
+                          </td>
+                        @endcanany
                       </tr>
                     @endforeach
                   </tbody>
