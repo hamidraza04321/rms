@@ -86,35 +86,35 @@
                                   <th>Group</th>
                                 </tr>
                                 <tbody>
-                                  @foreach($data['classes'] as $classKey => $class)
+                                  @foreach($data['classes'] as $class)
                                     <tr>
                                       <td>
                                         <div class="form-check">
-                                          <input class="form-check-input class-permission" type="checkbox" name="permissions[{{ $class->id }}]" value="{{ $class->id }}" id="class-{{ $classKey }}">
-                                          <label class="form-check-label" for="class-{{ $classKey }}">{{ $class->name }}</label>
+                                          <input class="form-check-input class-permission" type="checkbox" name="class_id[{{ $class->id }}]" value="{{ $class->id }}" id="class-{{ $class->id }}">
+                                          <label class="form-check-label" for="class-{{ $class->id }}">{{ $class->name }}</label>
                                         </div>
                                       </td>
                                       <td>
-                                        @foreach($class->sections as $sectionKey => $section)
+                                        @foreach($class->sections as $section)
                                           <div class="form-check">
-                                            <input class="form-check-input permission" type="checkbox" name="permissions[{{ $class->id }}][section_id][]" value="{{ $section->section->id }}" id="section-{{ "{$classKey}-{$sectionKey}" }}">
-                                            <label class="form-check-label" for="section-{{ "{$classKey}-{$sectionKey}" }}">{{ $section->section->name }}</label>
+                                            <input class="form-check-input permission" type="checkbox" name="class_section_id[]" value="{{ $section->id }}" id="class-section-{{ $section->id }}">
+                                            <label class="form-check-label" for="class-section-{{ $section->id }}">{{ $section->section->name }}</label>
                                           </div>
                                         @endforeach
                                       </td>
                                       <td>
-                                        @foreach($class->subjects as $subjectKey => $subject)
+                                        @foreach($class->subjects as $subject)
                                           <div class="form-check">
-                                            <input class="form-check-input permission" type="checkbox" name="permissions[{{ $class->id }}][subject_id][]" value="{{ $subject->subject->id }}" id="subject-{{ "{$classKey}-{$subjectKey}" }}">
-                                            <label class="form-check-label" for="subject-{{ "{$classKey}-{$subjectKey}" }}">{{ $subject->subject->name }}</label>
+                                            <input class="form-check-input permission" type="checkbox" name="class_subject_id[]" value="{{ $subject->id }}" id="class-subject-{{ $subject->id }}">
+                                            <label class="form-check-label" for="class-subject-{{ $subject->id }}">{{ $subject->subject->name }}</label>
                                           </div>
                                         @endforeach
                                       </td>
                                       <td>
-                                        @foreach($class->groups as $groupKey => $group)
+                                        @foreach($class->groups as $group)
                                           <div class="form-check">
-                                            <input class="form-check-input permission" type="checkbox" name="permissions[{{ $class->id }}][group_id][]" value="{{ $group->group->id }}" id="group-{{ "{$classKey}-{$groupKey}" }}">
-                                            <label class="form-check-label" for="group-{{ "{$classKey}-{$groupKey}" }}">{{ $group->group->name }}</label>
+                                            <input class="form-check-input permission" type="checkbox" name="class_group_id[]" value="{{ $group->id }}" id="class-group-{{ $group->id }}">
+                                            <label class="form-check-label" for="class-group-{{ $group->id }}">{{ $group->group->name }}</label>
                                           </div>
                                         @endforeach
                                       </td>

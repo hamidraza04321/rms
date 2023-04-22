@@ -19,12 +19,12 @@ class Module extends Model
     	return $this->hasMany(Menu::class, 'module_id');
     }
 
-    // Check role has all permissions
-    public function hasAllPermissions($role_id)
+    // Check role has any permission
+    public function hasAnyPermission($role_id)
     {
     	$role = Role::find($role_id);
     	$permissions = $role->permissions->pluck('name')->toArray();
     	$menus = $this->menus->pluck('permission')->toArray();
-    	return empty(array_diff($menus, $permissions));
+    	return !empty(array_intersect($menus, $permissions));
     }
 }

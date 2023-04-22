@@ -42,7 +42,7 @@
                             <div class="d-flex">
                               <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#permissions-table" aria-expanded="true" aria-controls="permissions-table">Assign Permissions</button>
                               <div class="form-check float-right p-2">
-                                <input class="form-check-input" id="check-all-permissions" {{ ($data['role']->hasAllPermissions()) ? 'checked' : '' }} type="checkbox">
+                                <input class="form-check-input" id="check-all-permissions" @checked($data['has_all_permissions']) type="checkbox">
                                 <label class="form-check-label" for="check-all-permissions">All</label>
                               </div>
                             </div>
@@ -60,7 +60,7 @@
                                       <tr>
                                         <td>
                                           <div class="form-check">
-                                            <input @checked($module->hasAllPermissions($data['role']->id)) class="form-check-input module" type="checkbox" id="module-{{ $moduleKey }}">
+                                            <input @checked($module->hasAnyPermission($data['role']->id)) class="form-check-input module" type="checkbox" id="module-{{ $moduleKey }}">
                                             <label class="form-check-label" for="module-{{ $moduleKey }}">{{ $module->name }}</label>
                                           </div>
                                         </td>

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserClassGroupPermission extends Model
+class UserClassGroup extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_class_group_permissions';
-    protected $fillable = [ 'class_permission_id', 'group_id' ];
+    protected $table = 'user_class_groups';
+    protected $fillable = [ 'class_group_id', 'user_id' ];
     protected $guarded = [ 'id', 'created_at', 'updated_at' ];
 }

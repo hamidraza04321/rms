@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_class_group_permissions', function (Blueprint $table) {
+        Schema::create('user_class_groups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_permission_id')->constrained('user_class_permissions')->onDelete('cascade');
-            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade');
+            $table->foreignId('class_group_id')->constrained('class_groups')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

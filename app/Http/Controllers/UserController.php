@@ -6,10 +6,7 @@ use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Classes;
-use App\Models\UserClassPermission;
-use App\Models\UserClassSectionPermission;
-use App\Models\UserClassGroupPermission;
-use App\Models\UserClassSubjectPermission;
+use App\Models\UserClass;
 
 class UserController extends Controller
 {
@@ -70,73 +67,13 @@ class UserController extends Controller
         $role_name = Role::findById($request->role_id)->name;
         $user->assignRole($role_name);
 
-        // Assign Class permissions to user
-        $this->assignClassPermissionsToUser($user->id, $request->permissions);
+        // Attach Class section, subject, group to user
+        $user->classes()->attach($request->class_id);
+        $user->classSections()->attach($request->class_section_id);
+        $user->classSubjects()->attach($request->class_subject_id);
+        $user->classGroups()->attach($request->class_group_id);
 
         return response()->successMessage('User Created Successfully!');
-    }
-
-    /**
-     * Assign class permissions to user.
-     *
-     * @param  $user_id int
-     * @param $permissions array
-     */
-    public function assignClassPermissionsToUser($user_id, $permissions)
-    {
-        $sections = [];
-        $groups = [];
-        $subjects = [];
-
-        // Save User Permissions
-        foreach ((array)$permissions as $class_id => $permission) {
-            // Assign class permission to user
-            $class_permission = UserClassPermission::create([
-                'class_id' => $class_id,
-                'user_id' => $user_id
-            ]);
-
-            // Store section in sections array
-            if (isset($permission['section_id'])) {
-                foreach ($permission['section_id'] as $section_id) {
-                    $sections[] = [
-                        'class_permission_id' => $class_permission->id,
-                        'section_id' => $section_id,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ];
-                }
-            }
-
-            // Store group in groups array
-            if (isset($permission['group_id'])) {
-                foreach ($permission['group_id'] as $group_id) {
-                    $groups[] = [
-                        'class_permission_id' => $class_permission->id,
-                        'group_id' => $group_id,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ];
-                }
-            }
-
-            // Store subject in subjects array
-            if (isset($permission['subject_id'])) {
-                foreach ($permission['subject_id'] as $subject_id) {
-                    $subjects[] = [
-                        'class_permission_id' => $class_permission->id,
-                        'subject_id' => $subject_id,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ];
-                }
-            }
-        }
-
-        // Assign Section, Group and subject permissions
-        UserClassSectionPermission::insert($sections);
-        UserClassGroupPermission::insert($groups);
-        UserClassSubjectPermission::insert($subjects);
     }
 
     /**
@@ -152,11 +89,35 @@ class UserController extends Controller
         $roles = Role::where('name', '!=', 'Super Admin')->get();
         $classes = Classes::with('sections', 'groups', 'subjects')->get();
 
+        // Get user Class section, subject and group id
+        $user_classes = $user->classes()->get()->pluck('pivot.class_id')->toArray();
+        $user_class_sections = $user->classSections()->get()->pluck('pivot.class_section_id')->toArray();
+        $user_class_subjects = $user->classSubjects()->get()->pluck('pivot.class_subject_id')->toArray();
+        $user_class_groups = $user->classGroups()->get()->pluck('pivot.class_group_id')->toArray();
+
+        // Check user has all Classses
+        $class_id = $classes->pluck('id')->toArray();
+        $class_section_id = $classes->pluck('sections')->collapse()->pluck('id')->toArray();
+        $class_subject_id = $classes->pluck('subjects')->collapse()->pluck('id')->toArray();
+        $class_group_id = $classes->pluck('groups')->collapse()->pluck('id')->toArray();
+
+        // Check user ha all permission
+        $has_all_permission[] = empty(array_diff($class_id, $user_classes));
+        $has_all_permission[] = empty(array_diff($class_section_id, $user_class_sections));
+        $has_all_permission[] = empty(array_diff($class_subject_id, $user_class_subjects));
+        $has_all_permission[] = empty(array_diff($class_group_id, $user_class_groups));
+        $has_all_permissions = !in_array(false, $has_all_permission);
+
         $data = [
             'user' => $user,
             'role_id' => $role_id,
             'roles' => $roles,
             'classes' => $classes,
+            'user_classes' => $user_classes,
+            'user_class_sections' => $user_class_sections,
+            'user_class_subjects' => $user_class_subjects,
+            'user_class_groups' => $user_class_groups,
+            'has_all_permissions' => $has_all_permissions,
             'page_title' => 'Edit User',
             'menu' => 'User'
         ];
@@ -190,11 +151,11 @@ class UserController extends Controller
             // Sync User Role
             $user->syncRoles($request->role_id);
 
-            // Delete all permissions of classes for user
-            $user->classPermissions->each->delete();
-
-            // Assing Permissions
-            $this->assignClassPermissionsToUser($id, $request->permissions);
+            // Sync Class section, subject, group to user
+            $user->classes()->sync($request->class_id);
+            $user->classSections()->sync($request->class_section_id);
+            $user->classSubjects()->sync($request->class_subject_id);
+            $user->classGroups()->sync($request->class_group_id);
 
             return response()->successMessage('User Updated Successfully!');
         }

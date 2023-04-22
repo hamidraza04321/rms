@@ -66,12 +66,15 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        $permissions = $role->permissions->pluck('name')->toArray();
         $modules = Module::with('menus')->get();
+        $permissions = $role->permissions->pluck('name')->toArray();
+        $menus = $modules->pluck('menus')->collapse()->pluck('permission')->toArray();
+        $has_all_permissions = ($permissions == $menus);
 
         $data = [
             'role' => $role,
             'permissions' => $permissions,
+            'has_all_permissions' => $has_all_permissions,
             'modules' => $modules,
             'page_title' => 'Edit Role',
             'menu' => 'Role'

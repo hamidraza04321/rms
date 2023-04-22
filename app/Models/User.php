@@ -42,8 +42,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function classPermissions()
+    public function classes()
     {
-        return $this->hasMany(UserClassPermission::class);
+        return $this->belongsToMany(Classes::class, 'user_classes', 'user_id', 'class_id')
+            ->withTimestamps();
+    }
+
+    public function classSections()
+    {
+        return $this->belongsToMany(ClassSection::class, 'user_class_sections', 'user_id', 'class_section_id')
+            ->withTimestamps();
+    }
+
+    public function classSubjects()
+    {
+        return $this->belongsToMany(ClassSubject::class, 'user_class_subjects', 'user_id', 'class_subject_id')
+            ->withTimestamps();
+    }
+
+    public function classGroups()
+    {
+        return $this->belongsToMany(ClassGroup::class, 'user_class_groups', 'user_id', 'class_group_id')
+            ->withTimestamps();
     }
 }

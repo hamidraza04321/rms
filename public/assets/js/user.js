@@ -21,19 +21,35 @@ $(document).ready(function() {
 		} else {
 			permissions.prop('checked', false);
 		}
+
+		// Check All Permissions
+		var not_checked = $("#permissions-table").find('input[type="checkbox"]:not(:checked)').length;
+
+		if (not_checked) {
+			$('#check-all-permissions').prop('checked', false);
+		} else {
+			$('#check-all-permissions').prop('checked', true);
+		}
 	});
 
 	//---------- ON CHECK CLASS PERMISSION ----------//
 	$(document).on('change', '.permission', function(e) {
 		var tr = $(this).parents('tr');
 			class_permission = tr.find('.class-permission');
-			total_permissions = tr.find('input[type="checkbox"]:not(.class-permission)').length;
-			checked_permissions = tr.find('input[type="checkbox"]:checked:not(.class-permission)').length;
+			assign_permissions = tr.find('.permission:checked').length;
+			not_checked = $("#permissions-table").find('input[type="checkbox"]:not(:checked)').length;
 
-		if (total_permissions == checked_permissions) {
+		if (assign_permissions) {
 			class_permission.prop('checked', true);
 		} else {
 			class_permission.prop('checked', false);
+		}
+
+		// Check All Permissions
+		if (!not_checked) {
+			$('#check-all-permissions').prop('checked', true);
+		} else {
+			$('#check-all-permissions').prop('checked', false);
 		}
 	});
 
@@ -87,6 +103,7 @@ $(document).ready(function() {
 					if (response.status == true) {
 						form[0].reset();
 				      	$('.select2').val('').change();
+				      	scrollToTop();
 						toastr.success(response.message);
 					} else {
 						if (response?.errors) {
@@ -151,6 +168,7 @@ $(document).ready(function() {
 					if (response.status == true) {
 						if (password != '') $('#password').val('');
 						toastr.success(response.message);
+						scrollToTop();
 					} else {
 						if (response?.errors) {
 							showErrorMessages(response.errors);

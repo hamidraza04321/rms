@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_class_section_permissions', function (Blueprint $table) {
+        Schema::create('user_classes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_permission_id')->constrained('user_class_permissions')->onDelete('cascade');
-            $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
+            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_class_section_permissions');
+        Schema::dropIfExists('user_class_permissions');
     }
 };

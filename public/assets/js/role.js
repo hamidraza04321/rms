@@ -5,11 +5,20 @@ $(document).ready(function() {
 	$(document).on('change', '.module', function(e) {
 		e.preventDefault();
 		var permissions = $(this).parents('tr').find('.permission');
-		
+
 		if ($(this).is(':checked')) {
 			permissions.prop('checked', true);
 		} else {
 			permissions.prop('checked', false);
+		}
+
+		// Check All Permissions
+		var not_checked = $("#permissions-table").find('input[type="checkbox"]:not(:checked)').length;
+
+		if (not_checked) {
+			$('#check-all-permissions').prop('checked', false);
+		} else {
+			$('#check-all-permissions').prop('checked', true);
 		}
 	});
 
@@ -29,13 +38,21 @@ $(document).ready(function() {
 	$(document).on('change', '.permission', function(e) {
 		e.preventDefault();
 		var tr = $(this).parents('tr');
-			permissions_length = tr.find('.permission').length;
+			module_permission = tr.find('.module');
 			assign_permissions = tr.find('.permission:checked').length;
-		
-		if (permissions_length == assign_permissions) {
-			tr.find('.module').prop('checked', true);
+			not_checked = $("#permissions-table").find('input[type="checkbox"]:not(:checked)').length;
+
+		if (assign_permissions) {
+			module_permission.prop('checked', true);
 		} else {
-			tr.find('.module').prop('checked', false);
+			module_permission.prop('checked', false);
+		}
+
+		// Check All Permissions
+		if (!not_checked) {
+			$('#check-all-permissions').prop('checked', true);
+		} else {
+			$('#check-all-permissions').prop('checked', false);
 		}
 	});
 

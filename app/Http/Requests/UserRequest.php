@@ -43,7 +43,10 @@ class UserRequest extends FormRequest
             'email' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at') ],
             'password' => 'required|min:6|string',
             'role_id' => 'required|exists:roles,id',
-            'permissions' => 'nullable|array'
+            'class_id.*' => 'nullable|exists:classes,id',
+            'class_section_id.*' => 'nullable|exists:class_sections,id',
+            'class_subject_id.*' => 'nullable|exists:class_subjects,id',
+            'class_group_id.*' => 'nullable|exists:class_groups,id'
         ];
     }
 
@@ -57,7 +60,10 @@ class UserRequest extends FormRequest
             'email' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
             'password' => 'nullable|min:6|string',
             'role_id' => 'required|exists:roles,id',
-            'permissions' => 'nullable|array'
+            'class_id.*' => 'nullable|exists:classes,id',
+            'class_section_id.*' => 'nullable|exists:class_sections,id',
+            'class_subject_id.*' => 'nullable|exists:class_subjects,id',
+            'class_group_id.*' => 'nullable|exists:class_groups,id'
         ];
     }
 
