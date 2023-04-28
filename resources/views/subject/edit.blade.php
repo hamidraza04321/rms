@@ -31,7 +31,7 @@
               <div class="card-body">
                 <form action="{{ route('subject.update', $data['subject']->id) }}" id="update-subject-form">
                   <div class="form-group">
-                    <label>Name</label>
+                    <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Subject Name" value="{{ $data['subject']->name }}">
                   </div>
                   <button class="btn btn-success" id="btn-update-subject">Update</button>

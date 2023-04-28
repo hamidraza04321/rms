@@ -29,7 +29,8 @@ class ClassRequest extends FormRequest
     {
         return match(Route::currentRouteName()) {
             'class.store' => $this->store(),
-            'class.update' => $this->update()
+            'class.update' => $this->update(),
+            'get.class.sections.and.groups' => $this->getClassSectionsAndGroups()
         };
     }
 
@@ -56,6 +57,16 @@ class ClassRequest extends FormRequest
             'section_id.*' => 'required|exists:sections,id',
             'group_id.*' => 'nullable|exists:groups,id',
             'subject_id.*' => 'required|exists:subjects,id'
+        ];
+    }
+
+    /**
+     * Validate Rules for get class sections and groups Request
+     */
+    public function getClassSectionsAndGroups()
+    {
+        return [
+            'class_id' => 'required|exists:classes,id'
         ];
     }
 

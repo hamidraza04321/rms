@@ -70,7 +70,7 @@
                               <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                             @endcan
                             @can('delete-class')
-                              <a class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></a>
+                              <button class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></button>
                             @endcan
                           </td>
                         @endcanany

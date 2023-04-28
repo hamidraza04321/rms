@@ -32,7 +32,7 @@
                 <div class="card-body">
                   <form action="{{ route('role.update', $data['role']->id) }}" id="update-role-form">
                     <div class="form-group">
-                      <label>Name</label>
+                      <label>Name <span class="error">*</span></label>
                       <input type="text" name="name" id="name" class="form-control" placeholder="Enter Role Name" value="{{ $data['role']->name }}">
                     </div>
                     <div class="form-group">

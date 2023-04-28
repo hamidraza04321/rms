@@ -293,12 +293,33 @@ class ClassController extends Controller
      */
     public function updateClassStatus($id)
     {
-        $class = Classes::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+        $class = Classes::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($class) {
             $data['is_active'] = ($class->is_active == 1) ? 0 : 1;
             $class->update($data);
             return response()->success($data);
+        }
+
+        return response()->errorMessage('Class not Found !');
+    }
+
+    /**
+     * Get sections and groups of class.
+     *
+     * @param  \App\Http\Requests\ClassRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getClassSectionsAndGroups(ClassRequest $request)
+    {
+        $class = Classes::find($request->class_id);
+
+        if ($class) {
+            return response()->success([
+                'sections' => $class->sections->pluck('section'),
+                'groups' => $class->groups->pluck('group')
+            ]);
         }
 
         return response()->errorMessage('Class not Found !');

@@ -31,7 +31,7 @@
               <div class="card-body">
                 <form action="{{ route('section.store') }}" id="create-section-form">
                   <div class="form-group">
-                    <label>Name</label>
+                    <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Section Name">
                   </div>
                   <button class="btn btn-success" id="btn-save-section">Save</button>

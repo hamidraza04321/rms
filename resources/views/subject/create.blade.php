@@ -31,7 +31,7 @@
               <div class="card-body">
                 <form action="{{ route('subject.store') }}" id="create-subject-form">
                   <div class="form-group">
-                    <label>Name</label>
+                    <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Subject Name">
                   </div>
                   <button class="btn btn-success" id="btn-save-subject">Save</button>

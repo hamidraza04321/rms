@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
 	
 	//---------- DASHBOARD ROUTES ----------//
 	Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard.index');
@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
 		Route::put('/class/restore/{id}', 'restore')->name('class.restore');
 		Route::delete('/class/delete/{id}', 'delete')->name('class.delete');
 		Route::put('/class/update-status/{id}', 'updateClassStatus')->name('class.update.status');
+		Route::get('/class/get-class-sections-and-groups', 'getClassSectionsAndGroups')->name('get.class.sections.and.groups');
 	});
 
 	//---------- SECTION ROUTES ----------//
@@ -56,8 +57,15 @@ Route::middleware(['auth'])->group(function () {
 		Route::put('/subject/update-status/{id}', 'updateSubjectStatus')->name('subject.update.status');
 	});
 
+	//---------- STUDENT ROUTES ----------//
+	Route::resource('/student', StudentController::class, ['except' => ['show']]);
+	Route::controller(StudentController::class)->group(function(){
+		Route::post('/student/search', 'search')->name('student.search');
+		Route::put('/student/update-status/{id}', 'updateStudentStatus')->name('student.update.status');
+	});
+
 	//---------- SUPER ADMIN ROUTES ----------//
-	Route::middleware(['is.super.admin'])->group(function () {
+	Route::middleware('is.super.admin')->group(function () {
 		//---------- USER ROLES ROUTES ----------//
 		Route::resource('/role', RoleController::class, ['except' => ['show']]);
 		
@@ -73,9 +81,12 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-//---------- AUTHERTICATION ROUTES ----------//
+//---------- AUTHENTICATION ROUTES ----------//
 Route::controller(AuthController::class)->group(function() {
-	Route::get('/login', 'login')->name('login');
-	Route::post('/attempt-login', 'attemptLogin')->name('attempt.login');
+	Route::middleware('guest')->group(function () {
+		Route::get('/login', 'login')->name('login');
+		Route::post('/attempt-login', 'attemptLogin')->name('attempt.login');
+	});
+
 	Route::post('/logout', 'logout')->name('logout');
 });

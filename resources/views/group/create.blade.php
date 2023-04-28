@@ -31,7 +31,7 @@
               <div class="card-body">
                 <form action="{{ route('group.store') }}" id="create-group-form">
                   <div class="form-group">
-                    <label>Name</label>
+                    <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Group Name">
                   </div>
                   <button class="btn btn-success" id="btn-save-group">Save</button>

@@ -31,11 +31,11 @@
               <div class="card-body">
                 <form action="{{ route('class.update', $data['class']->id) }}" id="update-class-form">
                   <div class="form-group">
-                    <label>Name</label>
+                    <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Class Name" value="{{ $data['class']->name }}">
                   </div>
                   <div class="form-group">
-                    <label>Sections</label>
+                    <label>Sections <span class="error">*</span></label>
                     <select name="section_id[]" id="section-id" class="form-control select2" multiple>
                       @foreach($data['sections'] as $section)
                         <option @selected(in_array($section->id, $data['section_ids'])) value="{{ $section->id }}">{{ $section->name }}</option>
@@ -51,7 +51,7 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label>Subjects</label>
+                    <label>Subjects <span class="error">*</span></label>
                     <select name="subject_id[]" id="subject-id" class="form-control select2" multiple>
                       @foreach($data['subjects'] as $subject)
                         <option @selected(in_array($subject->id, $data['subject_ids'])) value="{{ $subject->id }}">{{ $subject->name }}</option>

@@ -31,11 +31,11 @@
               <div class="card-body">
                 <form action="{{ route('class.store') }}" id="create-class-form">
                   <div class="form-group">
-                    <label>Name</label>
+                    <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Class Name">
                   </div>
                   <div class="form-group">
-                    <label>Sections</label>
+                    <label>Sections <span class="error">*</span></label>
                     <select name="section_id[]" id="section-id" class="form-control select2" multiple>
                       @foreach($data['sections'] as $section)
                         <option value="{{ $section->id }}">{{ $section->name }}</option>
@@ -51,7 +51,7 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label>Subjects</label>
+                    <label>Subjects <span class="error">*</span></label>
                     <select name="subject_id[]" id="subject-id" class="form-control select2" multiple>
                       @foreach($data['subjects'] as $subject)
                         <option value="{{ $subject->id }}">{{ $subject->name }}</option>

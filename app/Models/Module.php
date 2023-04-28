@@ -10,16 +10,43 @@ class Module extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'modules';
-    protected $fillable = [ 'name' ];
-    protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name'
+    ];
+    
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'id', 
+        'created_at',
+        'updated_at'
+    ];
 
     public function menus()
     {
     	return $this->hasMany(Menu::class, 'module_id');
     }
 
-    // Check role has any permission
+    /**
+     * Check role ha any permission.
+     *
+     * @param int $role_id
+     */
     public function hasAnyPermission($role_id)
     {
     	$role = Role::find($role_id);
