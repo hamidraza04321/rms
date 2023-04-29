@@ -221,7 +221,7 @@ class StudentController extends Controller
     public function unlinkImage($image)
     {
         $image_path = public_path('uploads/'.$image);
-        if (file_exists($image_path)) unlink($image_path);
+        if (is_file($image_path)) unlink($image_path);
     }
 
     /**

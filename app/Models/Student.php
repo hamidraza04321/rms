@@ -41,9 +41,6 @@ class Student extends Model
     	'email',
     	'admission_date',
     	'student_image',
-    	'blood_group',
-    	'height',
-    	'weight',
 
     	// Father Details
         'father_name',

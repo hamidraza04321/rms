@@ -24,69 +24,77 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Filters</div>
-              </div>
-              <div class="card-body">
-                <form action="{{ route('student.search') }}" id="search-student-form">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>Class</label>
-                        <select name="class_id" id="class-id" class="select2 form-control">
-                          <option value="">Select</option>
-                          @foreach($data['classes'] as $class)
-                            <option value="{{ $class->id }}">{{ $class->name }}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>Section <span class="error">*</span></label>
-                        <select name="section_id" id="section-id" disabled class="select2 form-control">
-                          <option value="">Select</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>Group </label>
-                        <select name="group_id" id="group-id" disabled class="select2 form-control">
-                          <option value="">Select</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>Gender </label>
-                        <select name="gender" id="gender" class="select2 form-control">
-                          <option value="">Select</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                        </select>
-                      </div>
-                    </div>
+            <div class="accordion" id="student-filters">
+              <div class="card">
+                <div class="card-header" id="student-filter-heading">
+                  <div class="d-flex">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#student-filters-table" aria-expanded="true" aria-controls="student-filters-table">
+                      Filters
+                    </button>
                   </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>Status </label>
-                        <select name="status" id="status" class="select2 form-control">
-                          <option value="">Select</option>
-                          <option value="1">Active</option>
-                          <option value="2">Deactive</option>
-                        </select>
+                </div>
+                <div id="student-filters-table" class="collapse show" aria-labelledby="student-filter-heading" data-parent="#student-filters">
+                  <div class="card-body">
+                    <form action="{{ route('student.search') }}" id="search-student-form">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Class</label>
+                            <select name="class_id" id="class-id" class="select2 form-control">
+                              <option value="">Select</option>
+                              @foreach($data['classes'] as $class)
+                                <option value="{{ $class->id }}">{{ $class->name }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Section <span class="error">*</span></label>
+                            <select name="section_id" id="section-id" disabled class="select2 form-control">
+                              <option value="">Select</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Group </label>
+                            <select name="group_id" id="group-id" disabled class="select2 form-control">
+                              <option value="">Select</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Gender </label>
+                            <select name="gender" id="gender" class="select2 form-control">
+                              <option value="">Select</option>
+                              <option value="male">Male</option>
+                              <option value="female">Female</option>
+                            </select>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <button id="btn-search-student" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Status </label>
+                            <select name="status" id="status" class="select2 form-control">
+                              <option value="">Select</option>
+                              <option value="1">Active</option>
+                              <option value="2">Deactive</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <button id="btn-search-student" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </form>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>

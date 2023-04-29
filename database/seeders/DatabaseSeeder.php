@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             ModuleTableSeeder::class,
             MenuTableSeeder::class,
-            UserTableSeeder::class
+            UserTableSeeder::class,
+            StudentTableSeeder::class
         ]);
     }
 }
