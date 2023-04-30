@@ -79,16 +79,17 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Status </label>
-                            <select name="status" id="status" class="select2 form-control">
+                            <select name="is_active" id="status" class="select2 form-control">
                               <option value="">Select</option>
-                              <option value="1">Active</option>
-                              <option value="2">Deactive</option>
+                              <option value="active">Active</option>
+                              <option value="deactive">Deactive</option>
                             </select>
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                             <button id="btn-search-student" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
+                            <button id="btn-export-student" data-url="{{ route('student.export') }}" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-file-export"></i> Export</button>
                           </div>
                         </div>
                       </div>

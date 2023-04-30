@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
 use App\Models\Scopes\ActiveScope;
+use App\Exports\StudentsExport;
 use App\Models\Student;
 use App\Models\Classes;
+use Excel;
 
 class StudentController extends Controller
 {
@@ -37,15 +39,13 @@ class StudentController extends Controller
      */
     public function search(StudentRequest $request)
     {
-        $where = collect([
-            'class_id' => $request->class_id,
-            'section_id' => $request->section_id,
-            'group_id' => $request->group_id,
-            'gender' => $request->gender,
-            'is_active' => ($request->status) ? 1 : 0,
-        ])
-        ->filter()
-        ->toArray();
+        $where = collect($request->all())
+            ->filter()
+            ->toArray();
+        
+        if (isset($where['is_active'])) {
+            $where['is_active'] = ($request->is_active == 'active') ? 1 : 0;
+        }
 
         $students = Student::withoutGlobalScope(ActiveScope::class)
             ->where($where)
@@ -259,5 +259,15 @@ class StudentController extends Controller
         }
 
         return response()->errorMessage('Student not Found!');
+    }
+
+    /**
+     * Export the specified resource in storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function export(StudentRequest $request)
+    {
+        return Excel::download(new StudentsExport($request->all()), 'students.xls');
     }
 }

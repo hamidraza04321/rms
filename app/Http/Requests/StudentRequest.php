@@ -30,7 +30,8 @@ class StudentRequest extends FormRequest
         return match(Route::currentRouteName()) {
             'student.search' => $this->search(),
             'student.store' => $this->store(),
-            'student.update' => $this->update()
+            'student.update' => $this->update(),
+            'student.export' => $this->export()
         };
     }
 
@@ -44,8 +45,22 @@ class StudentRequest extends FormRequest
             'section_id' => 'nullable|exists:sections,id',
             'group_id' => 'nullable|exists:groups,id',
             'gender' => 'nullable|in:male,female',
-            'status' => 'nullable|in:0,1' // Active / Deactive
-        ];        
+            'is_active' => 'nullable|in:active,deactive'
+        ];
+    }
+
+    /**
+     * Validate Rules for Export Student Request
+     */
+    public function export()
+    {
+        return [
+            'class_id' => 'nullable|exists:classes,id',
+            'section_id' => 'nullable|exists:sections,id',
+            'group_id' => 'nullable|exists:groups,id',
+            'gender' => 'nullable|in:male,female',
+            'is_active' => 'nullable|in:active,deactive'
+        ];
     }
 
     /**

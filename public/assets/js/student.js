@@ -16,7 +16,7 @@ $(document).ready(function() {
             section_id = $('#section-id').val();
             group_id = $('#group-id').val();
             gender = $('#gender').val();
-            status = $('#status').val();
+            is_active = $('#status').val();
 
         // Button Loading
         self.addClass('disabled').html('<div class="spinner-border"></div>');
@@ -36,7 +36,7 @@ $(document).ready(function() {
                     section_id: section_id,
                     group_id: group_id,
                     gender: gender,
-                    status: status
+                    is_active: is_active
                 }
             },
             initComplete: function(settings, response){
@@ -97,6 +97,16 @@ $(document).ready(function() {
                 { data: null }
             ],
         });
+    });
+
+    //---------- ON CLICK EXPORT STUDENT ----------//
+    $(document).on('click', '#btn-export-student', function(e) {
+        e.preventDefault();
+
+        var formData = $("#search-student-form").serialize(); 
+            url = $(this).attr('data-url') + '?' + formData;
+
+        window.open(url, '_self');
     });
 
     //---------- ON CLICK SAVE STUDENT ----------//

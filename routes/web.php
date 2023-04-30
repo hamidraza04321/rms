@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
 	Route::controller(StudentController::class)->group(function(){
 		Route::post('/student/search', 'search')->name('student.search');
 		Route::put('/student/update-status/{id}', 'updateStudentStatus')->name('student.update.status');
+		Route::get('/student/export', 'export')->name('student.export');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//
