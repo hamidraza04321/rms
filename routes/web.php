@@ -20,6 +20,15 @@ Route::middleware('auth')->group(function () {
 	//---------- DASHBOARD ROUTES ----------//
 	Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard.index');
 
+	//---------- SESSION ROUTES ----------//
+	Route::resource('/session', SessionController::class, ['except' => ['show']]);
+	Route::controller(SessionController::class)->group(function(){
+		Route::get('/session/trash', 'trash')->name('session.trash');
+		Route::put('/session/restore/{id}', 'restore')->name('session.restore');
+		Route::delete('/session/delete/{id}', 'delete')->name('session.delete');
+		Route::put('/session/update-status/{id}', 'updateSessionStatus')->name('session.update.status');
+	});
+
 	//---------- CLASS ROUTES ----------//
 	Route::resource('/class', ClassController::class, ['except' => ['show']]);
 	Route::controller(ClassController::class)->group(function(){
@@ -63,6 +72,8 @@ Route::middleware('auth')->group(function () {
 		Route::post('/student/search', 'search')->name('student.search');
 		Route::put('/student/update-status/{id}', 'updateStudentStatus')->name('student.update.status');
 		Route::get('/student/export', 'export')->name('student.export');
+		Route::match(['GET', 'POST'], '/student/import', 'import')->name('student.import');
+		Route::get('/student/import/download-sample', 'downloadImportSample')->name('student.import.download.sample');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//
@@ -77,6 +88,12 @@ Route::middleware('auth')->group(function () {
 			Route::put('/user/restore/{id}', 'restore')->name('user.restore');
 			Route::delete('/user/delete/{id}', 'delete')->name('user.delete');
 			Route::put('/user/update-status/{id}', 'updateUserStatus')->name('user.update.status');
+		});
+
+		//---------- USER ROUTES ----------//
+		Route::controller(SettingController::class)->group(function(){
+			Route::get('/settings', 'index')->name('settings.index');
+			Route::post('/settings/update-logo', 'updateLogo')->name('settings.update.logo');
 		});
 	});
 

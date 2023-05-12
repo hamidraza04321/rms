@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Scopes\HasClassGroup;
+use App\Models\Scopes\HasUserClassGroup;
 
 class ClassGroup extends Model
 {
@@ -43,7 +45,13 @@ class ClassGroup extends Model
     public function group()
     {
     	return $this->belongsTo(Group::class)
-            ->select(['id', 'name']);
+            ->select([ 'id', 'name' ]);
+    }
+
+    public function userClassGroup()
+    {
+        return $this->belongsTo(UserClassGroup::class, 'id', 'class_group_id')
+            ->where('user_id', auth()->id());
     }
 
     /**
@@ -53,8 +61,7 @@ class ClassGroup extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope('hasGroup', function (Builder $builder) {
-            $builder->has('group');
-        });
+        static::addGlobalScope(new HasClassGroup);
+        static::addGlobalScope(new HasUserClassGroup);
     }
 }

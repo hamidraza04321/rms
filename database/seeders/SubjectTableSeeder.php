@@ -15,7 +15,7 @@ class SubjectTableSeeder extends Seeder
      */
     public function run()
     {
-        Subject::insert([
+        $subjects = collect([
         	[ 'name' => 'English' ],
         	[ 'name' => 'Urdu' ],
         	[ 'name' => 'Mathematics' ],
@@ -25,5 +25,9 @@ class SubjectTableSeeder extends Seeder
             [ 'name' => 'Physics' ],
         	[ 'name' => 'Chemistry' ]
         ]);
+
+        $subjects->each(function($subject){
+            Subject::create($subject);
+        });
     }
 }

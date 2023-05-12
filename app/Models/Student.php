@@ -4,14 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\ActiveScopeTrait;
 
 class Student extends Model
 {
-    use HasFactory,
-    	SoftDeletes,
-        ActiveScopeTrait;
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -72,7 +68,6 @@ class Student extends Model
     	'current_address',
     	'permenant_address',
 
-    	'is_active',
     	'created_by',
     	'updated_by'
     ];
@@ -92,24 +87,6 @@ class Student extends Model
         'dob',
         'admission_date'
     ];
-
-    public function class()
-    {
-        return $this->belongsTo(Classes::class, 'class_id')
-            ->select([ 'id', 'name' ]);
-    }
-
-    public function section()
-    {
-        return $this->belongsTo(Section::class)
-            ->select([ 'id', 'name' ]);
-    }
-
-    public function group()
-    {
-        return $this->belongsTo(Group::class)
-            ->select([ 'id', 'name' ]);
-    }
 
     /**
      * Get the Student full name.

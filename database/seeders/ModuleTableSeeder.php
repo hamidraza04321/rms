@@ -16,16 +16,15 @@ class ModuleTableSeeder extends Seeder
     public function run()
     {
         $modules = collect([
-        	'Class',
-        	'Section',
-            'Group',
-            'Subject'
+            [ 'name' => 'Session' ],
+            [ 'name' => 'Class' ],
+            [ 'name' => 'Section' ],
+            [ 'name' => 'Group' ],
+            [ 'name' => 'Subject' ]
         ]);
 
-        $modules->each(function($name) {
-	        Module::create([
-	        	'name' => $name
-	        ]);
+        $modules->each(function($module) {
+	        Module::create($module);
         });
     }
 }

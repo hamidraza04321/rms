@@ -7,16 +7,18 @@ $.ajaxSetup({
 });
 
 //---------- DATATABLE ----------//
-if (typeof DataTable !== "undefined") { 
+if ($.isFunction($.fn.DataTable)) {
     $('.datatable').DataTable();
 }
 
 //---------- SELECT 2 ----------//
-$('.select2').select2({
-	width: '100%',
-	placeholder: "Select",
-	allowClear: true
-});
+if ($.isFunction($.fn.select2)) {
+	$('.select2').select2({
+		width: '100%',
+		placeholder: "Select",
+		allowClear: true
+	});
+}
 
 //---------- REMOVE VALIDATION ERROR ALERT MESSAGES ----------//
 function removeErrorMessages()
@@ -49,11 +51,27 @@ function warningMessage(message)
 function showErrorMessages(errors) 
 {
 	$.each(errors, function(key, value) {
-		if ($('input[name="'+key+'"]').length) { // IF INPUT EXISTS
-			$('input[name="'+key+'"]').addClass('is-invalid').after('<span class="invalid-feedback">'+value.toString()+'</span>');
+		var input = $('input[name="'+key+'"]');
+
+		// If input exists
+		if (input.length) {
+			// If input type is checkbox / radio not show errors
+			if (!['checkbox', 'radio'].includes(input.attr('type'))) {
+				if (input.attr('type') == 'file') {
+					var avatar = input.parents('.avatar-upload');
+					if (avatar.length) {
+						avatar.after('<span class="invalid-feedback d-block text-center">'+value.toString()+'</span>');
+					} else {
+						input.addClass('is-invalid').parent('.custom-file').after('<span class="invalid-feedback d-block">'+value.toString()+'</span>');
+					}
+				} else {
+					input.addClass('is-invalid').after('<span class="invalid-feedback">'+value.toString()+'</span>');
+				}
+			}
 		} else {
 			$('select[name="'+key+'"]').siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">'+value.toString()+'</span>');
 		}
+
 	});
 }
 
@@ -89,6 +107,15 @@ $(document).on('click', '#btn-logout', function(e) {
 			window.location.href = response.redirect;
 		}
 	});
+});
+
+//---------- ON CHANGE FILE INPUT ----------//
+$(document).on('change', '.custom-file-input', function(e) {
+	e.preventDefault();
+	var filename = $(this).val().split('\\').pop();
+	if (filename != '') {
+		$(this).siblings('label').html(filename);
+	}
 });
 
 //---------- THEME SETTINGS SET IN LOACAL STOREAGE ----------//

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StudentRequest;
 use App\Models\Scopes\ActiveScope;
 use App\Exports\StudentsExport;
+use App\Exports\DownloadImportSample;
+use App\Imports\StudentsImport;
+use App\Models\StudentSession;
 use App\Models\Student;
 use App\Models\Classes;
 use Excel;
@@ -103,38 +106,51 @@ class StudentController extends Controller
             'student_image',
             'father_image',
             'mother_image',
-            'guardian_image'
+            'guardian_image',
+            'class_id',
+            'section_id',
+            'group_id'
         ]);
 
         // Upload student image
         if ($request->student_image) {
             $file_name = time() . '1.' . $request->student_image->extension();
-            $request->student_image->move(public_path('uploads'), $file_name);
+            $request->student_image->move(public_path('uploads/student'), $file_name);
             $data['student_image'] = $file_name;
         }
 
         // Upload father image
         if ($request->father_image) {
             $file_name = time() . '2.' . $request->father_image->extension();
-            $request->father_image->move(public_path('uploads'), $file_name);
+            $request->father_image->move(public_path('uploads/student/father'), $file_name);
             $data['father_image'] = $file_name;
         }
 
         // Upload mother image
         if ($request->mother_image) {
             $file_name = time() . '3.' . $request->mother_image->extension();
-            $request->mother_image->move(public_path('uploads'), $file_name);
+            $request->mother_image->move(public_path('uploads/student/mother'), $file_name);
             $data['mother_image'] = $file_name;
         }
 
         // Upload guardian image
         if ($request->guardian_image) {
             $file_name = time() . '4.' . $request->guardian_image->extension();
-            $request->guardian_image->move(public_path('uploads'), $file_name);
+            $request->guardian_image->move(public_path('uploads/student/guardian'), $file_name);
             $data['guardian_image'] = $file_name;
         }
 
-        Student::create($data);
+        $student = Student::create($data);
+
+        // Store student into current session
+        StudentSession::create([
+            'student_id' => $student->id,
+            'session_id' => $this->current_session_id,
+            'class_id' => $request->class_id,
+            'section_id' => $request->section_id,
+            'group_id' => $request->group_id
+        ]);
+
         return response()->successMessage('Student Created Successfully!');
     }
 
@@ -181,33 +197,45 @@ class StudentController extends Controller
 
             // Upload student image
             if ($request->student_image) {
-                $this->unlinkImage($student->student_image);
+                // Unlink Image
+                $image_path = public_path('uploads/student/'.$student->student_image);
+                if (is_file($image_path)) unlink($image_path);
+
                 $file_name = time() . '1.' . $request->student_image->extension();
-                $request->student_image->move(public_path('uploads'), $file_name);
+                $request->student_image->move(public_path('uploads/student'), $file_name);
                 $data['student_image'] = $file_name;
             }
 
             // Upload father image
             if ($request->father_image) {
-                $this->unlinkImage($student->father_image);
+                // Unlink Image
+                $image_path = public_path('uploads/student/father/'.$student->father_image);
+                if (is_file($image_path)) unlink($image_path);
+
                 $file_name = time() . '2.' . $request->father_image->extension();
-                $request->father_image->move(public_path('uploads'), $file_name);
+                $request->father_image->move(public_path('uploads/student/father'), $file_name);
                 $data['father_image'] = $file_name;
             }
 
             // Upload mother image
             if ($request->mother_image) {
-                $this->unlinkImage($student->mother_image);
+                // Unlink Image
+                $image_path = public_path('uploads/student/mother/'.$student->mother_image);
+                if (is_file($image_path)) unlink($image_path);
+
                 $file_name = time() . '3.' . $request->mother_image->extension();
-                $request->mother_image->move(public_path('uploads'), $file_name);
+                $request->mother_image->move(public_path('uploads/student/mother'), $file_name);
                 $data['mother_image'] = $file_name;
             }
 
             // Upload guardian image
             if ($request->guardian_image) {
-                $this->unlinkImage($student->guardian_image);
+                // Unlink Image
+                $image_path = public_path('uploads/student/guardian/'.$student->guardian_image);
+                if (is_file($image_path)) unlink($image_path);
+
                 $file_name = time() . '4.' . $request->guardian_image->extension();
-                $request->guardian_image->move(public_path('uploads'), $file_name);
+                $request->guardian_image->move(public_path('uploads/student/guardian'), $file_name);
                 $data['guardian_image'] = $file_name;
             }
 
@@ -216,12 +244,6 @@ class StudentController extends Controller
         }
 
         return response()->errorMessage('Student Not Found!');
-    }
-
-    public function unlinkImage($image)
-    {
-        $image_path = public_path('uploads/'.$image);
-        if (is_file($image_path)) unlink($image_path);
     }
 
     /**
@@ -268,6 +290,43 @@ class StudentController extends Controller
      */
     public function export(StudentRequest $request)
     {
-        return Excel::download(new StudentsExport($request->all()), 'students.xls');
+        return Excel::download(new StudentsExport($request->all()), 'students.xlsx');
+    }
+
+    /**
+     * Import the specified resource in storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function import(StudentRequest $request)
+    {
+        if ($request->method() == 'GET')
+        {
+            $classes = Classes::get();
+
+            $data = [
+                'classes' => $classes,
+                'page_title' => 'Import Students',
+                'menu' => 'Student'
+            ];
+
+            return view('student.import', compact('data'));   
+        }
+
+        if ($request->method() == 'POST')
+        {
+            try {
+                $import = new StudentsImport($request->all());
+                Excel::import($import, $request->import_file);
+                return response()->successMessage("The {$import->getRowCount()} Students Imported Successfully !");
+            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                return response()->errors($e->failures());
+            }
+        }
+    }
+
+    public function downloadImportSample()
+    {
+         return Excel::download(new DownloadImportSample, 'students_import_sample.xlsx');
     }
 }

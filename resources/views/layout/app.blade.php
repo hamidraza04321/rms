@@ -31,7 +31,7 @@
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{ url('/assets/dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
+    <img class="animation__shake" src="{{ url($settings->school_logo) }}" alt="{{ $settings->school_name }}" height="60" width="60">
   </div>
 
   <!-- Navbar -->
@@ -61,6 +61,8 @@
 <script src="{{ url('/assets/plugins/jquery/jquery.min.js') }}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ url('/assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<!-- jQuery Progress Bar -->
+<script src="{{ url('/assets/plugins/jquery/jq-ajax-progress.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)

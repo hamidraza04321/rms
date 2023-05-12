@@ -15,7 +15,7 @@ class SectionTableSeeder extends Seeder
      */
     public function run()
     {
-        Section::insert([
+        $sections = collect([
             [ 'name' => 'A' ], 
             [ 'name' => 'B' ], 
             [ 'name' => 'C' ], 
@@ -23,5 +23,9 @@ class SectionTableSeeder extends Seeder
             [ 'name' => 'E' ], 
             [ 'name' => 'F' ] 
         ]);
+
+        $sections->each(function($section){
+            Section::create($section);
+        });
     }
 }

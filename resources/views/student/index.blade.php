@@ -110,45 +110,47 @@
                 </div>
               </div>
               <div class="card-body">
-                <table id="student-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Admission No.</th>
-                      <th>Roll No.</th>
-                      <th>Student Name</th>
-                      <th>Father Name</th>
-                      <th>Class</th>
-                      <th>Group</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['students'] as $student)
+                <div class="table-responsive">
+                  <table id="student-table" class="table table-bordered table-hover datatable no-wrap">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $student->admission_no }}</td>
-                        <td>{{ $student->roll_no }}</td>
-                        <td>{{ $student->fullName() }}</td>
-                        <td>{{ $student->father_name }}</td>
-                        <td>{{ $student->class->name }} ( {{ $student->section->name }} )</td>
-                        <td>{{ $student->group->name ?? '-' }}</td>
-                        <td>
-                          @if($student->is_active)
-                            <button data-url="{{ route('student.update.status', $student->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                          @else
-                            <button data-url="{{ route('student.update.status', $student->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                          @endif
-                        </td>
-                        <td>
-                          <a href="{{ route('student.edit', $student->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                          <button class="btn btn-sm btn-danger btn-destroy-student" data-url="{{ route('student.destroy', $student->id) }}"><i class="fa fa-trash"> Delete</i></button>
-                        </td>
+                        <th>S No.</th>
+                        <th>Admission No.</th>
+                        <th>Roll No.</th>
+                        <th>Student Name</th>
+                        <th>Father Name</th>
+                        <th>Class</th>
+                        <th>Group</th>
+                        <th>Status</th>
+                        <th>Action</th>
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['students'] as $student)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $student->admission_no }}</td>
+                          <td>{{ $student->roll_no }}</td>
+                          <td>{{ $student->fullName() }}</td>
+                          <td>{{ $student->father_name }}</td>
+                          <td>{{ $student->class->name }} ( {{ $student->section->name }} )</td>
+                          <td>{{ $student->group->name ?? '-' }}</td>
+                          <td>
+                            @if($student->is_active)
+                              <button data-url="{{ route('student.update.status', $student->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                            @else
+                              <button data-url="{{ route('student.update.status', $student->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                            @endif
+                          </td>
+                          <td>
+                            <a href="{{ route('student.edit', $student->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            <button class="btn btn-sm btn-danger btn-destroy-student" data-url="{{ route('student.destroy', $student->id) }}"><i class="fa fa-trash"> Delete</i></button>
+                          </td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

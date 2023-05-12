@@ -24,15 +24,9 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        $class_id = $this->faker->numberBetween(1, 10);
-        $group_id = (in_array($class_id, [9,10])) ? $this->faker->numberBetween(1, 4) : null;
-
         return [
             'admission_no' => $this->faker->unique()->numberBetween(1000, 9999),
             'roll_no' => $this->faker->numberBetween(1000, 9999),
-            'class_id' => $class_id,
-            'section_id' => $this->faker->numberBetween(1, 6),
-            'group_id' => $group_id,
             'first_name' => $this->faker->name('null|male|female'),
             'gender' => $this->faker->randomElement(['male', 'female']),
             'dob' => $this->faker->date('Y-m-d'),

@@ -15,7 +15,7 @@ class ClassTableSeeder extends Seeder
      */
     public function run()
     {
-        Classes::insert([
+        $classes = collect([
             [ 'name' => 'Class I' ],
             [ 'name' => 'Class II' ],
             [ 'name' => 'Class III' ],
@@ -27,5 +27,9 @@ class ClassTableSeeder extends Seeder
             [ 'name' => 'Class IX' ],
             [ 'name' => 'Class X' ]
         ]);
+
+        $classes->each(function($class){
+            Classes::create($class);
+        });
     }
 }

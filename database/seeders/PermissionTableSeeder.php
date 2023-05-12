@@ -17,52 +17,60 @@ class PermissionTableSeeder extends Seeder
     {
         $permissions = collect([
 
-            // CLASS
-            'view-class',
-            'create-class',
-            'edit-class',
-            'delete-class',
-            'update-class-status',
-            'view-class-trash',
-            'restore-class',
-            'permanent-delete-class',
+            // SESSION
+            [ 'name' => 'view-session' ],
+            [ 'name' => 'create-session' ],
+            [ 'name' => 'edit-session' ],
+            [ 'name' => 'delete-session' ],
+            [ 'name' => 'update-session-status' ],
+            [ 'name' => 'view-session-trash' ],
+            [ 'name' => 'restore-session' ],
+            [ 'name' => 'permanent-delete-session' ],
 
-        	// SECTION
-        	'view-section',
-        	'create-section',
-        	'edit-section',
-        	'delete-section',
-            'update-section-status',
-        	'view-section-trash',
-        	'restore-section',
-            'permanent-delete-section',
+            // CLASS
+            [ 'name' => 'view-class' ],
+            [ 'name' => 'create-class' ],
+            [ 'name' => 'edit-class' ],
+            [ 'name' => 'delete-class' ],
+            [ 'name' => 'update-class-status' ],
+            [ 'name' => 'view-class-trash' ],
+            [ 'name' => 'restore-class' ],
+            [ 'name' => 'permanent-delete-class' ],
+
+            // SECTION
+            [ 'name' => 'view-section' ],
+            [ 'name' => 'create-section' ],
+            [ 'name' => 'edit-section' ],
+            [ 'name' => 'delete-section' ],
+            [ 'name' => 'update-section-status' ],
+            [ 'name' => 'view-section-trash' ],
+            [ 'name' => 'restore-section' ],
+            [ 'name' => 'permanent-delete-section' ],
 
             // GROUP
-            'view-group',
-            'create-group',
-            'edit-group',
-            'delete-group',
-            'update-group-status',
-            'view-group-trash',
-            'restore-group',
-            'permanent-delete-group',
+            [ 'name' => 'view-group' ],
+            [ 'name' => 'create-group' ],
+            [ 'name' => 'edit-group' ],
+            [ 'name' => 'delete-group' ],
+            [ 'name' => 'update-group-status' ],
+            [ 'name' => 'view-group-trash' ],
+            [ 'name' => 'restore-group' ],
+            [ 'name' => 'permanent-delete-group' ],
 
             // SUBJECT
-            'view-subject',
-            'create-subject',
-            'edit-subject',
-            'delete-subject',
-            'update-subject-status',
-            'view-subject-trash',
-            'restore-subject',
-            'permanent-delete-subject'
+            [ 'name' => 'view-subject' ],
+            [ 'name' => 'create-subject' ],
+            [ 'name' => 'edit-subject' ],
+            [ 'name' => 'delete-subject' ],
+            [ 'name' => 'update-subject-status' ],
+            [ 'name' => 'view-subject-trash' ],
+            [ 'name' => 'restore-subject' ],
+            [ 'name' => 'permanent-delete-subject' ],
 
         ]);
 
-        $permissions->each(function($name) {
-        	Permission::create([
-        		'name' => $name
-        	]);
+        $permissions->each(function($permission) {
+        	Permission::create($permission);
         });
     }
 }

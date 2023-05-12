@@ -3,6 +3,79 @@ $(document).ready(function() {
     //---------- APPLICATION BASE URL ----------//
     const base_url = $('#base-url').val();
 
+    //---------- ON CLICK IMPORT STUDENT ----------//
+    $(document).on('click', '#btn-import-student', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            class_id = $('#class-id').val();
+            section_id = $('#section-id').val();
+            group_id = $('#group-id').val();
+            import_file = $('#import-file').val();
+            flag = true;
+
+        if (class_id == '') {
+            $("#class-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if (section_id == '') {
+            $("#section-id:not(:disabled)").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if ($("#group-id option").length > 1) {
+            if (group_id == '') {
+                $("#group-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+                flag = false;
+            }
+        }
+
+        if (import_file == '') {
+            $("#import-file").addClass('is-invalid').parent('.custom-file').after('<span class="invalid-feedback d-block">The Import File is required !</span>');
+            flag = false;
+        } else {
+            var ext = import_file.split('.').pop().toLowerCase();
+            if (!['csv','xls','xlsx'].includes(ext)) {
+                $("#import-file").addClass('is-invalid').parent('.custom-file').after('<span class="invalid-feedback d-block">The Import File is must be in csv, xls, xlxs format.</span>');
+                flag = false;
+            }
+        }
+
+        if (flag) {
+            $('#import-progress-modal').modal('show');
+
+            var form = $('#import-student-form');
+                url = form.attr('action');
+                formData = new FormData(form[0]);
+                progress_bar = $('.impor-progress-bar');
+                progress_percentage = $('.import-percentage');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                beforeSend: function() {
+                    progress_bar.css('width', '0%');
+                    progress_percentage.html('0');
+                },
+                uploadProgress: function(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = Math.round((e.loaded * 100) / e.total);
+                        progress_bar.css('width', percentComplete + '%');
+                        progress_percentage.html(percentComplete);
+                    }
+                }
+            });
+        }
+    });
+
     //---------- ON CLICK SEARCH STUDENT ----------//
     $(document).on('click', '#btn-search-student', function(e) {
         e.preventDefault();
@@ -202,6 +275,7 @@ $(document).ready(function() {
                         form[0].reset();
                         $('.select2').val('').change();
                         $('.image-preview').css('background-image', 'url('+ $('#image-preview').attr('data-src') +')');
+                        scrollToTop();
                         toastr.success(response.message);
                     } else {
                         showErrorMessages(response.errors);
@@ -308,6 +382,7 @@ $(document).ready(function() {
                 cache: false,
                 success: function(response) {
                     if (response.status == true) {
+                        scrollToTop();
                         toastr.success(response.message);
                     } else {
                         showErrorMessages(response.errors);

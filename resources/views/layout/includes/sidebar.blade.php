@@ -1,8 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="{{ route('dashboard.index') }}" class="brand-link">
-    <img src="{{ url('/assets/dist/img/AdminLTELogo.png') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">RMS</span>
+    <img src="{{ url($settings->school_logo) }}" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">{{ $settings->school_name }}</span>
   </a>
 
   <!-- Sidebar -->
@@ -41,8 +41,8 @@
           </a>
         </li>
         <li class="nav-header">Student Management</li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.edit' ]))) active @endif">
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.import' ]))) menu-open @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.edit', 'student.import' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Student
@@ -62,12 +62,45 @@
                 <p>Create</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('student.import') }}" class="nav-link @if(Route::currentRouteName() == 'student.import') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Import</p>
+              </a>
+            </li>
           </ul>
         </li>
         @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
           <li class="nav-header">Academics</li>
         @endcanany
         @canany(['view-class', 'create-class'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'session.index', 'session.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'session.index', 'session.create', 'session.edit', 'session.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Session
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-class')
+                <li class="nav-item">
+                  <a href="{{ route('session.index') }}" class="nav-link @if(Route::currentRouteName() == 'session.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-class')
+                <li class="nav-item">
+                  <a href="{{ route('session.create') }}" class="nav-link @if(Route::currentRouteName() == 'session.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit', 'class.trash' ]))) active @endif">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -230,6 +263,13 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-header">System Settings</li>
+          <li class="nav-item @if(Route::currentRouteName() == 'settings.index') menu-open @endif">
+            <a href="{{ route('settings.index') }}" class="nav-link @if(Route::currentRouteName() == 'settings.index') active @endif">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Settings</p>
+            </a>
           </li>
         @endrole
       </ul>

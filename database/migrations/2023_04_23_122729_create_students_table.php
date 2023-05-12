@@ -17,9 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('admission_no', 20);
             $table->string('roll_no', 20);
-            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
-            $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
-            $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('gender');
@@ -61,11 +58,9 @@ return new class extends Migration
             $table->text('current_address')->nullable();            
             $table->text('permenant_address')->nullable();
 
-            $table->boolean('is_active')->default('1');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
