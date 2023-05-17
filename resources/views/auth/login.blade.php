@@ -25,6 +25,9 @@
   .float-right {
     float: right !important;
   }
+  .invalid-feedback {
+    display: block !important;
+  }
 </style>
 <div class="login-box">
   <div class="login-logo">

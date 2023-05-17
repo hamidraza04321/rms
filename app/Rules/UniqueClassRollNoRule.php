@@ -3,19 +3,21 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\InvokableRule;
-use Illuminate\Support\Facades\DB;
+use App\Models\StudentSession;
+use App\Models\Scopes\ActiveScope;
 use App\Settings\GeneralSettings;
 
-class UniqueClassRollNo implements InvokableRule
+class UniqueClassRollNoRule implements InvokableRule
 {
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($class_id)
+    public function __construct($class_id, $student_id)
     {
         $this->class_id = $class_id;
+        $this->student_id = $student_id;
         $this->current_session_id = (new GeneralSettings)->current_session_id;
     }
 
@@ -29,14 +31,20 @@ class UniqueClassRollNo implements InvokableRule
      */
     public function __invoke($attribute, $value, $fail)
     {
-        $exists = DB::table('student_sessions')
-            ->join('students', 'students.id', '=', 'student_sessions.student_id')
-            ->where([
-                'student_sessions.session_id' => $this->current_session_id,
-                'student_sessions.class_id' => $this->class_id,
-                'student_sessions.deleted_at' => NULL,
-                'students.roll_no' => $value
-            ])
+        $where = [
+            [ 'class_id',  $this->class_id ],
+            [ 'session_id', $this->current_session_id ]
+        ];
+
+        if ($this->student_id) {
+            $where[] = [ 'student_id', '!=', $student_id ];            
+        }
+
+        $exists = StudentSession::withoutGlobalScope(ActiveScope::class)
+            ->where($where)
+            ->whereHas('student', function($query) use ($value){
+                $query->where('roll_no', $value);
+            })
             ->exists();
 
         if ($exists) {

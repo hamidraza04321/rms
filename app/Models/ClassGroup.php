@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Scopes\HasClassGroup;
+use App\Models\Scopes\HasGroup;
 use App\Models\Scopes\HasUserClassGroup;
 
 class ClassGroup extends Model
@@ -61,7 +61,7 @@ class ClassGroup extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new HasClassGroup);
+        static::addGlobalScope(new HasGroup);
         static::addGlobalScope(new HasUserClassGroup);
     }
 }

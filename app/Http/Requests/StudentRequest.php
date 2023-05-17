@@ -2,20 +2,17 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Route;
+use App\Traits\FailedValidationTrait;
+use App\Traits\CustomValidationTrait;
 use Illuminate\Validation\Rule;
-use App\Rules\HasUserClass;
-use App\Rules\HasClassSection;
-use App\Rules\HasUserClassSection;
-use App\Rules\HasClassGroup;
-use App\Rules\HasUserClassGroup;
-use App\Rules\UniqueClassRollNo;
 
 class StudentRequest extends FormRequest
 {
+    use FailedValidationTrait,
+        CustomValidationTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -44,27 +41,34 @@ class StudentRequest extends FormRequest
 
     /**
      * Validate Rules for Filter Student Request
+     *
+     * @return array
      */
     public function search()
     {
         return [
-            'class_id' => [ 'nullable', 'exists:classes,id', new HasUserClass() ],
-            'section_id' => [ 'nullable', 'exists:sections,id', new HasClassSection($this->class_id), new HasUserClassSection($this->class_id) ],
-            'group_id' => 'nullable|exists:groups,id',
+            'session_id' => $this->sessionRule('nullable'),
+            'class_id' => $this->classRule('nullable'),
+            'section_id' => $this->sectionRule($this->class_id, 'nullable'),
+            'group_id' => $this->groupRule($this->class_id),
             'gender' => 'nullable|in:male,female',
-            'is_active' => 'nullable|in:active,deactive'
+            'is_active' => 'nullable|in:active,deactive',
+            'action' => 'nullable|in:from_trash'
         ];
     }
 
     /**
      * Validate Rules for Export Student Request
+     *
+     * @return array
      */
     public function export()
     {
         return [
-            'class_id' => [ 'nullable', 'exists:classes,id', new HasUserClass() ],
-            'section_id' => [ 'nullable', 'exists:sections,id', new HasClassSection($this->class_id), new HasUserClassSection($this->class_id) ],
-            'group_id' => 'nullable|exists:groups,id',
+            'session_id' => $this->sessionRule(),
+            'class_id' => $this->classRule(),
+            'section_id' => $this->sectionRule($this->class_id),
+            'group_id' => $this->groupRule($this->class_id),
             'gender' => 'nullable|in:male,female',
             'is_active' => 'nullable|in:active,deactive'
         ];
@@ -72,29 +76,34 @@ class StudentRequest extends FormRequest
 
     /**
      * Validate Rules for Import Student Request
+     *
+     * @return array
      */
     public function import()
     {
         return [
-            'class_id' => 'nullable|exists:classes,id',
-            'section_id' => 'nullable|exists:sections,id',
-            'group_id' => 'nullable|exists:groups,id',
+            'session_id' => $this->sessionRule(),
+            'class_id' => $this->classRule('nullable'),
+            'section_id' => $this->sectionRule($this->class_id, 'nullable'),
+            'group_id' => $this->groupRule($this->class_id),
             'import_file' => 'required|mimes:csv,xlxs,xls'
         ];
     }
 
     /**
      * Validate Rules for Student Store Request
+     *
+     * @return array
      */
     public function store()
     {
         return [
             'student_image' => 'nullable|mimes:png,jpg,jpeg||max:500000',
             'admission_no' => 'required|max:20|unique:students,admission_no',
-            'roll_no' => [ 'required', 'max:20', new UniqueClassRollNo($this->class_id) ],
-            'class_id' => [ 'required', 'exists:classes,id', new HasUserClass() ],
-            'section_id' => [ 'required', 'exists:sections,id', new HasClassSection($this->class_id), new HasUserClassSection($this->class_id) ],
-            'group_id' => [ 'nullable', 'exists:groups,id', new HasClassGroup($this->class_id), new HasUserClassGroup($this->class_id) ],
+            'roll_no' => $this->uniqueRollNoRule($this->class_id),
+            'class_id' => $this->classRule(),
+            'section_id' => $this->sectionRule($this->class_id),
+            'group_id' => $this->groupRule($this->class_id),
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|string|max:50',
             'gender' => 'required|in:male,female',
@@ -131,16 +140,18 @@ class StudentRequest extends FormRequest
 
     /**
      * Validate Rules for Student Update Request
+     *
+     * @return array
      */
     public function update()
     {
         return [
             'student_image' => 'nullable|mimes:png,jpg,jpeg',
-            'admission_no' => [ 'required', 'max:20', Rule::unique('students')->whereNull('deleted_at')->ignore($this->student) ],
-            'roll_no' => [ 'required', 'max:20', Rule::unique('students')->whereNull('deleted_at')->where('class_id', $this->class_id)->ignore($this->student) ],
-            'class_id' => 'required|exists:classes,id',
-            'section_id' => 'required|exists:sections,id',
-            'group_id' => 'nullable|exists:groups,id',
+            'admission_no' => 'required|max:20|unique:students,admission_no,'.$this->student,
+            'roll_no' => $this->uniqueRollNoRule($this->class_id, $this->student),
+            'class_id' => $this->classRule(),
+            'section_id' => $this->sectionRule($this->class_id),
+            'group_id' => $this->groupRule($this->class_id),
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|string|max:50',
             'gender' => 'required|in:male,female',
@@ -188,16 +199,5 @@ class StudentRequest extends FormRequest
                 'admission_date' => date('Y-m-d', strtotime($this->input('admission_date'))),
             ]);
         }
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator $validator
-     * @return void
-     */
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->errors($validator->errors())); 
     }
 }

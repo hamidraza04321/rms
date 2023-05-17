@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Scopes\HasUserClassSection;
-use App\Models\Scopes\HasClassSection;
+use App\Models\Scopes\HasSection;
 
 class ClassSection extends Model
 {
@@ -61,7 +61,7 @@ class ClassSection extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new HasClassSection);
+        static::addGlobalScope(new HasSection);
         static::addGlobalScope(new HasUserClassSection);
     }
 }

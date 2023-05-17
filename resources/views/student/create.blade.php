@@ -123,7 +123,7 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Religion</label>
-                                  <input type="text" name="religion" id="religion" class="form-control">
+                                  <input type="text" name="religion" id="religion" class="form-control" placeholder="Enter Religion">
                                 </div>
                               </div>
                             </div>
@@ -131,19 +131,19 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Caste</label>
-                                  <input type="text" name="caste" id="caste" class="form-control">
+                                  <input type="text" name="caste" id="caste" class="form-control"  placeholder="Enter Caste">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Mobile No</label>
-                                  <input type="text" name="mobile_no" id="mobile-no" class="form-control">
+                                  <input type="text" name="mobile_no" id="mobile-no" class="form-control" placeholder="Enter Mobile No">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Email</label>
-                                  <input type="email" name="email" id="email" class="form-control">
+                                  <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email">
                                 </div>
                               </div>
                               <div class="col-md-3">
@@ -339,11 +339,11 @@
                             <div class="row">
                               <div class="col-md-6">
                                 <label>Current Address</label>
-                                <textarea name="current_address" id="current-address" class="form-control"></textarea>
+                                <textarea name="current_address" id="current-address" class="form-control" placeholder="Enter Current Address"></textarea>
                               </div>
                               <div class="col-md-6">
                                 <label>Permenant Address</label>
-                                <textarea name="permenant_address" id="permenant-address" class="form-control"></textarea>
+                                <textarea name="permenant_address" id="permenant-address" class="form-control" placeholder="Enter Permenant Address"></textarea>
                               </div>
                             </div>
                           </div>

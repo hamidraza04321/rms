@@ -85,43 +85,47 @@ $(document).ready(function() {
             self_html = self.html();
             form = $('#search-student-form');
             url = form.attr('action');
+            session_id = $('#session-id').val();
             class_id = $('#class-id').val();
             section_id = $('#section-id').val();
             group_id = $('#group-id').val();
             gender = $('#gender').val();
             is_active = $('#status').val();
-
+            action = (self[0].hasAttribute('data-action')) ? self.attr('data-action') : '';
+            table = (action == 'from_trash') ? '#student-trash-table' : '#student-table';
+        
         // Button Loading
         self.addClass('disabled').html('<div class="spinner-border"></div>');
 
-        $('#student-table').DataTable({
+        $(table).DataTable({
             destroy: true,
-            searchable: false,
-            responsive: true,
             ajax: {
                 url: url,
                 type: 'POST',
                 dataSrc: function (response) {
-                    return (response?.students) ? response.students : '';
+                    return (response?.student_session) ? response.student_session : '';
                 },
                 data: {
+                    session_id: session_id,
                     class_id: class_id,
                     section_id: section_id,
                     group_id: group_id,
                     gender: gender,
-                    is_active: is_active
+                    is_active: is_active,
+                    action: action
                 }
             },
             initComplete: function(settings, response){
                 if (response.status == false) showErrorMessages(response.errors);
                 self.removeClass('disabled').html(self_html);
             },
-            rowCallback: function (nRow, aData, iDisplayIndex) {
-                 var oSettings = this.fnSettings ();
-                 $("td:first", nRow).html(oSettings._iDisplayStart+iDisplayIndex +1);
-                 return nRow;
-            },
             columnDefs: [
+                {
+                    "targets": 3,
+                    "render": function (data) {
+                        return data.student.first_name + ' ' + data.student.last_name;
+                    }
+                },
                 {
                     "targets": 5,
                     "render": function (data) {
@@ -141,6 +145,10 @@ $(document).ready(function() {
                 {
                     "targets": 7,
                     "render": function (data) {
+                        if (action == 'from_trash') {
+                            return data.delete_at;
+                        }
+
                         var status_url = base_url + `/student/update-status/` + data.id;
                         
                         if (data.is_active) {
@@ -153,17 +161,22 @@ $(document).ready(function() {
                 {
                     "targets": 8,
                     "render": function (data) {
-                        return `<a href="`+ base_url + '/student/' + data.id + '/edit' +`" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                <button class="btn btn-sm btn-danger btn-destroy-student" data-url="`+ base_url + '/student/' + data.id +`"><i class="fa fa-trash"> Delete</i></button>`;
+                        if (action == 'from_trash') {
+                            return `<button class="btn btn-sm btn-success btn-restore-student" data-url="`+ base_url + `/student/restore/` + data.id +`"><i class="fa fa-trash-restore"> Restore</i></button>
+                                    <button class="btn btn-sm btn-danger btn-delete-student" data-url="`+ base_url + `/student/delete/` + data.id +`"><i class="fa fa-trash"></i> Permanent Delete</button>`;
+                        }
+
+                        return `<a href="`+ base_url + `/student/` + data.id + `/edit` +`" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                <button class="btn btn-sm btn-danger btn-destroy-student" data-url="`+ base_url + `/student/` + data.id +`"><i class="fa fa-trash"> Delete</i></button>`;
                     }
                 }
             ],
             columns: [
+                { data: 'session.name' },
+                { data: 'student.admission_no' },
+                { data: 'student.roll_no' },
                 { data: null },
-                { data: 'admission_no' },
-                { data: 'roll_no' },
-                { data: 'full_name' },
-                { data: 'father_name' },
+                { data: 'student.father_name' },
                 { data: null },
                 { data: null },
                 { data: null },
@@ -176,10 +189,38 @@ $(document).ready(function() {
     $(document).on('click', '#btn-export-student', function(e) {
         e.preventDefault();
 
-        var formData = $("#search-student-form").serialize(); 
+        var session_id = $('#session-id').val();
+            class_id = $('#class-id').val();
+            section_id = $('#section-id').val();
+            formData = $("#search-student-form").serialize(); 
             url = $(this).attr('data-url') + '?' + formData;
+            flag = true;
 
-        window.open(url, '_self');
+        if (session_id == '') {
+            $("#session-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if (class_id == '') {
+            $("#class-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if (section_id == '') {
+            $("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if ($("#group-id option").length > 1) {
+            if (group_id == '') {
+                $("#group-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+                flag = false;
+            }
+        }
+
+        if (flag) {
+            window.open(url, '_self');
+        }
     });
 
     //---------- ON CLICK SAVE STUDENT ----------//
@@ -218,7 +259,7 @@ $(document).ready(function() {
         }
 
         if (section_id == '') {
-            $("#section-id:not(:disabled)").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            $("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
         }
 
@@ -328,7 +369,7 @@ $(document).ready(function() {
         }
 
         if (section_id == '') {
-            $("#section-id:not(:disabled)").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            $("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
         }
 
@@ -542,6 +583,104 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    //---------- ON CLICK DELETE STUDENT ----------//
+    $(document).on('click', '.btn-delete-student', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            url = self.attr('data-url');
+            message = '';
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // BUTTON LOADING
+                self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    success: function(response) {
+                        if (response.status == true) {
+                            var table = $('#student-trash-table').DataTable();
+                            table.row(self.parents('tr')).remove().draw();
+                            toastr.success(response.message);
+                        } else {
+                            message = errorMessage(response.message);
+                        }
+                    },
+                    error: function() {
+                        message = errorMessage();
+                    },
+                    complete: function() {
+                        if (message != '') {
+                            showAlertInTop(message);
+                            self.removeClass('disabled').html(self_html);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //---------- ON CLICK RESTORE BUTTON ----------//
+    $(document).on('click', '.btn-restore-student', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            url = self.attr('data-url');
+            message = '';
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Restore it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // BUTTON LOADING
+                self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    success: function(response) {
+                        if (response.status == true) {
+                            var table = $('#student-trash-table').DataTable();
+                            table.row(self.parents('tr')).remove().draw();
+                            toastr.success(response.message);
+                        } else {
+                            message = errorMessage(response.message);
+                        }
+                    },
+                    error: function() {
+                        message = errorMessage();
+                    },
+                    complete: function() {
+                        if (message != '') {
+                            showAlertInTop(message);
+                            self.removeClass('disabled').html(self_html);
+                        }
+                    }
+                });
+            }
+         });
     });
 
     //---------- ON CHANGE IMAGE ----------//

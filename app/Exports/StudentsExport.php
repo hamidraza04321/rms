@@ -2,7 +2,8 @@
 
 namespace App\Exports;
 
-use App\Models\Student;
+use App\Models\StudentSession;
+use App\Models\Scopes\ActiveScope;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -18,20 +19,38 @@ class StudentsExport implements FromQuery, WithMapping, WithHeadings, WithHeadin
 
     public function query()
     {
-    	$where = collect($this->request)
+        $request = $this->request;
+
+    	$where = collect($request)
+            ->only([
+                'session_id',
+                'class_id',
+                'section_id',
+                'group_id',
+                'gender',
+                'is_active'
+            ])
             ->filter()
+            ->forget('gender')
             ->toArray();
         
         if (isset($where['is_active'])) {
             $where['is_active'] = ($request->is_active == 'active') ? 1 : 0;
         }
 
-        return Student::query()
-            ->where($where);
+        return StudentSession::query()
+            ->withoutGlobalScope(ActiveScope::class)
+            ->where($where)
+            ->with('student')
+            ->whereHas('student', function($query) use($request){
+                $query->when($request['gender'], fn($query) => $query->where('gender', $request['gender']));
+            });
     }
 
-    public function map($student): array
+    public function map($student_session): array
     {
+        $student = $student_session->student;
+
         return [
             $student->admission_no,
             $student->roll_no,

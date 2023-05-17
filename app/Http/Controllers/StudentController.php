@@ -10,6 +10,8 @@ use App\Imports\StudentsImport;
 use App\Models\StudentSession;
 use App\Models\Student;
 use App\Models\Classes;
+use App\Models\Session;
+use App\Models\Section;
 use Excel;
 
 class StudentController extends Controller
@@ -21,11 +23,40 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::withoutGlobalScope(ActiveScope::class)->get();
+        $student_session = StudentSession::withoutGlobalScope(ActiveScope::class)
+            ->where('session_id', $this->current_session_id)
+            ->with([
+                'student' => function($query){
+                    $query->select(
+                        'id',
+                        'admission_no',
+                        'roll_no',
+                        'first_name',
+                        'last_name',
+                        'father_name'
+                    );
+                },
+                'session',
+                'section',
+                'class',
+                'group'
+            ])
+            ->get([
+                'id',
+                'student_id',
+                'session_id',
+                'class_id',
+                'section_id',
+                'group_id',
+                'is_active'
+            ]);
+
+        $sessions = Session::get();
         $classes = Classes::get();
 
         $data = [
-            'students' => $students,
+            'student_session' => $student_session,
+            'sessions' => $sessions,
             'classes' => $classes,
             'page_title' => 'Manage Students',
             'menu' => 'Student'
@@ -44,34 +75,52 @@ class StudentController extends Controller
     {
         $where = collect($request->all())
             ->filter()
+            ->forget(['gender', 'action'])
             ->toArray();
-        
+
         if (isset($where['is_active'])) {
             $where['is_active'] = ($request->is_active == 'active') ? 1 : 0;
         }
 
-        $students = Student::withoutGlobalScope(ActiveScope::class)
+        $student_session = StudentSession::withoutGlobalScope(ActiveScope::class)
+            ->when($request->action == 'from_trash', fn($query) => $query->onlyTrashed())
             ->where($where)
-            ->with('class', 'section', 'group')
+            ->with([
+                'student' => function($query){
+                    $query->select(
+                        'id',
+                        'admission_no',
+                        'roll_no',
+                        'first_name',
+                        'last_name',
+                        'father_name'
+                    );
+                },
+                'session',
+                'section',
+                'class',
+                'group'
+            ])
+            ->whereHas('student', function($query) use($request){
+                $query->when($request->gender, fn($query) => $query->where('gender', $request->gender));
+            })
             ->get([
                 'id',
+                'student_id',
+                'session_id',
                 'class_id',
                 'section_id',
                 'group_id',
-                'admission_no',
-                'roll_no',
-                'first_name',
-                'last_name',
-                'father_name',
-                'is_active'
+                'is_active',
+                'deleted_at'
             ])
-            ->map(function($student){
-                $student['full_name'] = $student->fullName();
-                return $student;
+            ->map(function($student_session){
+                $student_session['delete_at'] = $student_session->deleted_at?->diffForHumans();
+                return $student_session;
             });
 
         return response()->success([
-            'students' => $students
+            'student_session' => $student_session
         ]);
     }
 
@@ -254,7 +303,7 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $student = Student::withoutGlobalScope(ActiveScope::class)->find($id);
+        $student = StudentSession::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($student) {
             $student->delete();
@@ -272,7 +321,7 @@ class StudentController extends Controller
      */
     public function updateStudentStatus($id)
     {
-        $student = Student::withoutGlobalScope(ActiveScope::class)->find($id);
+        $student = StudentSession::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($student) {
             $data['is_active'] = ($student->is_active == 1) ? 0 : 1;
@@ -284,13 +333,125 @@ class StudentController extends Controller
     }
 
     /**
+     * Display a listing of the Trash resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $student_session = StudentSession::withoutGlobalScope(ActiveScope::class)
+            ->onlyTrashed()
+            ->where('session_id', $this->current_session_id)
+            ->with([
+                'student' => function($query){
+                    $query->select(
+                        'id',
+                        'admission_no',
+                        'roll_no',
+                        'first_name',
+                        'last_name',
+                        'father_name'
+                    );
+                },
+                'session',
+                'section',
+                'class',
+                'group'
+            ])
+            ->get([
+                'id',
+                'student_id',
+                'session_id',
+                'class_id',
+                'section_id',
+                'group_id',
+                'deleted_at'
+            ]);
+
+        $sessions = Session::get();
+        $classes = Classes::get();
+
+        $data = [
+            'student_session' => $student_session,
+            'sessions' => $sessions,
+            'classes' => $classes,
+            'page_title' => 'Student Trash',
+            'menu' => 'Student'
+        ];
+
+        return view('student.trash', compact('data'));
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $class = Classes::withoutGlobalScope(ActiveScope::class)
+            ->withTrashed()
+            ->find($id);
+
+        if ($class) {
+            // Check if class exists with this name
+            $exists = Classes::withoutGlobalScope(ActiveScope::class)
+                ->where('name', $class->name)
+                ->exists();
+
+            if (!$exists) {
+                $class->restore();
+                return response()->successMessage('Class Restored Successfully !');
+            }
+
+            return response()->errorMessage("The Class {$class->name} has already exists !");
+        }
+
+        return response()->errorMessage('Class not Found !');
+    }
+
+    /**
+     * Delete the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $student_session = StudentSession::withoutGlobalScope(ActiveScope::class)
+            ->withTrashed()
+            ->find($id);
+
+        if ($student_session) {
+            $student_sessions_count = StudentSession::withoutGlobalScopes()
+                ->where('student_id', $student_session->student_id)
+                ->count();
+
+            if ($student_sessions_count == 1) {
+                Student::find($student_session->student_id)->delete();
+            }
+
+            $student_session->forceDelete();
+            return response()->successMessage('Student Deleted Successfully !');
+        }
+
+        return response()->errorMessage('Student not Found !');
+    }
+
+    /**
      * Export the specified resource in storage.
      *
      * @return \Illuminate\Http\Response
      */
     public function export(StudentRequest $request)
     {
-        return Excel::download(new StudentsExport($request->all()), 'students.xlsx');
+        $session = Session::find($request->session_id)->name;
+        $class = Classes::find($request->class_id)->name;
+        $section = Section::find($request->section_id)->name;
+
+        $file_name = "students-{$session}-{$class}-{$section}.xlsx";
+        return Excel::download(new StudentsExport($request->all()), $file_name);
     }
 
     /**
@@ -325,6 +486,11 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * Download Importing Sample file.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function downloadImportSample()
     {
          return Excel::download(new DownloadImportSample, 'students_import_sample.xlsx');

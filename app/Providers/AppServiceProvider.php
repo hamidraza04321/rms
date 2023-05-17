@@ -9,7 +9,7 @@ use App\Models\Group;
 use App\Models\Classes;
 use App\Models\Subject;
 use App\Models\User;
-use App\Models\Student;
+use App\Models\StudentSession;
 use App\Observers\SectionObserver;
 use App\Observers\SessionObserver;
 use App\Observers\GroupObserver;
@@ -17,6 +17,7 @@ use App\Observers\ClassObserver;
 use App\Observers\SubjectObserver;
 use App\Observers\UserObserver;
 use App\Observers\StudentObserver;
+use App\Observers\StudentSessionObserver;
 use Illuminate\Support\Facades\View;
 use App\Settings\GeneralSettings;
 
@@ -46,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Group::observe(GroupObserver::class);
         Subject::observe(SubjectObserver::class);
         User::observe(UserObserver::class);
-        Student::observe(StudentObserver::class);
+        StudentSession::observe(StudentSessionObserver::class);
 
         // GENERAL SETTINGS TO ALL VIEW
         $settings = new GeneralSettings;

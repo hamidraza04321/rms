@@ -3,8 +3,8 @@
 namespace App\Traits;
 use App\Models\Scopes\ActiveScope;
 
-trait ActiveScopeTrait {
-
+trait ActiveScopeTrait
+{
 	/**
      * The "booted" method of the model.
      *

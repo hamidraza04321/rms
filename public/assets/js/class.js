@@ -168,7 +168,7 @@ $(document).ready(function() {
 		});
 	});
 
-	//---------- ON CLICK DELETE SECTION ----------//
+	//---------- ON CLICK DELETE CLASS ----------//
 	$(document).on('click', '.btn-delete-class', function(e) {
 		e.preventDefault();
 		removeErrorMessages();

@@ -25,18 +25,18 @@ Route::middleware('auth')->group(function () {
 	Route::controller(SessionController::class)->group(function(){
 		Route::get('/session/trash', 'trash')->name('session.trash');
 		Route::put('/session/restore/{id}', 'restore')->name('session.restore');
-		Route::delete('/session/delete/{id}', 'delete')->name('session.delete');
 		Route::put('/session/update-status/{id}', 'updateSessionStatus')->name('session.update.status');
+		Route::delete('/session/delete/{id}', 'delete')->name('session.delete');
 	});
 
 	//---------- CLASS ROUTES ----------//
 	Route::resource('/class', ClassController::class, ['except' => ['show']]);
 	Route::controller(ClassController::class)->group(function(){
 		Route::get('/class/trash', 'trash')->name('class.trash');
-		Route::put('/class/restore/{id}', 'restore')->name('class.restore');
-		Route::delete('/class/delete/{id}', 'delete')->name('class.delete');
-		Route::put('/class/update-status/{id}', 'updateClassStatus')->name('class.update.status');
 		Route::get('/class/get-class-sections-and-groups', 'getClassSectionsAndGroups')->name('get.class.sections.and.groups');
+		Route::put('/class/restore/{id}', 'restore')->name('class.restore');
+		Route::put('/class/update-status/{id}', 'updateClassStatus')->name('class.update.status');
+		Route::delete('/class/delete/{id}', 'delete')->name('class.delete');
 	});
 
 	//---------- SECTION ROUTES ----------//
@@ -44,8 +44,8 @@ Route::middleware('auth')->group(function () {
 	Route::controller(SectionController::class)->group(function(){
 		Route::get('/section/trash', 'trash')->name('section.trash');
 		Route::put('/section/restore/{id}', 'restore')->name('section.restore');
-		Route::delete('/section/delete/{id}', 'delete')->name('section.delete');
 		Route::put('/section/update-status/{id}', 'updateSectionStatus')->name('section.update.status');
+		Route::delete('/section/delete/{id}', 'delete')->name('section.delete');
 	});
 
 	//---------- GROUP ROUTES ----------//
@@ -53,8 +53,8 @@ Route::middleware('auth')->group(function () {
 	Route::controller(GroupController::class)->group(function(){
 		Route::get('/group/trash', 'trash')->name('group.trash');
 		Route::put('/group/restore/{id}', 'restore')->name('group.restore');
-		Route::delete('/group/delete/{id}', 'delete')->name('group.delete');
 		Route::put('/group/update-status/{id}', 'updateGroupStatus')->name('group.update.status');
+		Route::delete('/group/delete/{id}', 'delete')->name('group.delete');
 	});
 
 	//---------- SUBJECT ROUTES ----------//
@@ -62,18 +62,21 @@ Route::middleware('auth')->group(function () {
 	Route::controller(SubjectController::class)->group(function(){
 		Route::get('/subject/trash', 'trash')->name('subject.trash');
 		Route::put('/subject/restore/{id}', 'restore')->name('subject.restore');
-		Route::delete('/subject/delete/{id}', 'delete')->name('subject.delete');
 		Route::put('/subject/update-status/{id}', 'updateSubjectStatus')->name('subject.update.status');
+		Route::delete('/subject/delete/{id}', 'delete')->name('subject.delete');
 	});
 
 	//---------- STUDENT ROUTES ----------//
 	Route::resource('/student', StudentController::class, ['except' => ['show']]);
 	Route::controller(StudentController::class)->group(function(){
-		Route::post('/student/search', 'search')->name('student.search');
-		Route::put('/student/update-status/{id}', 'updateStudentStatus')->name('student.update.status');
+		Route::get('/student/trash', 'trash')->name('student.trash');
 		Route::get('/student/export', 'export')->name('student.export');
-		Route::match(['GET', 'POST'], '/student/import', 'import')->name('student.import');
 		Route::get('/student/import/download-sample', 'downloadImportSample')->name('student.import.download.sample');
+		Route::post('/student/search', 'search')->name('student.search');
+		Route::put('/student/restore/{id}', 'restore')->name('student.restore');
+		Route::put('/student/update-status/{id}', 'updateStudentStatus')->name('student.update.status');
+		Route::delete('/student/delete/{id}', 'delete')->name('student.delete');
+		Route::match(['GET', 'POST'], '/student/import', 'import')->name('student.import');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//
@@ -86,8 +89,8 @@ Route::middleware('auth')->group(function () {
 		Route::controller(UserController::class)->group(function(){
 			Route::get('/user/trash', 'trash')->name('user.trash');
 			Route::put('/user/restore/{id}', 'restore')->name('user.restore');
-			Route::delete('/user/delete/{id}', 'delete')->name('user.delete');
 			Route::put('/user/update-status/{id}', 'updateUserStatus')->name('user.update.status');
+			Route::delete('/user/delete/{id}', 'delete')->name('user.delete');
 		});
 
 		//---------- USER ROUTES ----------//

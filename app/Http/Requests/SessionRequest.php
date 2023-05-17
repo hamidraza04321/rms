@@ -2,14 +2,15 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Traits\FailedValidationTrait;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 class SessionRequest extends FormRequest
 {
+    use FailedValidationTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -55,16 +56,5 @@ class SessionRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date'
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator $validator
-     * @return void
-     */
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->errors($validator->errors())); 
     }
 }

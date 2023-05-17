@@ -3,9 +3,10 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\InvokableRule;
-use App\Models\UserClass;
+use App\Models\Scopes\ActiveScope;
+use App\Models\Session;
 
-class HasUserClass implements InvokableRule
+class SessionRule implements InvokableRule
 {
     /**
      * Run the validation rule.
@@ -17,15 +18,14 @@ class HasUserClass implements InvokableRule
      */
     public function __invoke($attribute, $value, $fail)
     {
-        if (!auth()->user()->hasRole('Super Admin')) {
-            $exists = UserClass::where([
-                'class_id' => $value,
-                'user_id' => auth()->id()
-            ])->exists();
+        $session = Session::withoutGlobalScope(ActiveScope::class)->find($value);
 
-            if (!$exists) {
-                $fail('User does not have permission to this class !');
-            }
+        if (!$session) {
+            return $fail('The selected session id is invalid.');
+        }
+
+        if (!$session->is_active) {
+            return $fail('The selected session is deactive.');
         }
     }
 }

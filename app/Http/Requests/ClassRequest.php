@@ -4,12 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Traits\FailedValidationTrait;
+use App\Traits\CustomValidationTrait;
 use Illuminate\Validation\Rule;
 
 class ClassRequest extends FormRequest
 {
+    use FailedValidationTrait,
+        CustomValidationTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -66,18 +69,7 @@ class ClassRequest extends FormRequest
     public function getClassSectionsAndGroups()
     {
         return [
-            'class_id' => 'required|exists:classes,id'
+            'class_id' => $this->classRule()
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator $validator
-     * @return void
-     */
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->errors($validator->errors())); 
     }
 }

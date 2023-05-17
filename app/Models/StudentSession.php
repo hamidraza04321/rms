@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Scopes\HasStudent;
 use App\Traits\ActiveScopeTrait;
 
 class StudentSession extends Model
@@ -31,6 +32,7 @@ class StudentSession extends Model
         'class_id',
         'section_id',
         'group_id',
+        'is_active',
     	'created_by',
     	'updated_by'
     ];
@@ -73,5 +75,15 @@ class StudentSession extends Model
     {
         return $this->belongsTo(Group::class)
             ->select([ 'id', 'name' ]);
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        //
     }
 }

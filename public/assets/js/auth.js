@@ -19,19 +19,19 @@ $(document).ready(function() {
 
 		if (email == '') {
 			$('#email').addClass('is-invalid');
-			$('#email').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The field is required !</span>')
+			$('#email').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The field is required !</span>');
 			flag = false;
 		} else {
 			if (!isValidEmail(email)) {
 				$('#email').addClass('is-invalid');
-				$('#email').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The email is not valid !</span>')
+				$('#email').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The email is not valid !</span>');
 				flag = false;
 			}
 		}
 
 		if (password == '') {
-			$('#password').addClass('is-invalid')
-			$('#password').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The field is required !</span>')
+			$('#password').addClass('is-invalid');
+			$('#password').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The field is required !</span>');
 			flag = false;
 		}
 

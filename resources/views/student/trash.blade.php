@@ -89,18 +89,7 @@
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Status </label>
-                            <select name="is_active" id="status" class="select2 form-control">
-                              <option value="">Select</option>
-                              <option value="active">Active</option>
-                              <option value="deactive">Deactive</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <button id="btn-search-student" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
-                            <button id="btn-export-student" data-url="{{ route('student.export') }}" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-file-export"></i> Export</button>
+                            <button id="btn-search-student" class="btn btn-primary" data-action="from_trash" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
                           </div>
                         </div>
                       </div>
@@ -116,14 +105,10 @@
             <div class="card">
               <div class="card-header">
                 <div class="card-title">{{ $data['page_title'] }}</div>
-                <div class="card-tools">
-                  <a href="{{ route('student.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Student</a>
-                  <a href="{{ route('student.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
-                </div>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table id="student-table" class="table table-bordered table-hover datatable no-wrap">
+                  <table id="student-trash-table" class="table table-bordered table-hover datatable no-wrap">
                     <thead>
                       <tr>
                         <th>Session</th>
@@ -133,7 +118,7 @@
                         <th>Father Name</th>
                         <th>Class</th>
                         <th>Group</th>
-                        <th>Status</th>
+                        <th>Deleted At</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -147,16 +132,10 @@
                           <td>{{ $student_session->student->father_name }}</td>
                           <td>{{ $student_session->class->name }} ( {{ $student_session->section->name }} )</td>
                           <td>{{ $student_session->group->name ?? null }}</td>
+                          <td>{{ $student_session->deleted_at->diffForHumans() }}</td>
                           <td>
-                            @if($student_session->is_active)
-                              <button data-url="{{ route('student.update.status', $student_session->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                            @else
-                              <button data-url="{{ route('student.update.status', $student_session->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                            @endif
-                          </td>
-                          <td>
-                            <a href="{{ route('student.edit', $student_session->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            <button class="btn btn-sm btn-danger btn-destroy-student" data-url="{{ route('student.destroy', $student_session->id) }}"><i class="fa fa-trash"> Delete</i></button>
+                            <button class="btn btn-sm btn-success btn-restore-student" data-url="{{ route('student.restore', $student_session->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                            <button class="btn btn-sm btn-danger btn-delete-student" data-url="{{ route('student.delete', $student_session->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
                           </td>
                         </tr>
                       @endforeach

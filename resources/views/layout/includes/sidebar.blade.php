@@ -42,7 +42,7 @@
         </li>
         <li class="nav-header">Student Management</li>
         <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.import' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.edit', 'student.import' ]))) active @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.edit', 'student.import', 'student.trash' ]))) active @endif">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Student

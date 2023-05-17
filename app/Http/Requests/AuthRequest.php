@@ -4,12 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Traits\FailedValidationTrait;
 use Illuminate\Validation\Rule;
 
 class AuthRequest extends FormRequest
 {
+    use FailedValidationTrait;
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -41,16 +42,5 @@ class AuthRequest extends FormRequest
             'email' => 'required|email',
             'password' => 'required|string'
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator $validator
-     * @return void
-     */
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->errors($validator->errors())); 
     }
 }
