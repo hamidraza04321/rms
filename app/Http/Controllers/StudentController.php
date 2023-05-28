@@ -8,6 +8,8 @@ use App\Exports\StudentsExport;
 use App\Exports\DownloadImportSample;
 use App\Imports\StudentsImport;
 use App\Models\StudentSession;
+use App\Models\Scopes\HasClassSection;
+use App\Models\Scopes\HasClassGroup;
 use App\Models\Student;
 use App\Models\Classes;
 use App\Models\Session;
@@ -150,7 +152,7 @@ class StudentController extends Controller
      */
     public function store(StudentRequest $request)
     {
-        // Remove images parameters from request
+        // Remove parameters from request
         $data = $request->except([
             'student_image',
             'father_image',
@@ -211,11 +213,16 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $student = Student::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+        $student_session = StudentSession::withoutGlobalScope(ActiveScope::class)
+            ->with('student')
+            ->findOrFail($id);
+
+        $sessions = Session::get();
         $classes = Classes::get();
 
         $data = [
-            'student' => $student,
+            'student_session' => $student_session,
+            'sessions' => $sessions,
             'classes' => $classes,
             'page_title' => 'Edit Student',
             'menu' => 'Student'
@@ -233,15 +240,55 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, $id)
     {
-        $student = Student::withoutGlobalScope(ActiveScope::class)->find($id);
+        $student_session = StudentSession::withoutGlobalScope(ActiveScope::class)->find($id);
 
-        if ($student) {
-            // Remove images parameters from request
+        if ($student_session) {
+
+            // Update session class, section and group
+            if ($request->session_id == $student_session->session_id) {
+                $student_session->update([
+                    'class_id' => $request->class_id,
+                    'section_id' => $request->section_id,
+                    'group_id' => $request->group_id
+                ]);
+            } else {
+                // Check the student has already exists in the session
+                $exists = StudentSession::withoutGlobalScopes([
+                    // without user permission
+                    HasClassSection::class,
+                    HasClassGroup::class
+                ])
+                ->where([
+                    [ 'session_id', $request->session_id ],
+                    [ 'student_id', $student_session->student_id ],
+                    [ 'id', '!=', $id ]
+                ])
+                ->exists();
+
+                if ($exists) {
+                    return response()->errorMessage("Student has already exists in session ( {$student_session->session->name} ).");
+                }
+
+                // Move student in to new session
+                StudentSession::create([
+                    'student_id' => $student_session->student_id,
+                    'session_id' => $request->session_id,
+                    'class_id' => $request->class_id,
+                    'section_id' => $request->section_id,
+                    'group_id' => $request->group_id
+                ]);
+            }
+
+            // Removing parameters from request
             $data = $request->except([
                 'student_image',
                 'father_image',
                 'mother_image',
-                'guardian_image'
+                'guardian_image',
+                'session_id',
+                'class_id',
+                'section_id',
+                'group_id'
             ]);
 
             // Upload student image
@@ -288,7 +335,8 @@ class StudentController extends Controller
                 $data['guardian_image'] = $file_name;
             }
 
-            $student->update($data);
+            $student_session->student->update($data);
+
             return response()->successMessage('Student Updated Successfully!');
         }
 
@@ -390,25 +438,28 @@ class StudentController extends Controller
      */
     public function restore($id)
     {
-        $class = Classes::withoutGlobalScope(ActiveScope::class)
+        $student_session = StudentSession::withoutGlobalScope(ActiveScope::class)
             ->withTrashed()
             ->find($id);
 
-        if ($class) {
-            // Check if class exists with this name
-            $exists = Classes::withoutGlobalScope(ActiveScope::class)
-                ->where('name', $class->name)
+        if ($student_session) {
+            // Check if student exists in session
+            $exists = StudentSession::withoutGlobalScope(ActiveScope::class)
+                ->where([
+                    'student_id' => $student_session->student_id,
+                    'session_id' => $student_session->session_id
+                ])
                 ->exists();
 
             if (!$exists) {
-                $class->restore();
-                return response()->successMessage('Class Restored Successfully !');
+                $student_session->restore();
+                return response()->successMessage('Student Restored Successfully !');
             }
 
-            return response()->errorMessage("The Class {$class->name} has already exists !");
+            return response()->errorMessage("The Student {$student_session->student->fullName()} has already exists in session {$student_session->session->name} !");
         }
 
-        return response()->errorMessage('Class not Found !');
+        return response()->errorMessage('Student not Found !');
     }
 
     /**

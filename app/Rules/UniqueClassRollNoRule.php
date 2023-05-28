@@ -14,11 +14,11 @@ class UniqueClassRollNoRule implements InvokableRule
      *
      * @return void
      */
-    public function __construct($class_id, $student_id)
+    public function __construct($class_id, $student_session_id, $session_id)
     {
         $this->class_id = $class_id;
-        $this->student_id = $student_id;
-        $this->current_session_id = (new GeneralSettings)->current_session_id;
+        $this->student_session_id = $student_session_id;
+        $this->session_id = ($session_id) ? $session_id : (new GeneralSettings)->current_session_id;
     }
 
     /**
@@ -33,11 +33,11 @@ class UniqueClassRollNoRule implements InvokableRule
     {
         $where = [
             [ 'class_id',  $this->class_id ],
-            [ 'session_id', $this->current_session_id ]
+            [ 'session_id', $this->session_id ]
         ];
 
-        if ($this->student_id) {
-            $where[] = [ 'student_id', '!=', $student_id ];            
+        if ($this->student_session_id) {
+            $where[] = [ 'id', '!=', $this->student_session_id ];            
         }
 
         $exists = StudentSession::withoutGlobalScope(ActiveScope::class)

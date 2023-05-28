@@ -30,7 +30,7 @@
               </div>
               <div class="card-body">
                 <input type="hidden" id="image-preview" data-src="{{ url('/assets/dist/img/avatar.jpg') }}">
-                <form action="{{ route('student.update', $data['student']->id) }}" id="update-student-form" enctype="multipart/form-data">
+                <form action="{{ route('student.update', $data['student_session']->id) }}" id="update-student-form" enctype="multipart/form-data">
                   @method('PUT')
                   <div class="form-group">
                     <div class="accordion" id="student-details">
@@ -53,8 +53,8 @@
                                     <label for="student-image"><i class="fas fa-camera"></i></label>
                                   </div>
                                   <div class="avatar-preview">
-                                    @if($data['student']->student_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student']->student_image }});">
+                                    @if($data['student_session']->student->student_image)
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->student_image }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
@@ -66,14 +66,14 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Admission No <span class="error">*</span></label>
-                                  <input type="text" name="admission_no" id="admission-no" class="form-control" placeholder="Enter Admission No" value="{{ $data['student']->admission_no }}">
+                                  <input type="text" name="admission_no" id="admission-no" class="form-control" placeholder="Enter Admission No" value="{{ $data['student_session']->student->admission_no }}">
                                 </div>
                                 <div class="form-group">
-                                  <label>Section <span class="error">*</span></label>
-                                  <select name="section_id" id="section-id" class="select2 form-control">
+                                  <label>Class <span class="error">*</span></label>
+                                  <select name="class_id" id="class-id" class="select2 form-control">
                                     <option value="">Select</option>
-                                    @foreach($data['student']->class->sections as $section)
-                                      <option @selected($data['student']->section_id == $section->section->id) value="{{ $section->section->id }}">{{ $section->section->name }}</option>
+                                    @foreach($data['classes'] as $class)
+                                      <option @selected($data['student_session']->class_id == $class->id) value="{{ $class->id }}">{{ $class->name }}</option>
                                     @endforeach
                                   </select>
                                 </div>
@@ -81,39 +81,50 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Roll No <span class="error">*</span></label>
-                                  <input type="text" name="roll_no" id="roll-no" class="form-control" placeholder="Enter Roll No"  value="{{ $data['student']->roll_no }}">
+                                  <input type="text" name="roll_no" id="roll-no" class="form-control" placeholder="Enter Roll No"  value="{{ $data['student_session']->student->roll_no }}">
                                 </div>
                                 <div class="form-group">
-                                  <label>Group </label>
-                                  <select name="group_id" id="group-id" @disabled(!count($data['student']->class->groups)) class="select2 form-control">
+                                  <label>Section <span class="error">*</span></label>
+                                  <select name="section_id" id="section-id" class="select2 form-control">
                                     <option value="">Select</option>
-                                    @foreach($data['student']->class->groups as $group)
-                                      <option @selected($data['student']->group_id == $group->group->id) value="{{ $group->group->id }}">{{ $group->group->name }}</option>
+                                    @foreach($data['student_session']->class->sections as $section)
+                                      <option @selected($data['student_session']->section_id == $section->section->id) value="{{ $section->section->id }}">{{ $section->section->name }}</option>
                                     @endforeach
                                   </select>
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
-                                  <label>Class <span class="error">*</span></label>
-                                  <select name="class_id" id="class-id" class="select2 form-control">
+                                  <label>Session <span class="error">*</span></label>
+                                  <select name="session_id" id="session-id" class="select2 form-control">
                                     <option value="">Select</option>
-                                    @foreach($data['classes'] as $class)
-                                      <option @selected($data['student']->class_id == $class->id) value="{{ $class->id }}">{{ $class->name }}</option>
+                                    @foreach($data['sessions'] as $session)
+                                      <option @selected($data['student_session']->session_id == $session->id) value="{{ $session->id }}">{{ $session->name }}</option>
                                     @endforeach
                                   </select>
                                 </div>
                                 <div class="form-group">
-                                  <label>First Name <span class="error">*</span></label>
-                                  <input type="text" name="first_name" id="first-name" class="form-control" placeholder="Enter First Name" value="{{ $data['student']->first_name }}">
+                                  <label>Group </label>
+                                  <select name="group_id" id="group-id" @disabled(!count($data['student_session']->class->groups)) class="select2 form-control">
+                                    <option value="">Select</option>
+                                    @foreach($data['student_session']->class->groups as $group)
+                                      <option @selected($data['student_session']->group_id == $group->group->id) value="{{ $group->group->id }}">{{ $group->group->name }}</option>
+                                    @endforeach
+                                  </select>
                                 </div>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-3">
                                 <div class="form-group">
+                                  <label>First Name <span class="error">*</span></label>
+                                  <input type="text" name="first_name" id="first-name" class="form-control" placeholder="Enter First Name" value="{{ $data['student_session']->student->first_name }}">
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="form-group">
                                   <label>Last Name</label>
-                                  <input type="text" name="last_name" id="last-name" class="form-control" placeholder="Enter Last Name" value="{{ $data['student']->last_name }}">
+                                  <input type="text" name="last_name" id="last-name" class="form-control" placeholder="Enter Last Name" value="{{ $data['student_session']->student->last_name }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
@@ -121,47 +132,47 @@
                                   <label>Gender <span class="error">*</span></label>
                                   <select name="gender" id="gender" class="select2 form-control">
                                     <option value="">Select</option>
-                                    <option @selected($data['student']->gender == 'male') value="male">Male</option>
-                                    <option @selected($data['student']->gender == 'female') value="female">Female</option>
+                                    <option @selected($data['student_session']->student->gender == 'male') value="male">Male</option>
+                                    <option @selected($data['student_session']->student->gender == 'female') value="female">Female</option>
                                   </select>
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Date of Birth <span class="error">*</span></label>
-                                  <input type="date" name="dob" id="dob" class="form-control" placeholder="Enter Date of Birth"  value="{{ $data['student']->dob->format('Y-m-d') }}">
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label>Religion</label>
-                                  <input type="text" name="religion" id="religion" class="form-control" value="{{ $data['student']->religion }}">
+                                  <input type="date" name="dob" id="dob" class="form-control" placeholder="Enter Date of Birth"  value="{{ $data['student_session']->student->dob->format('Y-m-d') }}">
                                 </div>
                               </div>
                             </div>
                             <div class="row">
-                              <div class="col-md-3">
+                              <div class="col-md-2">
                                 <div class="form-group">
-                                  <label>Caste</label>
-                                  <input type="text" name="caste" id="caste" class="form-control" value="{{ $data['student']->caste }}">
+                                  <label>Religion</label>
+                                  <input type="text" name="religion" id="religion" class="form-control" value="{{ $data['student_session']->student->religion }}">
                                 </div>
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-2">
+                                <div class="form-group">
+                                  <label>Caste</label>
+                                  <input type="text" name="caste" id="caste" class="form-control" value="{{ $data['student_session']->student->caste }}">
+                                </div>
+                              </div>
+                              <div class="col-md-2">
                                 <div class="form-group">
                                   <label>Mobile No</label>
-                                  <input type="text" name="mobile_no" id="mobile-no" class="form-control" value="{{ $data['student']->mobile_no }}">
+                                  <input type="text" name="mobile_no" id="mobile-no" class="form-control" value="{{ $data['student_session']->student->mobile_no }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Email</label>
-                                  <input type="email" name="email" id="email" class="form-control" value="{{ $data['student']->email }}">
+                                  <input type="email" name="email" id="email" class="form-control" value="{{ $data['student_session']->student->email }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Admission Date</label>
-                                  <input type="date" name="admission_date" id="admission-date" class="form-control" value="{{ $data['student']->admission_date->format('Y-m-d') }}">
+                                  <input type="date" name="admission_date" id="admission-date" class="form-control" value="{{ $data['student_session']->student->admission_date->format('Y-m-d') }}">
                                 </div>
                               </div>
                             </div>
@@ -191,8 +202,8 @@
                                     <label for="father-image"><i class="fas fa-camera"></i></label>
                                   </div>
                                   <div class="avatar-preview">
-                                    @if($data['student']->father_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student']->father_image }});">
+                                    @if($data['student_session']->student->father_image)
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->father_image }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
@@ -204,27 +215,27 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Father Name</label>
-                                  <input type="text" name="father_name" id="father-name" class="form-control" placeholder="Enter Father Name" value="{{ $data['student']->father_name }}">
+                                  <input type="text" name="father_name" id="father-name" class="form-control" placeholder="Enter Father Name" value="{{ $data['student_session']->student->father_name }}">
                                 </div>
                                 <div class="form-group">
                                   <label>Father Phone </label>
-                                  <input type="text" name="father_phone" id="father-phone" class="form-control" placeholder="Enter Father Phone" value="{{ $data['student']->father_phone }}">
+                                  <input type="text" name="father_phone" id="father-phone" class="form-control" placeholder="Enter Father Phone" value="{{ $data['student_session']->student->father_phone }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Father Email</label>
-                                  <input type="email" name="father_email" id="father-email" class="form-control" placeholder="Enter Father Email" value="{{ $data['student']->father_email }}">
+                                  <input type="email" name="father_email" id="father-email" class="form-control" placeholder="Enter Father Email" value="{{ $data['student_session']->student->father_email }}">
                                 </div>
                                 <div class="form-group">
                                   <label>Father Occupation </label>
-                                  <input type="text" name="father_occupation" id="father-occupation" class="form-control" placeholder="Enter Father Occupation" value="{{ $data['student']->father_occupation }}">
+                                  <input type="text" name="father_occupation" id="father-occupation" class="form-control" placeholder="Enter Father Occupation" value="{{ $data['student_session']->student->father_occupation }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Father CNIC Number</label>
-                                  <input type="email" name="father_cnic" id="father-cnic" class="form-control" placeholder="Enter Father CNIC Number" value="{{ $data['student']->father_cnic }}">
+                                  <input type="email" name="father_cnic" id="father-cnic" class="form-control" placeholder="Enter Father CNIC Number" value="{{ $data['student_session']->student->father_cnic }}">
                                 </div>
                               </div>
                             </div>
@@ -238,8 +249,8 @@
                                     <label for="mother-image"><i class="fas fa-camera"></i></label>
                                   </div>
                                   <div class="avatar-preview">
-                                    @if($data['student']->mother_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student']->mother_image }});">
+                                    @if($data['student_session']->student->mother_image)
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->mother_image }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
@@ -251,27 +262,27 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Mother Name</label>
-                                  <input type="text" name="mother_name" id="mother-name" class="form-control" placeholder="Enter Mother Name" value="{{ $data['student']->mother_name }}">
+                                  <input type="text" name="mother_name" id="mother-name" class="form-control" placeholder="Enter Mother Name" value="{{ $data['student_session']->student->mother_name }}">
                                 </div>
                                 <div class="form-group">
                                   <label>Mother Phone </label>
-                                  <input type="text" name="mother_phone" id="mother-phone" class="form-control" placeholder="Enter Mother Phone" value="{{ $data['student']->mother_phone }}">
+                                  <input type="text" name="mother_phone" id="mother-phone" class="form-control" placeholder="Enter Mother Phone" value="{{ $data['student_session']->student->mother_phone }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Mother Email</label>
-                                  <input type="email" name="mother_email" id="mother-email" class="form-control" placeholder="Enter Mother Email" value="{{ $data['student']->mother_email }}">
+                                  <input type="email" name="mother_email" id="mother-email" class="form-control" placeholder="Enter Mother Email" value="{{ $data['student_session']->student->mother_email }}">
                                 </div>
                                 <div class="form-group">
                                   <label>Mother Occupation </label>
-                                  <input type="text" name="mother_occupation" id="mother-occupation" class="form-control" placeholder="Enter Mother Occupation" value="{{ $data['student']->mother_occupation }}">
+                                  <input type="text" name="mother_occupation" id="mother-occupation" class="form-control" placeholder="Enter Mother Occupation" value="{{ $data['student_session']->student->mother_occupation }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Mother CNIC Number</label>
-                                  <input type="text" name="mother_cnic" id="mother-cnic" class="form-control" placeholder="Enter Mother CNIC Number" value="{{ $data['student']->mother_cnic }}">
+                                  <input type="text" name="mother_cnic" id="mother-cnic" class="form-control" placeholder="Enter Mother CNIC Number" value="{{ $data['student_session']->student->mother_cnic }}">
                                 </div>
                               </div>
                             </div>
@@ -281,15 +292,15 @@
                                 <div class="form-group d-flex mb-0">
                                   <label>Guardian Is <span class="error">*</span></label>
                                   <div class="custom-control custom-radio ml-3">
-                                    <input class="custom-control-input" type="radio" value="father" id="guardian-is-father" @checked($data['student']->guardian_is == 'father') name="guardian_is">
+                                    <input class="custom-control-input" type="radio" value="father" id="guardian-is-father" @checked($data['student_session']->student->guardian_is == 'father') name="guardian_is">
                                     <label for="guardian-is-father" class="custom-control-label">Father</label>
                                   </div>
                                   <div class="custom-control custom-radio ml-3">
-                                    <input class="custom-control-input" type="radio" value="mother" id="guardian-is-mother" @checked($data['student']->guardian_is == 'mother') name="guardian_is">
+                                    <input class="custom-control-input" type="radio" value="mother" id="guardian-is-mother" @checked($data['student_session']->student->guardian_is == 'mother') name="guardian_is">
                                     <label for="guardian-is-mother" class="custom-control-label">Mother</label>
                                   </div>
                                   <div class="custom-control custom-radio ml-3">
-                                    <input class="custom-control-input" type="radio" value="other" id="guardian-is-other" @checked($data['student']->guardian_is == 'other') name="guardian_is">
+                                    <input class="custom-control-input" type="radio" value="other" id="guardian-is-other" @checked($data['student_session']->student->guardian_is == 'other') name="guardian_is">
                                     <label for="guardian-is-other" class="custom-control-label">Other</label>
                                   </div>
                                 </div>
@@ -305,8 +316,8 @@
                                     <label for="guardian-image"><i class="fas fa-camera"></i></label>
                                   </div>
                                   <div class="avatar-preview">
-                                    @if($data['student']->guardian_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student']->guardian_image }});">
+                                    @if($data['student_session']->student->guardian_image)
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->guardian_image }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
@@ -318,31 +329,31 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Guardian Name <span class="error">*</span></label>
-                                  <input type="text" name="guardian_name" id="guardian-name" class="form-control" placeholder="Enter Guardian Name" value="{{ $data['student']->guardian_name }}">
+                                  <input type="text" name="guardian_name" id="guardian-name" class="form-control" placeholder="Enter Guardian Name" value="{{ $data['student_session']->student->guardian_name }}">
                                 </div>
                                 <div class="form-group">
                                   <label>Guardian Phone <span class="error">*</span></label>
-                                  <input type="text" name="guardian_phone" id="guardian-phone" class="form-control" placeholder="Enter Guardian Phone" value="{{ $data['student']->guardian_phone }}">
+                                  <input type="text" name="guardian_phone" id="guardian-phone" class="form-control" placeholder="Enter Guardian Phone" value="{{ $data['student_session']->student->guardian_phone }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Guardian Email</label>
-                                  <input type="email" name="guardian_email" id="guardian-email" class="form-control" placeholder="Enter Guardian Email" value="{{ $data['student']->guardian_email }}">
+                                  <input type="email" name="guardian_email" id="guardian-email" class="form-control" placeholder="Enter Guardian Email" value="{{ $data['student_session']->student->guardian_email }}">
                                 </div>
                                 <div class="form-group">
                                   <label>Guardian Relation </label>
-                                  <input type="text" name="guardian_relation" id="guardian-relation" class="form-control" placeholder="Enter Guardian Relation" value="{{ $data['student']->guardian_relation }}">
+                                  <input type="text" name="guardian_relation" id="guardian-relation" class="form-control" placeholder="Enter Guardian Relation" value="{{ $data['student_session']->student->guardian_relation }}">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Guardian CNIC Number </label>
-                                  <input type="text" name="guardian_cnic" id="guardian-cnic" class="form-control" placeholder="Enter Guardian CNIC Number" value="{{ $data['student']->guardian_cnic }}">
+                                  <input type="text" name="guardian_cnic" id="guardian-cnic" class="form-control" placeholder="Enter Guardian CNIC Number" value="{{ $data['student_session']->student->guardian_cnic }}">
                                 </div>
                                 <div class="form-group">
                                   <label>Guardian Occupation </label>
-                                  <input type="text" name="guardian_occupation" id="guardian-occupation" class="form-control" placeholder="Enter Guardian Occupation" value="{{ $data['student']->guardian_occupation }}">
+                                  <input type="text" name="guardian_occupation" id="guardian-occupation" class="form-control" placeholder="Enter Guardian Occupation" value="{{ $data['student_session']->student->guardian_occupation }}">
                                 </div>
                               </div>
                             </div>
@@ -366,11 +377,11 @@
                             <div class="row">
                               <div class="col-md-6">
                                 <label>Current Address</label>
-                                <textarea name="current_address" id="current-address" class="form-control">{{ $data['student']->current_address }}</textarea>
+                                <textarea name="current_address" id="current-address" class="form-control">{{ $data['student_session']->student->current_address }}</textarea>
                               </div>
                               <div class="col-md-6">
                                 <label>Permenant Address</label>
-                                <textarea name="permenant_address" id="permenant-address" class="form-control">{{ $data['student']->permenant_address }}</textarea>
+                                <textarea name="permenant_address" id="permenant-address" class="form-control">{{ $data['student_session']->student->permenant_address }}</textarea>
                               </div>
                             </div>
                           </div>

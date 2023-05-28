@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Scopes\HasUserClassSubject;
+use App\Models\Scopes\HasSubject;
 
 class ClassSubject extends Model
 {
@@ -46,6 +48,12 @@ class ClassSubject extends Model
             ->select(['id', 'name']);
     }
 
+    public function userClassSection()
+    {
+        return $this->belongsTo(UserClassSubject::class, 'id', 'class_subject_id')
+            ->where('user_id', auth()->id());
+    }
+
     /**
      * The "booted" method of the model.
      *
@@ -53,8 +61,7 @@ class ClassSubject extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope('hasSubject', function (Builder $builder) {
-            $builder->has('subject');
-        });
+        static::addGlobalScope(new HasSubject);
+        static::addGlobalScope(new HasUserClassSubject);
     }
 }

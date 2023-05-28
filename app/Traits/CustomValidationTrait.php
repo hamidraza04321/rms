@@ -6,7 +6,8 @@ use App\Rules\{
     ClassRule,
     SectionRule,
     GroupRule,
-    UniqueClassRollNoRule   
+    UniqueAdmissionNoRule,
+    UniqueClassRollNoRule
 };
 
 trait CustomValidationTrait
@@ -64,16 +65,30 @@ trait CustomValidationTrait
     }
 
     /**
-     * Define Rule For Student Roll No.
+     * Define Rule For Student Admission No.
      *
      * @return array
      */
-    public function uniqueRollNoRule($class_id, $student_id = null)
+    public function uniqueAdmissionNoRule($student_session_id = null)
     {
         return [
             'required',
             'max:20',
-            new UniqueClassRollNoRule($class_id, $student_id) // $student_id For ignore in update
+            new UniqueAdmissionNoRule($student_session_id)
+        ];
+    }
+
+    /**
+     * Define Rule For Student Roll No.
+     *
+     * @return array
+     */
+    public function uniqueRollNoRule($class_id, $student_id = null, $session_id = null)
+    {
+        return [
+            'required',
+            'max:20',
+            new UniqueClassRollNoRule($class_id, $student_id, $session_id) // $student_id For ignore in update
         ];
     }
 }

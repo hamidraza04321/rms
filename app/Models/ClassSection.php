@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Scopes\HasUserClassSection;
 use App\Models\Scopes\HasSection;
+use Awobaz\Compoships\Compoships;
 
 class ClassSection extends Model
 {
     use HasFactory,
-    	SoftDeletes;
+    	SoftDeletes,
+        Compoships;
 
     /**
      * The table associated with the model.

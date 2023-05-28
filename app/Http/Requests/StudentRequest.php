@@ -98,8 +98,8 @@ class StudentRequest extends FormRequest
     public function store()
     {
         return [
-            'student_image' => 'nullable|mimes:png,jpg,jpeg||max:500000',
-            'admission_no' => 'required|max:20|unique:students,admission_no',
+            'student_image' => 'nullable|mimes:png,jpg,jpeg|max:500000',
+            'admission_no' => $this->uniqueAdmissionNoRule(),
             'roll_no' => $this->uniqueRollNoRule($this->class_id),
             'class_id' => $this->classRule(),
             'section_id' => $this->sectionRule($this->class_id),
@@ -147,8 +147,9 @@ class StudentRequest extends FormRequest
     {
         return [
             'student_image' => 'nullable|mimes:png,jpg,jpeg',
-            'admission_no' => 'required|max:20|unique:students,admission_no,'.$this->student,
-            'roll_no' => $this->uniqueRollNoRule($this->class_id, $this->student),
+            'admission_no' => $this->uniqueAdmissionNoRule($this->student),
+            'roll_no' => $this->uniqueRollNoRule($this->class_id, $this->student, $this->session_id),
+            'session_id' => $this->sessionRule(),
             'class_id' => $this->classRule(),
             'section_id' => $this->sectionRule($this->class_id),
             'group_id' => $this->groupRule($this->class_id),

@@ -342,6 +342,7 @@ $(document).ready(function() {
             self_html = self.html();
             admission_no = $('#admission-no').val();
             roll_no = $('#roll-no').val();
+            session_id = $('#session-id').val();
             class_id = $('#class-id').val();
             section_id = $('#section-id').val();
             group_id = $('#group-id').val();
@@ -360,6 +361,11 @@ $(document).ready(function() {
 
         if (roll_no == '') {
             $("#roll-no").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if (session_id == '') {
+            $("#session-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
         }
 
@@ -426,7 +432,11 @@ $(document).ready(function() {
                         scrollToTop();
                         toastr.success(response.message);
                     } else {
-                        showErrorMessages(response.errors);
+                        if (response?.errors) {
+                            showErrorMessages(response.errors);
+                        } else {
+                            message = errorMessage(response.message);
+                        }
                     }
                 },
                 error: function() {

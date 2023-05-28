@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Scopes\HasStudent;
+use App\Models\Scopes\HasClass;
+use App\Models\Scopes\HasSession;
+use App\Models\Scopes\HasClassSection;
+use App\Models\Scopes\HasClassGroup;
 use App\Traits\ActiveScopeTrait;
+use Awobaz\Compoships\Compoships;
 
 class StudentSession extends Model
 {
     use HasFactory,
+        Compoships,
     	SoftDeletes,
         ActiveScopeTrait;
 
@@ -77,6 +82,16 @@ class StudentSession extends Model
             ->select([ 'id', 'name' ]);
     }
 
+    public function classSection()
+    {
+        return $this->belongsTo(ClassSection::class, [ 'class_id', 'section_id' ], [ 'class_id', 'section_id' ]);
+    }
+
+    public function classGroup()
+    {
+        return $this->belongsTo(ClassGroup::class, [ 'class_id', 'group_id' ], [ 'class_id', 'group_id' ]);
+    }
+
     /**
      * The "booted" method of the model.
      *
@@ -84,6 +99,9 @@ class StudentSession extends Model
      */
     protected static function booted()
     {
-        //
+        static::addGlobalScope(new HasSession);
+        static::addGlobalScope(new HasClass);
+        static::addGlobalScope(new HasClassSection);
+        static::addGlobalScope(new HasClassGroup);
     }
 }

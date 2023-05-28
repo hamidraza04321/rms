@@ -17,7 +17,7 @@ class HasUserClass implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if (!auth()->user()->hasRole('Super Admin'))
+        if (auth()->check() && !auth()->user()->hasRole('Super Admin'))
         {
             $builder->has('userClass');
         }

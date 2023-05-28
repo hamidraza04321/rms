@@ -8,6 +8,7 @@ use App\Models\Scopes\ActiveScope;
 use App\Models\Scopes\HasGroup;
 use App\Models\Scopes\HasUserClassGroup;
 use App\Models\UserClassGroup;
+use Illuminate\Support\Facades\Route;
 use App\Models\ClassGroup;
 use App\Models\Group;
 
@@ -48,7 +49,9 @@ class GroupRule implements InvokableRule
             ->where('class_id', $this->class_id)
             ->exists();
 
-        if (is_null($value) && $group_exists_in_class) {
+        if (is_null($value)
+            && $group_exists_in_class
+            && in_array(Route::currentRouteName(), ['student.store', 'student.update'])) {
             return $fail('The group is required for this class.');
         }
 

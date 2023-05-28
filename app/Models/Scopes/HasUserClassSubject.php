@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class HasUserClassSection implements Scope
+class HasUserClassSubject implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -19,7 +19,7 @@ class HasUserClassSection implements Scope
     {
         if (auth()->check() && !auth()->user()->hasRole('Super Admin'))
         {
-            $builder->has('userClassSection');
+            $builder->has('userClassSubject');
         }
     }
 }
