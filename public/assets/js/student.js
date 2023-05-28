@@ -22,7 +22,7 @@ $(document).ready(function() {
         }
 
         if (section_id == '') {
-            $("#section-id:not(:disabled)").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            $("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
         }
 
@@ -71,6 +71,35 @@ $(document).ready(function() {
                         progress_bar.css('width', percentComplete + '%');
                         progress_percentage.html(percentComplete);
                     }
+                },
+                success: function(response){
+                    if (response.status == true) {
+                        $('#import-success-modal').modal('show');
+                        $('#import-success-modal-body').html(`<p>`+response.message+`</p><br><stong>Total Students: </stong>` + response.import_students_count);
+                        toastr.success(response.message);
+                    } else {
+                        if (response?.errors) {
+                            var errors_list = ``;
+
+                            $.each(response.errors, function(key, value) {
+                                if (value?.errors) {
+                                    errors_list += `<li>`+value.errors.toString()+` at row : `+value.row+`</li>`;
+                                } else {
+                                    errors_list += `<li>`+value.toString()+`</li>`;
+                                }
+                            });
+
+                            $('#import-errors-modal').modal('show');
+                            $('#import-errors-modal-body').html(`<ul style="padding-left:20px;">`+errors_list+`</ul>`);
+                        }
+                    }
+                },
+                error: function(response){
+                    message = errorMessage();
+                },
+                complete: function(){
+                    $('#import-progress-modal').modal('hide');
+                    if (message != '') showAlertInTop(message);
                 }
             });
         }

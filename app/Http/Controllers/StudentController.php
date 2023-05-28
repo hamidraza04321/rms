@@ -514,9 +514,11 @@ class StudentController extends Controller
     {
         if ($request->method() == 'GET')
         {
+            $sessions = Session::get();
             $classes = Classes::get();
 
             $data = [
+                'sessions' => $sessions,
                 'classes' => $classes,
                 'page_title' => 'Import Students',
                 'menu' => 'Student'
@@ -530,7 +532,10 @@ class StudentController extends Controller
             try {
                 $import = new StudentsImport($request->all());
                 Excel::import($import, $request->import_file);
-                return response()->successMessage("The {$import->getRowCount()} Students Imported Successfully !");
+                return response()->success([
+                    'import_students_count' => $import->getRowCount(),
+                    'message' => 'Students Imported Successfully !'
+                ]);
             } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
                 return response()->errors($e->failures());
             }

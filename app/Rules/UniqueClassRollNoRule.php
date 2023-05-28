@@ -14,11 +14,11 @@ class UniqueClassRollNoRule implements InvokableRule
      *
      * @return void
      */
-    public function __construct($class_id, $student_session_id, $session_id)
+    public function __construct($class_id, $session_id, $student_session_id)
     {
         $this->class_id = $class_id;
-        $this->student_session_id = $student_session_id;
         $this->session_id = ($session_id) ? $session_id : (new GeneralSettings)->current_session_id;
+        $this->student_session_id = $student_session_id;
     }
 
     /**

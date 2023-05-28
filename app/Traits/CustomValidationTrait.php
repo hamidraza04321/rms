@@ -83,12 +83,12 @@ trait CustomValidationTrait
      *
      * @return array
      */
-    public function uniqueRollNoRule($class_id, $student_id = null, $session_id = null)
+    public function uniqueRollNoRule($class_id, $session_id = null, $student_id = null)
     {
         return [
             'required',
             'max:20',
-            new UniqueClassRollNoRule($class_id, $student_id, $session_id) // $student_id For ignore in update
+            new UniqueClassRollNoRule($class_id, $session_id, $student_id) // $student_id For ignore in update
         ];
     }
 }

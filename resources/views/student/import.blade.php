@@ -38,7 +38,7 @@
                     <li>The All fields(<span class="error"> * </span>) has required.</li>
                     <li>For Student Gender use (<strong>Male, Female</strong>) value.</li>
                     <li>For Student Guardian Is use (<strong>Father, Mother, other</strong>) value.</li>
-                    <li>The Roll No must be unique for every class.</li>
+                    <li>The Roll No must be unique for every class in session.</li>
                   </ol>
                 </div>
               </div>
@@ -120,6 +120,17 @@
                   <div class="row">
                     <div class="col-md-3">
                       <div class="form-group">
+                        <label>Session</label>
+                        <select name="session_id" id="session-id" class="select2 form-control">
+                          <option value="">Select</option>
+                          @foreach($data['sessions'] as $session)
+                            <option @selected($session->id == $settings->current_session_id) value="{{ $session->id }}">{{ $session->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
                         <label>Class</label>
                         <select name="class_id" id="class-id" class="select2 form-control">
                           <option value="">Select</option>
@@ -145,6 +156,8 @@
                         </select>
                       </div>
                     </div>
+                  </div>
+                  <div class="row">
                     <div class="col-md-3">
                       <div class="form-group">
                         <label>Import File</label>
@@ -156,9 +169,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 text-right">
+                    <div class="col-md-3" style="margin-top: 32px;">
                       <button class="btn btn-primary" id="btn-import-student"><i class="fa fa-file-import"></i> Import</button>
                     </div>
                   </div>
@@ -190,9 +201,40 @@
           </div>
         </div>
       </div>
-      <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade-in-center" id="import-errors-modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: red;"><i class="fa fa-exclamation-triangle"></i> Error </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="import-errors-modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade-in-center" id="import-success-modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: green;"><i class="fa fa-check"></i> Success </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="import-success-modal-body">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" style="float: right;" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
   </div>
 @endsection
 @section('scripts')

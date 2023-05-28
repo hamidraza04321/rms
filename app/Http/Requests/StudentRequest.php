@@ -86,7 +86,7 @@ class StudentRequest extends FormRequest
             'class_id' => $this->classRule('nullable'),
             'section_id' => $this->sectionRule($this->class_id, 'nullable'),
             'group_id' => $this->groupRule($this->class_id),
-            'import_file' => 'required|mimes:csv,xlxs,xls'
+            'import_file' => 'required|mimes:csv,xlsx,xls'
         ];
     }
 
@@ -148,7 +148,7 @@ class StudentRequest extends FormRequest
         return [
             'student_image' => 'nullable|mimes:png,jpg,jpeg',
             'admission_no' => $this->uniqueAdmissionNoRule($this->student),
-            'roll_no' => $this->uniqueRollNoRule($this->class_id, $this->student, $this->session_id),
+            'roll_no' => $this->uniqueRollNoRule($this->class_id, $this->session_id, $this->student),
             'session_id' => $this->sessionRule(),
             'class_id' => $this->classRule(),
             'section_id' => $this->sectionRule($this->class_id),
