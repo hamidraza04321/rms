@@ -43,7 +43,7 @@
         <li class="nav-header">Student Management</li>
         <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.import' ]))) menu-open @endif">
           <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.edit', 'student.import', 'student.trash' ]))) active @endif">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <i class="nav-icon fas fa-graduation-cap"></i>
             <p>
               Student
               <i class="right fas fa-angle-left"></i>
@@ -76,7 +76,7 @@
         @canany(['view-class', 'create-class'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'session.index', 'session.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'session.index', 'session.create', 'session.edit', 'session.trash' ]))) active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-calendar"></i>
               <p>
                 Session
                 <i class="right fas fa-angle-left"></i>
@@ -103,7 +103,7 @@
           </li>
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit', 'class.trash' ]))) active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-users-cog"></i>
               <p>
                 Class
                 <i class="right fas fa-angle-left"></i>
@@ -132,7 +132,7 @@
         @canany(['view-section', 'create-section'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'section.index', 'section.create', 'section.edit', 'section.trash' ]))) active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-puzzle-piece"></i>
               <p>
                 Section
                 <i class="right fas fa-angle-left"></i>
@@ -161,7 +161,7 @@
         @canany(['view-group', 'create-group'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'group.index', 'group.create', 'group.edit', 'group.trash' ]))) active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-layer-group"></i>
               <p>
                 Group
                 <i class="right fas fa-angle-left"></i>
@@ -190,7 +190,7 @@
         @canany(['view-subject', 'create-subject'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'subject.index', 'subject.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'subject.index', 'subject.create', 'subject.edit', 'subject.trash' ]))) active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-book"></i>
               <p>
                 Subject
                 <i class="right fas fa-angle-left"></i>
@@ -220,7 +220,7 @@
           <li class="nav-header">User Management</li>
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-user-shield"></i>
               <p>
                 Role
                 <i class="right fas fa-angle-left"></i>
@@ -243,7 +243,7 @@
           </li>
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create', 'user.edit', 'user.trash' ]))) active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
                 User
                 <i class="right fas fa-angle-left"></i>
@@ -267,7 +267,7 @@
           <li class="nav-header">System Settings</li>
           <li class="nav-item @if(Route::currentRouteName() == 'settings.index') menu-open @endif">
             <a href="{{ route('settings.index') }}" class="nav-link @if(Route::currentRouteName() == 'settings.index') active @endif">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon ion-gear-a"></i>
               <p>Settings</p>
             </a>
           </li>

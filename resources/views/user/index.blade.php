@@ -24,9 +24,9 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="card card-primary card-outline">
               <div class="card-header">
-                <div class="card-title">{{ $data['page_title'] }}</div>
+                <div class="card-title"><i class="fa fa-users"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
                   <a href="{{ route('user.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create User</a>
                   <a href="{{ route('user.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>

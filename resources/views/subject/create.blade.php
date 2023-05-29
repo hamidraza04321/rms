@@ -25,8 +25,8 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
-                <div class="card-title">{{ $data['page_title'] }}</div>
+              <div class="card-header card-primary card-outline">
+                <div class="card-title"><i class="fa fa-plus-square"></i> {{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
                 <form action="{{ route('subject.store') }}" id="create-subject-form">

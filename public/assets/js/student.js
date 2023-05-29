@@ -10,11 +10,17 @@ $(document).ready(function() {
 
         var self = $(this);
             self_html = self.html();
+            session_id = $('#session-id').val();
             class_id = $('#class-id').val();
             section_id = $('#section-id').val();
             group_id = $('#group-id').val();
             import_file = $('#import-file').val();
             flag = true;
+
+        if (session_id == '') {
+            $("#session-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
 
         if (class_id == '') {
             $("#class-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');

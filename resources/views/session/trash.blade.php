@@ -26,7 +26,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <div class="card-title">{{ $data['page_title'] }}</div>
+                <div class="card-title"><i class="fa fa-trash"></i> {{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
                 <table id="session-trash-table" class="table table-bordered table-hover datatable">

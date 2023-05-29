@@ -24,9 +24,9 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="card card-primary card-outline">
               <div class="card-header">
-                <div class="card-title">{{ $data['page_title'] }}</div>
+                <div class="card-title"><i class="fa fa-file-import"></i>&nbsp; {{ $data['page_title'] }}</div>
                 <div class="card-tools">
                   <a href="{{ route('student.import.download.sample') }}" class="btn btn-sm btn-info"> <i class="fa fa-download"></i> Download Sample</a>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\InvokableRule;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\StudentSession;
 
 class UniqueAdmissionNoRule implements InvokableRule
@@ -34,6 +35,7 @@ class UniqueAdmissionNoRule implements InvokableRule
 
         // If admission no is exists
         $exists = StudentSession::withoutGlobalScopes()
+            ->whereNull('deleted_at')
             ->whereHas('student', function($query) use($value, $student_id){
                 $query->where('admission_no', $value)
                     ->when($this->student_session_id, function($query) use($student_id){

@@ -443,20 +443,49 @@ class StudentController extends Controller
             ->find($id);
 
         if ($student_session) {
-            // Check if student exists in session
-            $exists = StudentSession::withoutGlobalScope(ActiveScope::class)
+            // Check if student already exists in session
+            $exists_in_session = StudentSession::withoutGlobalScopes()
+                ->whereNull('deleted_at')
                 ->where([
                     'student_id' => $student_session->student_id,
                     'session_id' => $student_session->session_id
                 ])
                 ->exists();
 
-            if (!$exists) {
-                $student_session->restore();
-                return response()->successMessage('Student Restored Successfully !');
+            if ($exists_in_session) {
+                return response()->errorMessage("The Student {$student_session->student->fullName()} has already exists in session {$student_session->session->name} !");
             }
 
-            return response()->errorMessage("The Student {$student_session->student->fullName()} has already exists in session {$student_session->session->name} !");
+            // Check if Student has already exists with admission no
+            $exists_admission_no = StudentSession::withoutGlobalScopes()
+                ->whereNull('deleted_at')
+                ->whereHas('student', function($query) use($student_session){
+                    $query->where('admission_no', $student_session->student->admission_no);
+                })
+                ->exists();
+
+            if ($exists_admission_no) {
+                return response()->errorMessage("The Student has already exists with admission no ( {$student_session->student->admission_no} )");
+            }
+
+            // Check if Student has already exists with roll no in session class
+            $exists_roll_no = StudentSession::withoutGlobalScopes()
+                ->where([
+                    'deleted_at' => null,
+                    'session_id' => $student_session->session_id,
+                    'class_id' => $student_session->class_id
+                ])
+                ->whereHas('student', function($query) use($student_session){
+                    $query->where('roll_no', $student_session->student->roll_no);
+                })
+                ->exists();
+
+            if ($exists_roll_no) {
+                return response()->errorMessage("The Student has already exists with roll no ( {$student_session->student->roll_no} ) in session ( {$student_session->session->name} ) class ( {$student_session->class->name} )");
+            }
+
+            $student_session->restore();
+            return response()->successMessage('Student Restored Successfully !');
         }
 
         return response()->errorMessage('Student not Found !');

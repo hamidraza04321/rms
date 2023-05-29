@@ -25,11 +25,11 @@
         <div class="row">
           <div class="col-12">
             <div class="accordion" id="student-filters">
-              <div class="card">
+              <div class="card card-primary card-outline">
                 <div class="card-header" id="student-filter-heading">
                   <div class="d-flex">
                     <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#student-filters-table" aria-expanded="true" aria-controls="student-filters-table">
-                      Filters
+                      <i class="fa fa-filter"></i> Filters
                     </button>
                   </div>
                 </div>
@@ -113,9 +113,9 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="card card-primary card-outline">
               <div class="card-header">
-                <div class="card-title">{{ $data['page_title'] }}</div>
+                <div class="card-title"><i class="fa fa-users"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
                   <a href="{{ route('student.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Student</a>
                   <a href="{{ route('student.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>

@@ -24,9 +24,9 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="card card-primary card-outline">
               <div class="card-header">
-                <div class="card-title">{{ $data['page_title'] }}</div>
+                <div class="card-title"><i class="fa fa-puzzle-piece"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
                   @can('create-section')
                     <a href="{{ route('section.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Section</a>
