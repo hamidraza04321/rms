@@ -18,7 +18,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-3">
-          	<div class="card">
+          	<div class="card card-primary card-outline">
               <div class="card-body">
               	<div class="avatar-upload">
 				          <div class="avatar-preview mt-4 mb-4" style="width: 200px; height: 200px;">

@@ -218,24 +218,6 @@
       </div>
     </div>
   </div>
-
-  <div class="modal fade-in-center" id="import-success-modal" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" style="color: green;"><i class="fa fa-check"></i> Success </h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body" id="import-success-modal-body">
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" style="float: right;" data-dismiss="modal">Ok</button>
-        </div>
-      </div>
-    </div>
-  </div>
 @endsection
 @section('scripts')
 <script src="{{ url('/assets/js/student.js') }}"></script>

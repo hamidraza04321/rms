@@ -80,13 +80,20 @@ $(document).ready(function() {
                 },
                 success: function(response){
                     if (response.status == true) {
-                        $('#import-success-modal').modal('show');
-                        $('#import-success-modal-body').html(`<p>`+response.message+`</p><br><stong>Total Students: </stong>` + response.import_students_count);
-                        toastr.success(response.message);
+                        // Reset Form
+                        form[0].reset();
+                        $('.select2').val('').change();
+                        $('#session-id').val($('#current-session-id').val()).change();
+                        $('#import-file').siblings('label').text('Choose file');
+
+                        Swal.fire(
+                            response.message,
+                            'Total Students Imported : ' + response.import_students_count,
+                            'success'
+                        );
                     } else {
                         if (response?.errors) {
                             var errors_list = ``;
-
                             $.each(response.errors, function(key, value) {
                                 if (value?.errors) {
                                     errors_list += `<li>`+value.errors.toString()+` at row : `+value.row+`</li>`;

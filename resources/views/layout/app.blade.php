@@ -54,6 +54,8 @@
 
   <!-- BASE URL -->
   <input type="hidden" id="base-url" value="{{ url('/') }}">
+  <!-- CURRENT SESSION ID -->
+  <input type="hidden" id="current-session-id" value="{{ $settings->current_session_id }}">
 </div>
 <!-- ./wrapper -->
 
