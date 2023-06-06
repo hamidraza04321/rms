@@ -40,36 +40,44 @@
             <p>Dashboard</p>
           </a>
         </li>
-        <li class="nav-header">Student Management</li>
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.import' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.edit', 'student.import', 'student.trash' ]))) active @endif">
-            <i class="nav-icon fas fa-graduation-cap"></i>
-            <p>
-              Student
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('student.index') }}" class="nav-link @if(Route::currentRouteName() == 'student.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('student.create') }}" class="nav-link @if(Route::currentRouteName() == 'student.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('student.import') }}" class="nav-link @if(Route::currentRouteName() == 'student.import') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Import</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+        @canany(['view-student', 'create-student', 'import-student'])
+          <li class="nav-header">Student Management</li>
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.import' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'student.index', 'student.create', 'student.edit', 'student.import', 'student.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-graduation-cap"></i>
+              <p>
+                Student
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-student')
+                <li class="nav-item">
+                  <a href="{{ route('student.index') }}" class="nav-link @if(Route::currentRouteName() == 'student.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-student')
+                <li class="nav-item">
+                  <a href="{{ route('student.create') }}" class="nav-link @if(Route::currentRouteName() == 'student.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+              @can('import-student')
+                <li class="nav-item">
+                  <a href="{{ route('student.import') }}" class="nav-link @if(Route::currentRouteName() == 'student.import') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Import</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcanany
         @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
           <li class="nav-header">Academics</li>
         @endcanany

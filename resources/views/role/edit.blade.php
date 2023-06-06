@@ -64,11 +64,11 @@
                                             <label class="form-check-label" for="module-{{ $moduleKey }}">{{ $module->name }}</label>
                                           </div>
                                         </td>
-                                        <td>
+                                        <td class="d-flex">
                                           @foreach($module->menus as $menuKey => $menu)
                                             <div class="form-check">
                                               <input @checked(in_array($menu->permission, $data['permissions'])) name="permissions[]" class="form-check-input permission" type="checkbox" value="{{ $menu->permission }}" id="menu-{{ "{$moduleKey}-{$menuKey}" }}">
-                                              <label class="form-check-label" for="menu-{{ "{$moduleKey}-{$menuKey}" }}">{{ $menu->name }}</label>
+                                              <label class="form-check-label mr-3" for="menu-{{ "{$moduleKey}-{$menuKey}" }}">{{ $menu->name }}</label>
                                             </div>
                                           @endforeach
                                         </td>

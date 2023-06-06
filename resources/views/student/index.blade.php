@@ -100,7 +100,9 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <button id="btn-search-student" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
-                            <button id="btn-export-student" data-url="{{ route('student.export') }}" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-file-export"></i> Export</button>
+                            @can('export-student')
+                              <button id="btn-export-student" data-url="{{ route('student.export') }}" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-file-export"></i> Export</button>
+                            @endcan
                           </div>
                         </div>
                       </div>
@@ -117,13 +119,17 @@
               <div class="card-header">
                 <div class="card-title"><i class="fa fa-users"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  <a href="{{ route('student.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Student</a>
-                  <a href="{{ route('student.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @can('create-student')
+                    <a href="{{ route('student.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Student</a>
+                  @endcan
+                  @can('view-student-trash')
+                    <a href="{{ route('student.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @endcan
                 </div>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table id="student-table" class="table table-bordered table-hover datatable no-wrap">
+                  <table id="student-table" class="table table-bordered table-hover no-wrap">
                     <thead>
                       <tr>
                         <th>Session</th>
@@ -155,8 +161,12 @@
                             @endif
                           </td>
                           <td>
-                            <a href="{{ route('student.edit', $student_session->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            <button class="btn btn-sm btn-danger btn-destroy-student" data-url="{{ route('student.destroy', $student_session->id) }}"><i class="fa fa-trash"> Delete</i></button>
+                            @can('edit-student')
+                              <a href="{{ route('student.edit', $student_session->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                            @endcan
+                            @can('delete-student')
+                              <button class="btn btn-sm btn-danger btn-destroy-student" data-url="{{ route('student.destroy', $student_session->id) }}"><i class="fa fa-trash"> Delete</i></button>
+                            @endcan
                           </td>
                         </tr>
                       @endforeach
@@ -175,6 +185,14 @@
       <!-- /.container-fluid -->
     </section>
   </div>
+
+  <!-- Permissions -->
+  <input type="hidden" id="edit-permission" @can('edit-student') value="true" @endcan>
+  <input type="hidden" id="delete-permission" @can('delete-student') value="true" @endcan>
+  <input type="hidden" id="update-status-permission" @can('update-student-status') value="true" @endcan>
+  <input type="hidden" id="can-any-action-permission" @canany(['edit-student', 'delete-student']) value="true" @endcan>
+  <input type="hidden" id="update-status-permission" @can('update-student-status') value="true" @endcan>
+
 @endsection
 @section('scripts')
 <script src="{{ url('/assets/js/student.js') }}"></script>

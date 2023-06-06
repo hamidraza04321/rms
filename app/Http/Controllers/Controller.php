@@ -10,9 +10,9 @@ use App\Settings\GeneralSettings;
 
 class Controller extends BaseController
 {
-	public function __construct(GeneralSettings $settings)
+	public function __construct()
 	{
-		$this->current_session_id = $settings->current_session_id;
+		$this->current_session_id = (new GeneralSettings)->current_session_id;
 	}
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

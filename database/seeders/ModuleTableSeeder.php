@@ -20,7 +20,8 @@ class ModuleTableSeeder extends Seeder
             [ 'name' => 'Class' ],
             [ 'name' => 'Section' ],
             [ 'name' => 'Group' ],
-            [ 'name' => 'Subject' ]
+            [ 'name' => 'Subject' ],
+            [ 'name' => 'Student' ]
         ]);
 
         $modules->each(function($module) {

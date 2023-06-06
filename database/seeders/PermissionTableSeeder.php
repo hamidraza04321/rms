@@ -67,6 +67,18 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'restore-subject' ],
             [ 'name' => 'permanent-delete-subject' ],
 
+            // STUDENT
+            [ 'name' => 'view-student' ],
+            [ 'name' => 'create-student' ],
+            [ 'name' => 'edit-student' ],
+            [ 'name' => 'delete-student' ],
+            [ 'name' => 'update-student-status' ],
+            [ 'name' => 'view-student-trash' ],
+            [ 'name' => 'restore-student' ],
+            [ 'name' => 'permanent-delete-student' ],
+            [ 'name' => 'import-student' ],
+            [ 'name' => 'export-student' ]
+
         ]);
 
         $permissions->each(function($permission) {

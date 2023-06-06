@@ -89,7 +89,7 @@
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <button id="btn-search-student" class="btn btn-primary" data-action="from_trash" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
+                            <button id="btn-search-student-from-trash" class="btn btn-primary" data-action="from_trash" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
                           </div>
                         </div>
                       </div>
@@ -108,7 +108,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table id="student-trash-table" class="table table-bordered table-hover datatable no-wrap">
+                  <table id="student-trash-table" class="table table-bordered table-hover no-wrap">
                     <thead>
                       <tr>
                         <th>Session</th>
@@ -134,8 +134,12 @@
                           <td>{{ $student_session->group->name ?? null }}</td>
                           <td>{{ $student_session->deleted_at->diffForHumans() }}</td>
                           <td>
-                            <button class="btn btn-sm btn-success btn-restore-student" data-url="{{ route('student.restore', $student_session->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                            <button class="btn btn-sm btn-danger btn-delete-student" data-url="{{ route('student.delete', $student_session->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                            @can('restore-student')
+                              <button class="btn btn-sm btn-success btn-restore-student" data-url="{{ route('student.restore', $student_session->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                            @endcan
+                            @can('permanent-delete-student')
+                              <button class="btn btn-sm btn-danger btn-delete-student" data-url="{{ route('student.delete', $student_session->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                            @endcan
                           </td>
                         </tr>
                       @endforeach
@@ -154,6 +158,12 @@
       <!-- /.container-fluid -->
     </section>
   </div>
+
+  <!-- Permissions -->
+  <input type="hidden" id="restore-permission" @can('restore-student') value="true" @endcan>
+  <input type="hidden" id="permenant-delete-permission" @can('permanent-delete-student') value="true" @endcan>
+  <input type="hidden" id="can-any-action-permission-from-trash" @canany(['restore-student', 'permanent-delete-student']) value="true" @endcanany>
+
 @endsection
 @section('scripts')
 <script src="{{ url('/assets/js/student.js') }}"></script>

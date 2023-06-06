@@ -18,6 +18,21 @@ use Excel;
 
 class StudentController extends Controller
 {
+    function __construct()
+    {
+        parent::__construct();
+        $this->middleware('permission:view-student', [ 'only' => [ 'index', 'search' ]]);
+        $this->middleware('permission:create-student', [ 'only' => [ 'create', 'store' ]]);
+        $this->middleware('permission:edit-student',   [ 'only' => [ 'edit', 'update' ]]);
+        $this->middleware('permission:delete-student', [ 'only' => 'destroy' ]);
+        $this->middleware('permission:update-student-status', [ 'only' => 'updateStudentStatus' ]);
+        $this->middleware('permission:view-student-trash', [ 'only' => [ 'trash', 'search' ]]);
+        $this->middleware('permission:restore-student', [ 'only' => 'restore' ]);
+        $this->middleware('permission:permanent-delete-student', [ 'only' => 'delete' ]);
+        $this->middleware('permission:export-student', [ 'only' => 'export' ]);
+        $this->middleware('permission:import-student', [ 'only' => [ 'import', 'downloadImportSample' ]]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -462,6 +477,7 @@ class StudentController extends Controller
                 ->whereHas('student', function($query) use($student_session){
                     $query->where('admission_no', $student_session->student->admission_no);
                 })
+                ->where('student_id', '!=', $student_session->student_id)
                 ->exists();
 
             if ($exists_admission_no) {

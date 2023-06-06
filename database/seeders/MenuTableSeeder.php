@@ -190,6 +190,49 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 5,
 	        	'name' => 'Permanent Delete',
 	        	'permission' => 'permanent-delete-subject'
+	        ],
+
+	        // STUDENT MODULE
+	        [
+	        	'module_id' => 6,
+	        	'name' => 'View',
+	        	'permission' => 'view-student'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Create',
+	        	'permission' => 'create-student'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-student'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-student'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-student-status'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'View Trash',
+	        	'permission' => 'view-student-trash'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Restore',
+	        	'permission' => 'restore-student'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-student'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Import',
+	        	'permission' => 'import-student'
+	        ], [
+	        	'module_id' => 6,
+	        	'name' => 'Export',
+	        	'permission' => 'export-student'
 	        ]
 
     	]);

@@ -3,6 +3,37 @@ $(document).ready(function() {
     //---------- APPLICATION BASE URL ----------//
     const base_url = $('#base-url').val();
 
+    //---------- DATATABLE FOR ( STUDENT TABLE ) ----------//
+    var student_table = $('#student-table').DataTable();
+        can_update_status_permission = ($('#update-status-permission').val() == 'true') ? true : false;
+        can_any_action_permission = ($('#can-any-action-permission').val() == 'true') ? true : false;
+        student_table_columns = [];
+
+    if (!can_update_status_permission) {
+        student_table_columns.push(7);
+    }
+
+    if (!can_any_action_permission) {
+        student_table_columns.push(8);
+    }
+
+    if (student_table_columns.length) {
+        student_table.columns(student_table_columns).visible(false);
+    }
+
+    //---------- DATATABLE FOR ( STUDENT TRASH TABLE ) ----------//
+    var student_trash_table = $('#student-trash-table').DataTable();
+        can_any_action_permission_from_trash = ($('#can-any-action-permission-from-trash').val() == 'true') ? true : false;
+        student_trash_table_columns = [];
+
+    if (!can_any_action_permission_from_trash) {
+        student_trash_table_columns.push(8);
+    }
+
+    if (student_table_columns.length) {
+        student_trash_table.columns(student_trash_table_columns).visible(false);
+    }
+
     //---------- ON CLICK IMPORT STUDENT ----------//
     $(document).on('click', '#btn-import-student', function(e) {
         e.preventDefault();
@@ -133,13 +164,11 @@ $(document).ready(function() {
             group_id = $('#group-id').val();
             gender = $('#gender').val();
             is_active = $('#status').val();
-            action = (self[0].hasAttribute('data-action')) ? self.attr('data-action') : '';
-            table = (action == 'from_trash') ? '#student-trash-table' : '#student-table';
-        
+
         // Button Loading
         self.addClass('disabled').html('<div class="spinner-border"></div>');
 
-        $(table).DataTable({
+        $('#student-table').DataTable({
             destroy: true,
             ajax: {
                 url: url,
@@ -153,8 +182,7 @@ $(document).ready(function() {
                     section_id: section_id,
                     group_id: group_id,
                     gender: gender,
-                    is_active: is_active,
-                    action: action
+                    is_active: is_active
                 }
             },
             initComplete: function(settings, response){
@@ -186,11 +214,8 @@ $(document).ready(function() {
                 },
                 {
                     "targets": 7,
+                    "visible": can_update_status_permission,
                     "render": function (data) {
-                        if (action == 'from_trash') {
-                            return data.delete_at;
-                        }
-
                         var status_url = base_url + `/student/update-status/` + data.id;
                         
                         if (data.is_active) {
@@ -202,14 +227,12 @@ $(document).ready(function() {
                 },
                 {
                     "targets": 8,
+                    "visible": can_any_action_permission,
                     "render": function (data) {
-                        if (action == 'from_trash') {
-                            return `<button class="btn btn-sm btn-success btn-restore-student" data-url="`+ base_url + `/student/restore/` + data.id +`"><i class="fa fa-trash-restore"> Restore</i></button>
-                                    <button class="btn btn-sm btn-danger btn-delete-student" data-url="`+ base_url + `/student/delete/` + data.id +`"><i class="fa fa-trash"></i> Permanent Delete</button>`;
-                        }
+                        var btn_edit = ($('#edit-permission').val() == 'true') ? `<a href="`+ base_url + `/student/` + data.id + `/edit` +`" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> ` : ``;
+                            btn_delete = ($('#delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-destroy-student" data-url="`+ base_url + `/student/` + data.id +`"><i class="fa fa-trash"> Delete</i></button>` : ``;
 
-                        return `<a href="`+ base_url + `/student/` + data.id + `/edit` +`" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                <button class="btn btn-sm btn-danger btn-destroy-student" data-url="`+ base_url + `/student/` + data.id +`"><i class="fa fa-trash"> Delete</i></button>`;
+                        return btn_edit + btn_delete;
                     }
                 }
             ],
@@ -222,6 +245,95 @@ $(document).ready(function() {
                 { data: null },
                 { data: null },
                 { data: null },
+                { data: null }
+            ],
+        });
+    });
+
+    //---------- ON CLICK SEARCH STUDENT FROM TRASH ----------//
+    $(document).on('click', '#btn-search-student-from-trash', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            form = $('#search-student-form');
+            url = form.attr('action');
+            session_id = $('#session-id').val();
+            class_id = $('#class-id').val();
+            section_id = $('#section-id').val();
+            group_id = $('#group-id').val();
+            gender = $('#gender').val();
+            is_active = $('#status').val();
+
+        // Button Loading
+        self.addClass('disabled').html('<div class="spinner-border"></div>');
+
+        $('#student-trash-table').DataTable({
+            destroy: true,
+            ajax: {
+                url: url,
+                type: 'POST',
+                dataSrc: function (response) {
+                    return (response?.student_session) ? response.student_session : '';
+                },
+                data: {
+                    session_id: session_id,
+                    class_id: class_id,
+                    section_id: section_id,
+                    group_id: group_id,
+                    gender: gender,
+                    is_active: is_active,
+                    action: 'from_trash'
+                }
+            },
+            initComplete: function(settings, response){
+                if (response.status == false) showErrorMessages(response.errors);
+                self.removeClass('disabled').html(self_html);
+            },
+            columnDefs: [
+                {
+                    "targets": 3,
+                    "render": function (data) {
+                        return data.student.first_name + ' ' + data.student.last_name;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function (data) {
+                        return data.class.name + ' ( ' + data.section.name + ' ) ';
+                    }
+                },
+                {
+                    "targets": 6,
+                    "render": function (data) {
+                        if (data.group?.name) {
+                            return data.group.name;
+                        }
+                        
+                        return '';
+                    }
+                },
+                {
+                    "targets": 8,
+                    "visible": can_any_action_permission_from_trash,
+                    "render": function (data) {
+                        var btn_restore = ($('#restore-permission').val() == 'true') ? `<button class="btn btn-sm btn-success btn-restore-student" data-url="`+ base_url + `/student/restore/` + data.id +`"><i class="fa fa-trash-restore"> Restore</i></button> ` : '';
+                            btn_permenant_delete = ($('#permenant-delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-delete-student" data-url="`+ base_url + `/student/delete/` + data.id +`"><i class="fa fa-trash"></i> Permanent Delete</button>` : '';
+                        
+                        return btn_restore + btn_permenant_delete;
+                    }
+                }
+            ],
+            columns: [
+                { data: 'session.name' },
+                { data: 'student.admission_no' },
+                { data: 'student.roll_no' },
+                { data: null },
+                { data: 'student.father_name' },
+                { data: null },
+                { data: null },
+                { data: 'delete_at' },
                 { data: null }
             ],
         });
