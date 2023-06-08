@@ -77,7 +77,17 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'restore-student' ],
             [ 'name' => 'permanent-delete-student' ],
             [ 'name' => 'import-student' ],
-            [ 'name' => 'export-student' ]
+            [ 'name' => 'export-student' ],
+
+            // ATTENDANCE STATUS
+            [ 'name' => 'view-attendance-status' ],
+            [ 'name' => 'create-attendance-status' ],
+            [ 'name' => 'edit-attendance-status' ],
+            [ 'name' => 'delete-attendance-status' ],
+            [ 'name' => 'update-attendance-status' ],
+            [ 'name' => 'view-attendance-status-trash' ],
+            [ 'name' => 'restore-attendance-status' ],
+            [ 'name' => 'permanent-delete-attendance-status' ],
 
         ]);
 

@@ -79,6 +79,15 @@ Route::middleware('auth')->group(function () {
 		Route::match(['GET', 'POST'], '/student/import', 'import')->name('student.import');
 	});
 
+	//---------- ATTENDANCE STATUS ROUTES ----------//
+	Route::resource('/attendance-status', AttendanceStatusController::class, ['except' => ['show']]);
+	Route::controller(AttendanceStatusController::class)->group(function(){
+		Route::get('/attendance-status/trash', 'trash')->name('attendance-status.trash');
+		Route::put('/attendance-status/restore/{id}', 'restore')->name('attendance-status.restore');
+		Route::put('/attendance-status/update-status/{id}', 'updateAttendanceStatus')->name('attendance-status.update.status');
+		Route::delete('/attendance-status/delete/{id}', 'delete')->name('attendance-status.delete');
+	});
+
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware('is.super.admin')->group(function () {
 		//---------- USER ROLES ROUTES ----------//

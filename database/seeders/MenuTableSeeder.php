@@ -233,6 +233,41 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 6,
 	        	'name' => 'Export',
 	        	'permission' => 'export-student'
+	        ],
+
+	        // ATTENDANCE STATUS MODULE
+	        [
+	        	'module_id' => 7,
+	        	'name' => 'View',
+	        	'permission' => 'view-attendance-status'
+	        ], [
+	        	'module_id' => 7,
+	        	'name' => 'Create',
+	        	'permission' => 'create-attendance-status'
+	        ], [
+	        	'module_id' => 7,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-attendance-status'
+	        ], [
+	        	'module_id' => 7,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-attendance-status'
+	        ], [
+	        	'module_id' => 7,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-attendance-status'
+	        ], [
+	        	'module_id' => 7,
+	        	'name' => 'View Trash',
+	        	'permission' => 'view-attendance-status'
+	        ], [
+	        	'module_id' => 7,
+	        	'name' => 'Restore',
+	        	'permission' => 'restore-attendance-status'
+	        ], [
+	        	'module_id' => 7,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-attendance-status'
 	        ]
 
     	]);

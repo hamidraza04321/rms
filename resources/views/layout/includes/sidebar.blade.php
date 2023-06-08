@@ -78,6 +78,36 @@
             </ul>
           </li>
         @endcanany
+        <li class="nav-header">Student Attendance</li>
+        @canany(['view-attendance-status', 'create-attendance-status'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create', 'attendance-status.edit', 'attendance-status.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Attendance Status
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-attendance-status')
+                <li class="nav-item">
+                  <a href="{{ route('attendance-status.index') }}" class="nav-link @if(Route::currentRouteName() == 'attendance-status.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-attendance-status')
+                <li class="nav-item">
+                  <a href="{{ route('attendance-status.create') }}" class="nav-link @if(Route::currentRouteName() == 'attendance-status.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcan
         @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
           <li class="nav-header">Academics</li>
         @endcanany
