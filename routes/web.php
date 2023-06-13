@@ -88,6 +88,19 @@ Route::middleware('auth')->group(function () {
 		Route::delete('/attendance-status/delete/{id}', 'delete')->name('attendance-status.delete');
 	});
 
+	//---------- MARK ATTENDANCE ROUTES ----------//
+	Route::controller(MarkAttendanceController::class)->group(function(){
+		Route::get('/mark-attendance', 'index')->name('mark-attendance.index');
+		Route::post('/get-students-attendance-table', 'getStudentsAttendanceTable')->name('get.students.attendance.table');
+		Route::post('/save-student-attendance', 'saveStudentAttendance')->name('save.student.attendance');
+	});
+
+	//---------- MARK ATTENDANCE ROUTES ----------//
+	Route::controller(AttendanceReportController::class)->group(function(){
+		Route::get('/attendance-report', 'index')->name('attendance-report.index');
+		Route::post('/get-students-attendance-report', 'getStudentsAttendanceReport')->name('get.students.attendance.report');
+	});
+
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware('is.super.admin')->group(function () {
 		//---------- USER ROLES ROUTES ----------//

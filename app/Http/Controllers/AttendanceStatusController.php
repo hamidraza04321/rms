@@ -8,6 +8,18 @@ use App\Models\AttendanceStatus;
 
 class AttendanceStatusController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view-attendance-status', [ 'only' => 'index' ]);
+        $this->middleware('permission:create-attendance-status', [ 'only' => [ 'create', 'store' ]]);
+        $this->middleware('permission:edit-attendance-status',   [ 'only' => [ 'edit', 'update' ]]);
+        $this->middleware('permission:delete-attendance-status', [ 'only' => 'destroy' ]);
+        $this->middleware('permission:update-attendance-status', [ 'only' => 'updateSubjectStatus' ]);
+        $this->middleware('permission:view-attendance-status-trash', [ 'only' => 'trash' ]);
+        $this->middleware('permission:restore-attendance-status', [ 'only' => 'restore' ]);
+        $this->middleware('permission:permanent-delete-attendance-status', [ 'only' => 'delete' ]);
+    }
+
     /**
      * Display a listing of the resource.
      *

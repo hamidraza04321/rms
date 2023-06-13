@@ -39,6 +39,10 @@
                     <input type="text" name="short_code" id="short-code" class="form-control" placeholder="Enter Short Code" value="{{ $data['attendance_status']->short_code }}">
                   </div>
                   <div class="form-group">
+                    <label>Color <span class="error">*</span></label>
+                    <input type="color" name="color" id="color" class="form-control" value="{{ $data['attendance_status']->color }}">
+                  </div>
+                  <div class="form-group">
                     <p>The attendance mark in exam days status of the attendance will be show in result card.</p>
                     <div class="form-check">
                       <input name="show_in_result_card" @checked($data['attendance_status']->show_in_result_card) class="form-check-input" id="show-in-result-card" type="checkbox" value="1">

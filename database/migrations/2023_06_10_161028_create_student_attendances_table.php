@@ -13,17 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attendance_statuses', function (Blueprint $table) {
+        Schema::create('student_attendances', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('short_code');
-            $table->string('color');
-            $table->boolean('show_in_result_card')->default('0');
-            $table->boolean('is_active')->default('1');
+            $table->foreignId('student_session_id')->constrained('student_sessions')->onDelete('cascade');
+            $table->foreignId('attendance_status_id')->constrained('attendance_statuses')->onDelete('cascade');
+            $table->date('attendance_date');
+            $table->unique(['student_session_id', 'attendance_date']); 
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attendance_statuses');
+        Schema::dropIfExists('student_attendances');
     }
 };

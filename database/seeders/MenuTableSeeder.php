@@ -259,7 +259,7 @@ class MenuTableSeeder extends Seeder
 	        ], [
 	        	'module_id' => 7,
 	        	'name' => 'View Trash',
-	        	'permission' => 'view-attendance-status'
+	        	'permission' => 'view-attendance-status-trash'
 	        ], [
 	        	'module_id' => 7,
 	        	'name' => 'Restore',

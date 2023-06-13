@@ -19,7 +19,7 @@ class StudentTableSeeder extends Seeder
     	$student_sessions = [];
         
         Student::factory()
-        	->count(5000)
+        	->count(100)
         	->create()
         	->each(function($student) use(&$student_sessions) {
 	    		$class_id = rand(1, 10);

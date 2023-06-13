@@ -92,6 +92,11 @@ class StudentSession extends Model
         return $this->belongsTo(ClassGroup::class, [ 'class_id', 'group_id' ], [ 'class_id', 'group_id' ]);
     }
 
+    public function attendances()
+    {
+        return $this->hasMany(StudentAttendance::class);
+    }
+
     /**
      * The "booted" method of the model.
      *

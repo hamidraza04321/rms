@@ -4,19 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AttendanceStatus extends Model
+class StudentAttendance extends Model
 {
-    use HasFactory,
-    	SoftDeletes;
+    use HasFactory;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'attendance_statuses';
+    protected $table = 'student_attendances';
     
     /**
      * The attributes that are mass assignable.
@@ -24,11 +22,9 @@ class AttendanceStatus extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'short_code',
-        'color',
-        'show_in_result_card',
-        'is_active',
+        'student_session_id',
+        'attendance_status_id',
+        'attendance_date',
     	'created_by',
     	'updated_by'
     ];
@@ -43,4 +39,10 @@ class AttendanceStatus extends Model
     	'created_at',
     	'updated_at'
     ];
+
+    public function attendanceStatus()
+    {
+        return $this->belongsTo(AttendanceStatus::class)
+            ->select([ 'id', 'name', 'short_code', 'color' ]);
+    }
 }

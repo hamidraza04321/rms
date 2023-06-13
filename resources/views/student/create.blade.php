@@ -351,11 +351,13 @@
                       </div>
                     </div>
                   </div>
-                  <button class="btn btn-success" id="btn-save-student">Save</button>
-                  <a class="btn btn-danger" href="{{ route('student.index') }}">Back</a>
                 </form>
               </div>
               <!-- /.card-body -->
+              <div class="card-footer">
+                <button class="btn btn-success" id="btn-save-student">Save</button>
+                <a class="btn btn-danger" href="{{ route('student.index') }}">Back</a>
+              </div>
             </div>
             <!-- /.card -->
           </div>

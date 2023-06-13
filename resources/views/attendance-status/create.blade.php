@@ -39,7 +39,11 @@
                     <input type="text" name="short_code" id="short-code" class="form-control" placeholder="Enter Short Code">
                   </div>
                   <div class="form-group">
-                    <p>The attendance mark in exam days status of the attendance will be show in result card.</p>
+                    <label>Color <span class="error">*</span></label>
+                    <input type="color" name="color" id="color" class="form-control" value="#2ea4ff">
+                  </div>
+                  <div class="form-group">
+                    <p><strong>Note :</strong> The attendance mark in exam days status of the attendance will be show in result card.</p>
                     <div class="form-check">
                       <input class="form-check-input" name="show_in_result_card" id="show-in-result-card" type="checkbox" value="1">
                       <label class="form-check-label" for="show-in-result-card">Show in result card</label>

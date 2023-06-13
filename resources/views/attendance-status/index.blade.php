@@ -43,6 +43,7 @@
                       <th>S No.</th>
                       <th>Name</th>
                       <th>Short Code</th>
+                      <th>Color</th>
                       @can('update-attendance-status')
                         <th>Status</th>
                       @endcan
@@ -57,6 +58,9 @@
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $attendance_status->name }}</td>
                         <td>{{ $attendance_status->short_code }}</td>
+                        <td>
+                          <button class="btn-color" style="background-color: {{ $attendance_status->color }};"></button>
+                        </td>
                         @can('update-attendance-status')
                           <td>
                             @if($attendance_status->is_active)

@@ -35,6 +35,7 @@
                       <th>S No.</th>
                       <th>Name</th>
                       <th>Short Code</th>
+                      <th>Color</th>
                       <th>Deleted At</th>
                       @canany(['restore-attendance-status', 'permanent-delete-attendance-status'])
                         <th>Action</th>
@@ -47,6 +48,9 @@
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $attendance_status->name }}</td>
                         <td>{{ $attendance_status->short_code }}</td>
+                        <td>
+                          <button class="btn-color" style="background-color: {{ $attendance_status->color }};"></button>
+                        </td>
                         <td>{{ $attendance_status->deleted_at->diffForHumans() }}</td>
                         @canany(['restore-attendance-status', 'permanent-delete-attendance-status'])
                           <td>

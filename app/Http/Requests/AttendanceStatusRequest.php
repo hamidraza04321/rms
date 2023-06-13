@@ -42,6 +42,7 @@ class AttendanceStatusRequest extends FormRequest
         return [
             'name' => [ 'required', 'string', 'max:30', Rule::unique('attendance_statuses')->whereNull('deleted_at') ],
             'short_code' => [ 'required', 'string', 'max:5', Rule::unique('attendance_statuses')->whereNull('deleted_at') ],
+            'color' => 'required|string',
             'show_in_result_card' => 'nullable|in:1'
         ];
     }
@@ -54,6 +55,7 @@ class AttendanceStatusRequest extends FormRequest
         return [
             'name' => [ 'required', 'string', 'max:30', Rule::unique('attendance_statuses')->whereNull('deleted_at')->ignore($this->attendance_status) ],
             'short_code' => [ 'required', 'string', 'max:5', Rule::unique('attendance_statuses')->whereNull('deleted_at')->ignore($this->attendance_status) ],
+            'color' => 'required|string',
             'show_in_result_card' => 'nullable|in:1'
         ];
     }

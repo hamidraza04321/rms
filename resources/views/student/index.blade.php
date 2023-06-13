@@ -61,7 +61,7 @@
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Section <span class="error">*</span></label>
+                            <label>Section</label>
                             <select name="section_id" id="section-id" disabled class="select2 form-control">
                               <option value="">Select</option>
                             </select>
@@ -99,9 +99,9 @@
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <button id="btn-search-student" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-search"></i> Search</button>
+                            <button id="btn-search-student" class="btn btn-primary mt-30"><i class="fa fa-search"></i> Search</button>
                             @can('export-student')
-                              <button id="btn-export-student" data-url="{{ route('student.export') }}" class="btn btn-primary" style="margin-top: 30px;"><i class="fa fa-file-export"></i> Export</button>
+                              <button id="btn-export-student" data-url="{{ route('student.export') }}" class="btn btn-primary mt-30"><i class="fa fa-file-export"></i> Export</button>
                             @endcan
                           </div>
                         </div>
