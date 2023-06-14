@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\HasAttendanceStatus;
 
 class StudentAttendance extends Model
 {
@@ -44,5 +45,15 @@ class StudentAttendance extends Model
     {
         return $this->belongsTo(AttendanceStatus::class)
             ->select([ 'id', 'name', 'short_code', 'color' ]);
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        static::addGlobalScope(new HasAttendanceStatus);
     }
 }

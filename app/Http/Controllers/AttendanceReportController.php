@@ -39,19 +39,25 @@ class AttendanceReportController extends Controller
     {
         $attendance_statuses = AttendanceStatus::get();
 
-        // Get Students According to request parameters
-        $where = $request->safe()->except('month');
-        $where['session_id'] = $this->current_session_id;
-
         // Start and End date of month
         $start_date = date('Y-m-01', strtotime($request->month));
         $end_date = date('Y-m-t', strtotime($request->month));
 
-        // Get month dates
+        // Get array of month dates
         $dates = [];
         $period = CarbonPeriod::create($start_date, $end_date);
         foreach ($period as $date) {
             $dates[] = $date->format('Y-m-d');
+        }
+
+        // Get Students According to request parameters
+        $where = $request->safe()->except('month');
+        $where['session_id'] = $this->current_session_id;
+
+        // Making array of attendance percentage
+        $attendance_percentages = [];
+        foreach ($attendance_statuses as $attendance_status) {
+            $attendance_percentages[$attendance_status->id] = 0;
         }
 
         // Get students from Student Session
@@ -59,10 +65,41 @@ class AttendanceReportController extends Controller
             ->with([
                 'student',
                 'attendances' => function($query) use($start_date, $end_date) {
-                    $query->whereBetween('attendance_date', [ $start_date, $end_date ]);
+                    $query->whereBetween('attendance_date', [ $start_date, $end_date ])
+                        ->with('attendanceStatus');
                 }
             ])
-            ->get();
+            ->get()
+            ->map(function($student_session) use($dates, $attendance_percentages) {
+                $attendances = [];
+                foreach ($dates as $date) {
+                    $data = (object)[
+                        'date' => $date,
+                        'short_code' => null,
+                        'color' => null
+                    ];
+
+                    $attendance = $student_session->attendances->where('attendance_date', $date)->first();
+
+                    if ($attendance) {
+                        $data->short_code = $attendance->attendanceStatus->short_code;
+                        $data->color = $attendance->attendanceStatus->color;
+                        $attendance_percentages[$attendance->attendance_status_id] += 1;
+                    }
+
+                    $attendances[] = (object)$data;
+                }
+
+                $attendance_percentage = [];
+                $total_days = count($dates);
+                foreach ($attendance_percentages as $attendance_status_id => $attendance_count) {
+                    $attendance_percentage[$attendance_status_id] = ($attendance_count) ? round($attendance_count * 100 / $total_days, 1) : '0.0';
+                }
+                
+                $student_session['attendances'] = $attendances;
+                $student_session['attendance_percentage'] = $attendance_percentage;
+                return $student_session;
+            });
 
         $data = [
             'attendance_statuses' => $attendance_statuses,

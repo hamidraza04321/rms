@@ -123,4 +123,10 @@ $(document).ready(function() {
             });
         }
     });
+
+    //---------- ON CLICK PRINT BUTTON ----------//
+    $(document).on('click', '#btn-print-attendance-report', function(e) {
+        e.preventDefault();
+        $('#attendance-report').print();
+    });
 });
