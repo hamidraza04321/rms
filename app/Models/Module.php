@@ -23,7 +23,8 @@ class Module extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name'
+        'name',
+        'order_level'
     ];
     
     /**

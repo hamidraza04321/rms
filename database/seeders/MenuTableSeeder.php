@@ -268,8 +268,18 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 7,
 	        	'name' => 'Permanent Delete',
 	        	'permission' => 'permanent-delete-attendance-status'
-	        ]
+	        ],
 
+	        // STUDENT ATTENDANCE MODULE
+	        [
+	        	'module_id' => 8,
+	        	'name' => 'Mark Attendance',
+	        	'permission' => 'mark-attendance'
+	        ], [
+	        	'module_id' => 8,
+	        	'name' => 'Attendance Report',
+	        	'permission' => 'attendance-report'
+	        ]
     	]);
 
     	$menus->each(function($menu){

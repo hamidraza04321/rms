@@ -11,6 +11,16 @@ use Carbon\CarbonPeriod;
 
 class AttendanceReportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:attendance-report', [
+            'only' => [
+                'index', 
+                'getStudentsAttendanceReport'
+            ]
+        ]);
+    }
+
 	/**
      * Display a listing of the resource.
      *

@@ -78,56 +78,64 @@
             </ul>
           </li>
         @endcanany
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create', 'mark-attendance.index', 'attendance-status.trash', 'mark-attendance.index', 'attendance-report.index' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create', 'attendance-status.edit', 'attendance-status.trash', 'mark-attendance.index', 'attendance-report.index' ]))) active @endif">
-            <i class="nav-icon fas fa-user-check"></i>
-            <p>
-              Student Attendance
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create' ]))) menu-open @endif">
-              <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create', 'attendance-status.edit', 'attendance-status.trash' ]))) active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>
-                  Attendance Status
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                @can('view-attendance-status')
-                  <li class="nav-item">
-                    <a href="{{ route('attendance-status.index') }}" class="nav-link @if(Route::currentRouteName() == 'attendance-status.index') active @endif">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Manage</p>
-                    </a>
-                  </li>
-                @endcan
-                @can('create-attendance-status')
-                  <li class="nav-item">
-                    <a href="{{ route('attendance-status.create') }}" class="nav-link @if(Route::currentRouteName() == 'attendance-status.create') active @endif">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Create</p>
-                    </a>
-                  </li>
-                @endcan
-              </ul>
-            </li>
-            <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'mark-attendance.index' ]))) menu-open @endif">
-              <a href="{{ route('mark-attendance.index') }}" class="nav-link @if((in_array(Route::currentRouteName(), [ 'mark-attendance.index' ]))) active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Mark Attendance</p>
-              </a>
-            </li>
-            <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'attendance-report.index' ]))) menu-open @endif">
-              <a href="{{ route('attendance-report.index') }}" class="nav-link @if((in_array(Route::currentRouteName(), [ 'attendance-report.index' ]))) active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Attendance Report</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+        @canany(['view-attendance-status', 'create-attendance-status', 'mark-attendance', 'attendance-report'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create', 'mark-attendance.index', 'attendance-status.trash', 'mark-attendance.index', 'attendance-report.index' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create', 'attendance-status.edit', 'attendance-status.trash', 'mark-attendance.index', 'attendance-report.index' ]))) active @endif">
+              <i class="nav-icon fas fa-user-check"></i>
+              <p>
+                Student Attendance
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @canany(['view-attendance-status', 'create-attendance-status'])
+                <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create' ]))) menu-open @endif">
+                  <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'attendance-status.index', 'attendance-status.create', 'attendance-status.edit', 'attendance-status.trash' ]))) active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>
+                      Attendance Status
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    @can('view-attendance-status')
+                      <li class="nav-item">
+                        <a href="{{ route('attendance-status.index') }}" class="nav-link @if(Route::currentRouteName() == 'attendance-status.index') active @endif">
+                          <i class="far fa-dot-circle nav-icon"></i>
+                          <p>Manage</p>
+                        </a>
+                      </li>
+                    @endcan
+                    @can('create-attendance-status')
+                      <li class="nav-item">
+                        <a href="{{ route('attendance-status.create') }}" class="nav-link @if(Route::currentRouteName() == 'attendance-status.create') active @endif">
+                          <i class="far fa-dot-circle nav-icon"></i>
+                          <p>Create</p>
+                        </a>
+                      </li>
+                    @endcan
+                  </ul>
+                </li>
+              @endcanany
+              @can('mark-attendance')
+                <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'mark-attendance.index' ]))) menu-open @endif">
+                  <a href="{{ route('mark-attendance.index') }}" class="nav-link @if((in_array(Route::currentRouteName(), [ 'mark-attendance.index' ]))) active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Mark Attendance</p>
+                  </a>
+                </li>
+              @endcan
+              @can('attendance-report')
+                <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'attendance-report.index' ]))) menu-open @endif">
+                  <a href="{{ route('attendance-report.index') }}" class="nav-link @if((in_array(Route::currentRouteName(), [ 'attendance-report.index' ]))) active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Attendance Report</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcanany
         @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
           <li class="nav-header">Academics</li>
         @endcanany

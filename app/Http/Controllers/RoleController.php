@@ -33,7 +33,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $modules = Module::with('menus')->get();
+        $modules = Module::with('menus')->orderBy('order_level', 'asc')->get();
 
         $data = [
             'modules' => $modules,
@@ -66,7 +66,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        $modules = Module::with('menus')->get();
+        $modules = Module::with('menus')->orderBy('order_level', 'asc')->get();
         $permissions = $role->permissions->pluck('name')->toArray();
         $menus = $modules->pluck('menus')->collapse()->pluck('permission')->toArray();
         $has_all_permissions = ($permissions == $menus);

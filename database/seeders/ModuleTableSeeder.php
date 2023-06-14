@@ -16,13 +16,38 @@ class ModuleTableSeeder extends Seeder
     public function run()
     {
         $modules = collect([
-            [ 'name' => 'Session' ],
-            [ 'name' => 'Class' ],
-            [ 'name' => 'Section' ],
-            [ 'name' => 'Group' ],
-            [ 'name' => 'Subject' ],
-            [ 'name' => 'Student' ],
-            [ 'name' => 'Attendance Status' ]
+            [
+                'name' => 'Session',
+                'order_level' => 1
+            ],
+            [
+                'name' => 'Class',
+                'order_level' => 2
+            ],
+            [ 
+                'name' => 'Section',
+                'order_level' => 3
+            ],
+            [
+                'name' => 'Group',
+                'order_level' => 4
+            ],
+            [
+                'name' => 'Subject',
+                'order_level' => 5
+            ],
+            [
+                'name' => 'Student', 
+                'order_level' => 6
+            ],
+            [
+                'name' => 'Attendance Status',
+                'order_level' => 7
+            ],
+            [
+                'name' => 'Student Attendance',
+                'order_level' => 8
+            ]
         ]);
 
         $modules->each(function($module) {

@@ -89,6 +89,10 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'restore-attendance-status' ],
             [ 'name' => 'permanent-delete-attendance-status' ],
 
+            // STUDENT ATTENDANCE
+            [ 'name' => 'mark-attendance' ],
+            [ 'name' => 'attendance-report' ]
+
         ]);
 
         $permissions->each(function($permission) {

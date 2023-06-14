@@ -10,6 +10,17 @@ use App\Models\Classes;
 
 class MarkAttendanceController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:mark-attendance', [
+            'only' => [
+                'index', 
+                'getStudentsAttendanceTable', 
+                'saveStudentAttendance'
+            ]
+        ]);
+    }
+
 	/**
      * Display a listing of the resource.
      *
