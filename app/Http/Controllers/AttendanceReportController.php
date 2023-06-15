@@ -13,6 +13,7 @@ class AttendanceReportController extends Controller
 {
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('permission:attendance-report', [
             'only' => [
                 'index', 

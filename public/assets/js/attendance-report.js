@@ -127,6 +127,33 @@ $(document).ready(function() {
     //---------- ON CLICK PRINT BUTTON ----------//
     $(document).on('click', '#btn-print-attendance-report', function(e) {
         e.preventDefault();
-        $('#attendance-report').print();
+        var table = $('#attendance-report').html();
+        var printWindow = window.open('', '_blank', '');
+        printWindow.document.open();
+        printWindow.document.write(`
+            <html>
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+                <title>Attendance Report</title>
+            </head>
+            <style>
+                .no-wrap {
+                    white-space: nowrap;
+                }
+                @page {
+                    size: landscape;
+                }
+                .table td, .table th {
+                    padding: 5px;
+                }
+            </style>
+            <body onload="window.print();">
+                ${table}
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
     });
 });
