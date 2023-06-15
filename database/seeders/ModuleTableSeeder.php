@@ -47,6 +47,10 @@ class ModuleTableSeeder extends Seeder
             [
                 'name' => 'Student Attendance',
                 'order_level' => 8
+            ],
+            [
+                'name' => 'Exams',
+                'order_level' => 9
             ]
         ]);
 

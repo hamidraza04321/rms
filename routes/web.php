@@ -95,10 +95,19 @@ Route::middleware('auth')->group(function () {
 		Route::post('/save-student-attendance', 'saveStudentAttendance')->name('save.student.attendance');
 	});
 
-	//---------- MARK ATTENDANCE ROUTES ----------//
+	//---------- ATTENDANCE REPORT ROUTES ----------//
 	Route::controller(AttendanceReportController::class)->group(function(){
 		Route::get('/attendance-report', 'index')->name('attendance-report.index');
 		Route::post('/get-students-attendance-report', 'getStudentsAttendanceReport')->name('get.students.attendance.report');
+	});
+
+	//---------- EXAM ROUTES ----------//
+	Route::resource('/exam', ExamController::class, ['except' => ['show']]);
+	Route::controller(ExamController::class)->group(function(){
+		Route::get('/exam/trash', 'trash')->name('exam.trash');
+		Route::put('/exam/restore/{id}', 'restore')->name('exam.restore');
+		Route::put('/exam/update-status/{id}', 'updateExamStatus')->name('exam.update.status');
+		Route::delete('/exam/delete/{id}', 'delete')->name('exam.delete');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//

@@ -75,11 +75,8 @@ class ClassController extends Controller
      */
     public function store(ClassRequest $request)
     {
-        // CREATE CLASS
-        $class = Classes::withoutGlobalScope(ActiveScope::class)
-            ->create([
-                'name' => $request->name 
-            ]);
+        // Create class
+        $class = Classes::create([ 'name' => $request->name ]);
         
         // Save class section
         collect($request->section_id)
@@ -174,7 +171,7 @@ class ClassController extends Controller
                     ])->restore();
                 });
 
-            // Svae class groups
+            // Save class groups
             collect($request->group_id)
                 ->each(function($group_id) use($class) {
                     ClassGroup::withTrashed()->firstOrCreate([
@@ -183,7 +180,7 @@ class ClassController extends Controller
                     ])->restore();
                 });
 
-            // Svae class subjects
+            // Save class subjects
             collect($request->subject_id)
                 ->each(function($subject_id) use($class) {
                     ClassSubject::withTrashed()->firstOrCreate([

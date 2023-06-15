@@ -136,10 +136,42 @@
             </ul>
           </li>
         @endcanany
+        @canany(['view-exam', 'create-exam'])
+          <li class="nav-header">Examination</li>
+        @endcanany
+        @canany(['view-exam', 'create-exam'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'exam.index', 'exam.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'exam.index', 'exam.create', 'exam.edit', 'exam.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-file-signature"></i>
+              <p>
+                Exams
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-exam')
+                <li class="nav-item">
+                  <a href="{{ route('exam.index') }}" class="nav-link @if(Route::currentRouteName() == 'exam.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-exam')
+                <li class="nav-item">
+                  <a href="{{ route('exam.create') }}" class="nav-link @if(Route::currentRouteName() == 'exam.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcanany
         @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
           <li class="nav-header">Academics</li>
         @endcanany
-        @canany(['view-class', 'create-class'])
+        @canany(['view-session', 'create-session'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'session.index', 'session.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'session.index', 'session.create', 'session.edit', 'session.trash' ]))) active @endif">
               <i class="nav-icon fas fa-calendar"></i>
@@ -149,7 +181,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @can('view-class')
+              @can('view-session')
                 <li class="nav-item">
                   <a href="{{ route('session.index') }}" class="nav-link @if(Route::currentRouteName() == 'session.index') active @endif">
                     <i class="far fa-circle nav-icon"></i>
@@ -157,7 +189,7 @@
                   </a>
                 </li>
               @endcan
-              @can('create-class')
+              @can('create-session')
                 <li class="nav-item">
                   <a href="{{ route('session.create') }}" class="nav-link @if(Route::currentRouteName() == 'session.create') active @endif">
                     <i class="far fa-circle nav-icon"></i>
@@ -167,6 +199,8 @@
               @endcan
             </ul>
           </li>
+        @endcanany
+        @canany(['view-class', 'create-class'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'class.index', 'class.create', 'class.edit', 'class.trash' ]))) active @endif">
               <i class="nav-icon fas fa-users-cog"></i>

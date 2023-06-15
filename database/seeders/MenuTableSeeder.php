@@ -279,7 +279,42 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 8,
 	        	'name' => 'Attendance Report',
 	        	'permission' => 'attendance-report'
-	        ]
+	        ],
+
+	        // EXAM MODULE
+	        [
+	        	'module_id' => 9,
+	        	'name' => 'View',
+	        	'permission' => 'view-exam'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'Create',
+	        	'permission' => 'create-exam'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-exam'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-exam'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-exam-status'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'View Trash',
+	        	'permission' => 'view-exam-trash'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'Restore',
+	        	'permission' => 'restore-exam'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-exam'
+	        ],
     	]);
 
     	$menus->each(function($menu){
