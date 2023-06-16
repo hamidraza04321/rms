@@ -117,27 +117,3 @@ $(document).on('change', '.custom-file-input', function(e) {
 		$(this).siblings('label').html(filename);
 	}
 });
-
-//---------- THEME SETTINGS SET IN LOACAL STOREAGE ----------//
-
-// DARK MODE
-var $checkbox_dark_mode = $('.checkbox-dark-mode');
-	$body = $('body');
-
-$checkbox_dark_mode.on('change', function() {
-    if ($(this).is(':checked')) {
-    	localStorage.setItem('theme', 'dark');
-    } else {
-    	localStorage.setItem('theme', 'default');
-    }
-});
-
-var theme = localStorage.getItem("theme");
-
-if (theme == 'dark') {
-	$checkbox_dark_mode.prop('checked', true);
-    $body.addClass('dark-mode');
-} else {
-	$checkbox_dark_mode.prop('checked', false);
-    $body.removeClass('dark-mode');
-}

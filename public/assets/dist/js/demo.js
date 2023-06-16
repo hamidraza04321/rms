@@ -63,16 +63,173 @@
     '<h5>Customize AdminLTE</h5><hr class="mb-2"/>'
   )
 
+  var theme = localStorage.getItem("theme")
+  var fixed_header = localStorage.getItem("fixed_header")
+  var dropdown_legacy = localStorage.getItem("dropdown_legacy")
+  var navbar_border = localStorage.getItem("navbar_border")
+  var sidebar_collapse = localStorage.getItem("sidebar_collapse")
+  var fixed_sidebar = localStorage.getItem("fixed_sidebar")
+  var mini_sidebar = localStorage.getItem("mini_sidebar")
+  var mini_sidebar_md = localStorage.getItem("mini_sidebar_md")
+  var mini_sidebar_xs = localStorage.getItem("mini_sidebar_xs")
+  var navbar_flat_style = localStorage.getItem("navbar_flat_style")
+  var navbar_legacy = localStorage.getItem("navbar_legacy")
+  var navbar_compact = localStorage.getItem("navbar_compact")
+  var navbar_child_intent = localStorage.getItem("navbar_child_intent")
+  var navbar_collapse_hide_child = localStorage.getItem("navbar_collapse_hide_child")
+  var sidebar_no_expand = localStorage.getItem("sidebar_no_expand")
+  var fixed_footer = localStorage.getItem("fixed_footer")
+  var body_text_sm = localStorage.getItem("body_text_sm")
+  var header_text_sm = localStorage.getItem("header_text_sm")
+  var brand_link_text_sm = localStorage.getItem("brand_link_text_sm")
+  var nav_sidebar_text_sm = localStorage.getItem("nav_sidebar_text_sm")
+  var footer_text_sm = localStorage.getItem("footer_text_sm")
+  var body = $('body')
+  var navbar = $('nav')
+  var nav_sidebar = $('.nav-sidebar')
+  var main_sidebar = $('.main-sidebar')
+  var main_header = $('.main-header')
+  var brand_link = $('.brand-link')
+  var main_footer = $('.main-footer')
+
+  if (theme == 'dark') {
+    body.addClass('dark-mode')
+  } else {
+    body.removeClass('dark-mode')
+  }
+
+  if (fixed_header == 'true') {
+      body.addClass('layout-navbar-fixed')
+  } else {
+      body.removeClass('layout-navbar-fixed')
+  }
+
+  if (dropdown_legacy == 'true') {
+    navbar.addClass('dropdown-legacy')
+  } else {
+    navbar.removeClass('dropdown-legacy')
+  }
+
+  if (navbar_border == 'true') {
+    navbar.addClass('border-bottom-0')
+  } else {
+    navbar.removeClass('border-bottom-0')
+  }
+
+  if (sidebar_collapse == 'true') {
+    body.addClass('sidebar-collapse')
+  } else {
+    body.removeClass('sidebar-collapse')
+  }
+
+  if (fixed_sidebar == 'true') {
+    body.addClass('layout-fixed')
+  } else {
+    body.removeClass('layout-fixed')
+  }
+
+  if (mini_sidebar == 'true') {
+    body.addClass('sidebar-mini')
+  } else {
+    body.removeClass('sidebar-mini')
+  }
+
+  if (mini_sidebar_md == 'true') {
+    body.addClass('sidebar-mini-md')
+  } else {
+    body.removeClass('sidebar-mini-md')
+  }
+
+  if (mini_sidebar_xs == 'true') {
+    body.addClass('sidebar-mini-xs')
+  } else {
+    body.removeClass('sidebar-mini-xs')
+  }
+
+  if (navbar_flat_style == 'true') {
+    nav_sidebar.addClass('nav-flat')
+  } else {
+    nav_sidebar.removeClass('nav-flat')
+  }
+
+  if (navbar_legacy == 'true') {
+    nav_sidebar.addClass('nav-legacy')
+  } else {
+    nav_sidebar.removeClass('nav-legacy')
+  }
+
+  if (navbar_compact == 'true') {
+    nav_sidebar.addClass('nav-compact')
+  } else {
+    nav_sidebar.removeClass('nav-compact')
+  }
+
+  if (navbar_child_intent == 'true') {
+    nav_sidebar.addClass('nav-child-indent')
+  } else {
+    nav_sidebar.removeClass('nav-child-indent')
+  }
+
+  if (navbar_collapse_hide_child == 'true') {
+    nav_sidebar.addClass('nav-collapse-hide-child')
+  } else {
+    nav_sidebar.removeClass('nav-collapse-hide-child')
+  }
+
+  if (sidebar_no_expand == 'true') {
+    main_sidebar.addClass('sidebar-no-expand')
+  } else {
+    main_sidebar.removeClass('sidebar-no-expand')
+  }
+
+  if (fixed_footer == 'true') {
+    body.addClass('layout-footer-fixed')
+  } else {
+    body.removeClass('layout-footer-fixed')
+  }
+
+  if (body_text_sm == 'true') {
+    body.addClass('text-sm')
+  } else {
+    body.removeClass('text-sm')
+  }
+
+  if (header_text_sm == 'true') {
+    main_header.addClass('text-sm')
+  } else {
+    main_header.removeClass('text-sm')
+  }
+
+  if (brand_link_text_sm == 'true') {
+    brand_link.addClass('text-sm')
+  } else {
+    brand_link.removeClass('text-sm')
+  }
+
+  if (nav_sidebar_text_sm == 'true') {
+    nav_sidebar.addClass('text-sm')
+  } else {
+    nav_sidebar.removeClass('text-sm')
+  }
+
+  if (footer_text_sm == 'true') {
+    main_footer.addClass('text-sm')
+  } else {
+    main_footer.removeClass('text-sm')
+  }
+
   var $dark_mode_checkbox = $('<input />', {
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('dark-mode'),
-    class: 'mr-1 checkbox-dark-mode'
+    class: 'mr-1'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('dark-mode')
+      localStorage.setItem('theme', 'dark')
     } else {
       $('body').removeClass('dark-mode')
+      localStorage.setItem('theme', 'default')
     }
   })
   var $dark_mode_container = $('<div />', { class: 'mb-4' }).append($dark_mode_checkbox).append('<span>Dark Mode</span>')
@@ -87,8 +244,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('layout-navbar-fixed')
+      localStorage.setItem('fixed_header', true)
     } else {
       $('body').removeClass('layout-navbar-fixed')
+      localStorage.setItem('fixed_header', true)
     }
   })
   var $header_fixed_container = $('<div />', { class: 'mb-1' }).append($header_fixed_checkbox).append('<span>Fixed</span>')
@@ -102,8 +261,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-header').addClass('dropdown-legacy')
+      localStorage.setItem('dropdown_legacy', true);
     } else {
       $('.main-header').removeClass('dropdown-legacy')
+      localStorage.setItem('dropdown_legacy', false);
     }
   })
   var $dropdown_legacy_offset_container = $('<div />', { class: 'mb-1' }).append($dropdown_legacy_offset_checkbox).append('<span>Dropdown Legacy Offset</span>')
@@ -117,8 +278,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-header').addClass('border-bottom-0')
+      localStorage.setItem('navbar_border', true)
     } else {
       $('.main-header').removeClass('border-bottom-0')
+      localStorage.setItem('navbar_border', true)
     }
   })
   var $no_border_container = $('<div />', { class: 'mb-4' }).append($no_border_checkbox).append('<span>No border</span>')
@@ -135,9 +298,11 @@
     if ($(this).is(':checked')) {
       $('body').addClass('sidebar-collapse')
       $(window).trigger('resize')
+      localStorage.setItem('sidebar_collapse', true)
     } else {
       $('body').removeClass('sidebar-collapse')
       $(window).trigger('resize')
+      localStorage.setItem('sidebar_collapse', false)
     }
   })
   var $sidebar_collapsed_container = $('<div />', { class: 'mb-1' }).append($sidebar_collapsed_checkbox).append('<span>Collapsed</span>')
@@ -159,9 +324,11 @@
     if ($(this).is(':checked')) {
       $('body').addClass('layout-fixed')
       $(window).trigger('resize')
+      localStorage.setItem('fixed_sidebar', true)
     } else {
       $('body').removeClass('layout-fixed')
       $(window).trigger('resize')
+      localStorage.setItem('fixed_sidebar', true)
     }
   })
   var $sidebar_fixed_container = $('<div />', { class: 'mb-1' }).append($sidebar_fixed_checkbox).append('<span>Fixed</span>')
@@ -175,8 +342,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('sidebar-mini')
+      localStorage.setItem('mini_sidebar', true)
     } else {
       $('body').removeClass('sidebar-mini')
+      localStorage.setItem('mini_sidebar', false)
     }
   })
   var $sidebar_mini_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_checkbox).append('<span>Sidebar Mini</span>')
@@ -190,8 +359,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('sidebar-mini-md')
+      localStorage.setItem('mini_sidebar_md', true)
     } else {
       $('body').removeClass('sidebar-mini-md')
+      localStorage.setItem('mini_sidebar_md', false)
     }
   })
   var $sidebar_mini_md_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_md_checkbox).append('<span>Sidebar Mini MD</span>')
@@ -205,8 +376,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('sidebar-mini-xs')
+      localStorage.setItem('mini_sidebar_xs', true)
     } else {
       $('body').removeClass('sidebar-mini-xs')
+      localStorage.setItem('mini_sidebar_xs', false)
     }
   })
   var $sidebar_mini_xs_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_xs_checkbox).append('<span>Sidebar Mini XS</span>')
@@ -220,8 +393,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-flat')
+      localStorage.setItem('navbar_flat_style', true)
     } else {
       $('.nav-sidebar').removeClass('nav-flat')
+      localStorage.setItem('navbar_flat_style', false)
     }
   })
   var $flat_sidebar_container = $('<div />', { class: 'mb-1' }).append($flat_sidebar_checkbox).append('<span>Nav Flat Style</span>')
@@ -235,8 +410,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-legacy')
+      localStorage.setItem('navbar_legacy', true)
     } else {
       $('.nav-sidebar').removeClass('nav-legacy')
+      localStorage.setItem('navbar_legacy', false)
     }
   })
   var $legacy_sidebar_container = $('<div />', { class: 'mb-1' }).append($legacy_sidebar_checkbox).append('<span>Nav Legacy Style</span>')
@@ -250,8 +427,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-compact')
+      localStorage.setItem('navbar_compact', true)
     } else {
       $('.nav-sidebar').removeClass('nav-compact')
+      localStorage.setItem('navbar_compact', false)
     }
   })
   var $compact_sidebar_container = $('<div />', { class: 'mb-1' }).append($compact_sidebar_checkbox).append('<span>Nav Compact</span>')
@@ -265,8 +444,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-child-indent')
+      localStorage.setItem('navbar_child_intent', true)
     } else {
       $('.nav-sidebar').removeClass('nav-child-indent')
+      localStorage.setItem('navbar_child_intent', false)
     }
   })
   var $child_indent_sidebar_container = $('<div />', { class: 'mb-1' }).append($child_indent_sidebar_checkbox).append('<span>Nav Child Indent</span>')
@@ -280,8 +461,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-collapse-hide-child')
+      localStorage.setItem('navbar_collapse_hide_child', true)
     } else {
       $('.nav-sidebar').removeClass('nav-collapse-hide-child')
+      localStorage.setItem('navbar_collapse_hide_child', false)
     }
   })
   var $child_hide_sidebar_container = $('<div />', { class: 'mb-1' }).append($child_hide_sidebar_checkbox).append('<span>Nav Child Hide on Collapse</span>')
@@ -295,8 +478,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-sidebar').addClass('sidebar-no-expand')
+      localStorage.setItem('sidebar_no_expand', true)
     } else {
       $('.main-sidebar').removeClass('sidebar-no-expand')
+      localStorage.setItem('sidebar_no_expand', false)
     }
   })
   var $no_expand_sidebar_container = $('<div />', { class: 'mb-4' }).append($no_expand_sidebar_checkbox).append('<span>Disable Hover/Focus Auto-Expand</span>')
@@ -311,8 +496,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('layout-footer-fixed')
+      localStorage.setItem('fixed_footer', true)
     } else {
       $('body').removeClass('layout-footer-fixed')
+      localStorage.setItem('fixed_footer', false)
     }
   })
   var $footer_fixed_container = $('<div />', { class: 'mb-4' }).append($footer_fixed_checkbox).append('<span>Fixed</span>')
@@ -328,8 +515,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('text-sm')
+      localStorage.setItem('body_text_sm', true)
     } else {
       $('body').removeClass('text-sm')
+      localStorage.setItem('body_text_sm', false)
     }
   })
   var $text_sm_body_container = $('<div />', { class: 'mb-1' }).append($text_sm_body_checkbox).append('<span>Body</span>')
@@ -343,8 +532,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-header').addClass('text-sm')
+      localStorage.setItem('header_text_sm', true)
     } else {
       $('.main-header').removeClass('text-sm')
+      localStorage.setItem('header_text_sm', false)
     }
   })
   var $text_sm_header_container = $('<div />', { class: 'mb-1' }).append($text_sm_header_checkbox).append('<span>Navbar</span>')
@@ -358,8 +549,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.brand-link').addClass('text-sm')
+      localStorage.setItem('brand_link_text_sm', true)
     } else {
       $('.brand-link').removeClass('text-sm')
+      localStorage.setItem('brand_link_text_sm', false)
     }
   })
   var $text_sm_brand_container = $('<div />', { class: 'mb-1' }).append($text_sm_brand_checkbox).append('<span>Brand</span>')
@@ -373,8 +566,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('text-sm')
+      localStorage.setItem('nav_sidebar_text_sm', true)
     } else {
       $('.nav-sidebar').removeClass('text-sm')
+      localStorage.setItem('nav_sidebar_text_sm', false)
     }
   })
   var $text_sm_sidebar_container = $('<div />', { class: 'mb-1' }).append($text_sm_sidebar_checkbox).append('<span>Sidebar Nav</span>')
@@ -388,8 +583,10 @@
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-footer').addClass('text-sm')
+      localStorage.setItem('footer_text_sm', true)
     } else {
       $('.main-footer').removeClass('text-sm')
+      localStorage.setItem('footer_text_sm', false)
     }
   })
   var $text_sm_footer_container = $('<div />', { class: 'mb-4' }).append($text_sm_footer_checkbox).append('<span>Footer</span>')
