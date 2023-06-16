@@ -29,15 +29,15 @@ $(document).ready(function() {
                             $.each(response.sections, function(key, value) {
                                 sections += '<option value="'+value.id+'">'+value.name+'</option>';
                             });
-
-                            $('#section-id').prop('disabled', false).html(sections);
                         }
+
+                        $('#section-id').prop('disabled', false).html(sections);
 
                         if (response.groups.length) {
                             $.each(response.groups, function(key, value) {
                                 groups += '<option value="'+value.id+'">'+value.name+'</option>';
                             });
-
+                            
                             $('#group-id').prop('disabled', false).html(groups);
                         }
                     } else {

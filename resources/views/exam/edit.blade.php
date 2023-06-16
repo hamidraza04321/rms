@@ -31,6 +31,15 @@
               <div class="card-body">
                 <form action="{{ route('exam.update', $data['exam']->id) }}" id="update-exam-form">
                   <div class="form-group">
+                    <label>Session <span class="error">*</span></label>
+                    <select name="session_id" id="session-id" class="select2 form-control">
+                      <option value="">Select</option>
+                      @foreach($data['sessions'] as $session)
+                        <option @selected($data['exam']->session_id == $session->id) value="{{ $session->id }}">{{ $session->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group">
                     <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Exam Name" value="{{ $data['exam']->name }}">
                   </div>

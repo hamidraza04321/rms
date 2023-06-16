@@ -7,7 +7,9 @@ use App\Rules\{
     SectionRule,
     GroupRule,
     UniqueAdmissionNoRule,
-    UniqueClassRollNoRule
+    UniqueClassRollNoRule,
+    ExamNameRule,
+    ExamRule
 };
 
 trait CustomValidationTrait
@@ -89,6 +91,33 @@ trait CustomValidationTrait
             'required',
             'max:20',
             new UniqueClassRollNoRule($class_id, $session_id, $student_id) // $student_id For ignore in update
+        ];
+    }
+
+    /**
+     * Define Rule For Exam Name.
+     *
+     * @return array
+     */
+    public function examNameRule($session_id, $exam_id = null)
+    {
+        return [
+            'required',
+            'max:30',
+            new ExamNameRule($session_id, $exam_id)
+        ];
+    }
+
+    /**
+     * Define Rule For Exam.
+     *
+     * @return array
+     */
+    public function examRule()
+    {
+        return [
+            'required',
+            new ExamRule()
         ];
     }
 }

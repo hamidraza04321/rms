@@ -167,6 +167,29 @@
               @endcan
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-file-signature"></i>
+              <p>
+                Exam Schedule
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('exam-schedule.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('exam-schedule.create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         @endcanany
         @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
           <li class="nav-header">Academics</li>

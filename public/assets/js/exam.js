@@ -8,10 +8,16 @@ $(document).ready(function() {
 
 		var self = $(this);
 			self_html = self.html();
+			session_id = $('#session-id').val();
 			name = $('#name').val();
 			class_id = $('#class-id').val();
 			message = '';
 			flag = true;
+
+		if (session_id == '') {
+            $("#session-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
 
 		if (name == '') {
 			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
@@ -62,10 +68,16 @@ $(document).ready(function() {
 
 		var self = $(this);
 			self_html = self.html();
+			session_id = $('#session-id').val();
 			name = $('#name').val();
 			class_id = $('#class-id').val();
 			message = '';
 			flag = true;
+
+		if (session_id == '') {
+            $("#session-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
 
 		if (name == '') {
 			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');

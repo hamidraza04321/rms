@@ -6,6 +6,7 @@ use App\Models\Scopes\ActiveScope;
 use App\Http\Requests\ExamRequest;
 use App\Models\Exam;
 use App\Models\Classes;
+use App\Models\Session;
 use App\Models\ExamClass;
 
 class ExamController extends Controller
@@ -30,7 +31,7 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::withoutGlobalScope(ActiveScope::class)->get();
+        $exams = Exam::withoutGlobalScope(ActiveScope::class)->with('session')->get();
 
         $data = [
             'exams' => $exams,
@@ -49,9 +50,11 @@ class ExamController extends Controller
     public function create()
     {
         $classes = Classes::get();
+        $sessions = Session::get();
 
         $data = [
             'classes' => $classes,
+            'sessions' => $sessions,
             'page_title' => 'Create Exam',
             'menu' => 'Exams'
         ];
@@ -68,7 +71,6 @@ class ExamController extends Controller
     public function store(ExamRequest $request)
     {
         $data = $request->safe()->except('class_id');
-        $data['session_id'] = $this->current_session_id;
         $exam = Exam::create($data);
 
         // Save Exam Classes
@@ -97,11 +99,13 @@ class ExamController extends Controller
     {
         $exam = Exam::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $class_ids = $exam->classes->pluck('class_id')->toArray();
+        $sessions = Session::get();
         $classes = Classes::get();
 
         $data = [
             'exam' => $exam,
             'classes' => $classes,
+            'sessions' => $sessions,
             'class_ids' => $class_ids,
             'page_title' => 'Edit Exam',
             'menu' => 'Exams'
@@ -197,6 +201,7 @@ class ExamController extends Controller
             // Check if exam exists with this name
             $exists = Exam::withoutGlobalScope(ActiveScope::class)
                 ->where('name', $exam->name)
+                ->where('session_id', $exam->session_id)
                 ->exists();
 
             if (!$exists) {
@@ -204,7 +209,7 @@ class ExamController extends Controller
                 return response()->successMessage('Exam Restored Successfully !');
             }
 
-            return response()->errorMessage("The Exam {$exam->name} has already exists !");
+            return response()->errorMessage("The Exam ( {$exam->name} ) has already exists !");
         }
 
         return response()->errorMessage('Exam not Found !');
@@ -247,5 +252,37 @@ class ExamController extends Controller
         }
 
         return response()->errorMessage('Exam not Found !');
+    }
+
+    /**
+     * Get Exams By session.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getExamsBySession(ExamRequest $request)
+    {
+        $exams = Exam::where('session_id', $request->session_id)
+            ->get([ 'id', 'name' ]);
+        
+        return response()->success([
+            'exams' => $exams
+        ]);
+    }
+
+    /**
+     * Get Exam Classes.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getExamClasses(ExamRequest $request)
+    {
+        $classes = ExamClass::where('exam_id', $request->exam_id)
+            ->with('class')
+            ->get()
+            ->pluck('class');
+        
+        return response()->success([
+            'classes' => $classes
+        ]);
     }
 }

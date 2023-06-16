@@ -13,6 +13,8 @@ use App\Models\StudentSession;
 use App\Models\AttendanceStatus;
 use App\Models\StudentAttendance;
 use App\Models\Exam;
+use App\Models\ExamSchedule;
+use App\Models\ExamScheduleCategory;
 use App\Observers\SectionObserver;
 use App\Observers\SessionObserver;
 use App\Observers\GroupObserver;
@@ -24,6 +26,8 @@ use App\Observers\StudentSessionObserver;
 use App\Observers\AttendanceStatusObserver;
 use App\Observers\StudentAttendanceObserver;
 use App\Observers\ExamObserver;
+use App\Observers\ExamScheduleObserver;
+use App\Observers\ExamScheduleCategoryObserver;
 use Illuminate\Support\Facades\View;
 use App\Settings\GeneralSettings;
 
@@ -57,6 +61,8 @@ class AppServiceProvider extends ServiceProvider
         AttendanceStatus::observe(AttendanceStatusObserver::class);
         StudentAttendance::observe(StudentAttendanceObserver::class);
         Exam::observe(ExamObserver::class);
+        ExamSchedule::observe(ExamScheduleObserver::class);
+        ExamScheduleCategory::observe(ExamScheduleCategoryObserver::class);
 
         // GENERAL SETTINGS TO ALL VIEW
         $settings = new GeneralSettings;

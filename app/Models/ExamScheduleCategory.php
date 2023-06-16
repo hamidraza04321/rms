@@ -5,22 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\ActiveScopeTrait;
-use App\Traits\CurrentSessionTrait;
 
-class Exam extends Model
+class ExamScheduleCategory extends Model
 {
     use HasFactory,
-    	SoftDeletes,
-        ActiveScopeTrait,
-        CurrentSessionTrait;
+    	SoftDeletes;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'exams';
+    protected $table = 'exam_schedule_categories';
     
     /**
      * The attributes that are mass assignable.
@@ -28,10 +24,10 @@ class Exam extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'session_id',
+        'exam_schedule_id',
         'name',
-        'description',
-        'is_active',
+        'marks',
+        'is_grade',
     	'created_by',
     	'updated_by'
     ];
@@ -46,14 +42,4 @@ class Exam extends Model
     	'created_at',
     	'updated_at'
     ];
-
-    public function session()
-    {
-        return $this->belongsTo(Session::class);
-    }
-
-    public function classes()
-    {
-        return $this->hasMany(ExamClass::class, 'exam_id');
-    }
 }

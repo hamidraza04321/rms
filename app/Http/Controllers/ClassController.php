@@ -312,13 +312,9 @@ class ClassController extends Controller
     {
         $class = Classes::find($request->class_id);
 
-        if ($class) {
-            return response()->success([
-                'sections' => $class->sections->pluck('section'),
-                'groups' => $class->groups->pluck('group')
-            ]);
-        }
-
-        return response()->errorMessage('Class not Found !');
+        return response()->success([
+            'sections' => $class->sections->pluck('section'),
+            'groups' => $class->groups->pluck('group')
+        ]);
     }
 }

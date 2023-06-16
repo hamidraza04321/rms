@@ -105,10 +105,15 @@ Route::middleware('auth')->group(function () {
 	Route::resource('/exam', ExamController::class, ['except' => ['show']]);
 	Route::controller(ExamController::class)->group(function(){
 		Route::get('/exam/trash', 'trash')->name('exam.trash');
+		Route::get('/exam/get-exams-by-session', 'getExamsBySession')->name('get.exams.by.session');
+		Route::get('/exam/get-exam-classes', 'getExamClasses')->name('get.exam.classes');
 		Route::put('/exam/restore/{id}', 'restore')->name('exam.restore');
 		Route::put('/exam/update-status/{id}', 'updateExamStatus')->name('exam.update.status');
 		Route::delete('/exam/delete/{id}', 'delete')->name('exam.delete');
 	});
+
+	//---------- EXAM SCHEDULE ROUTES ----------//
+	Route::resource('/exam-schedule', ExamScheduleController::class, ['except' => ['show']]);
 
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware('is.super.admin')->group(function () {

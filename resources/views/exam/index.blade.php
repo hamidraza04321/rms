@@ -41,6 +41,7 @@
                   <thead>
                     <tr>
                       <th>S No.</th>
+                      <th>Session</th>
                       <th>Name</th>
                       @can('update-exam-status')
                         <th>Status</th>
@@ -54,6 +55,7 @@
                     @foreach($data['exams'] as $exam)
                       <tr>
                         <td>{{ ++$loop->index }}</td>
+                        <td>{{ $exam->session->name }}</td>
                         <td>{{ $exam->name }}</td>
                         @can('update-exam-status')
                           <td>
