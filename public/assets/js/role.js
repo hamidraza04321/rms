@@ -168,4 +168,53 @@ $(document).ready(function() {
 			});
 		}
 	});
+
+	//---------- ON CLICK DELETE ROLE ----------//
+	$(document).on('click', '.btn-delete-role', function(e) {
+		e.preventDefault();
+		removeErrorMessages();
+
+		var self = $(this);
+			self_html = self.html();
+			url = self.attr('data-url');
+			message = '';
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		 	if (result.isConfirmed) {
+		 		// BUTTON LOADING
+				self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
+		 		$.ajax({
+		 			url: url,
+		 			type: 'DELETE',
+		 			success: function(response) {
+		 				if (response.status == true) {
+		 					var table = $('#role-table').DataTable();
+		 					table.row(self.parents('tr')).remove().draw();
+		 					toastr.success(response.message);
+		 				} else {
+		 					message = errorMessage(response.message);
+		 				}
+		 			},
+		 			error: function() {
+		 				message = errorMessage();
+		 			},
+		 			complete: function() {
+		 				if (message != '') {
+		 					showAlertInTop(message);
+		 					self.removeClass('disabled').html(self_html);
+		 				}
+		 			}
+		 		});
+		  	}
+		});
+	});
 });

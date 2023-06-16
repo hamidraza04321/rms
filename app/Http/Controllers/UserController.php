@@ -86,7 +86,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-        $role_id = $user->roles->first()->id;
+        $role_id = $user->roles->first()?->id;
         $roles = Role::where('name', '!=', 'Super Admin')->get();
         $classes = Classes::with('sections', 'groups', 'subjects')->get();
 
