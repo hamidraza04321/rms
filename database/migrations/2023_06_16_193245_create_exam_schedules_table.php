@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('cascade');
             $table->date('exam_date');
             $table->string('type');
-            $table->integer('total_marks')->nullable();
+            $table->integer('marks')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();

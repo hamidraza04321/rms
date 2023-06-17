@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ExamScheduleRequest;
 use App\Models\ExamSchedule;
 use App\Models\Exam;
 use App\Models\Session;
+use App\Models\ClassSubject;
 
 class ExamScheduleController extends Controller
 {
@@ -40,25 +41,14 @@ class ExamScheduleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Save Exam Schedule.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ExamScheduleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function save(ExamScheduleRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        dd($request->all());
     }
 
     /**
@@ -73,18 +63,6 @@ class ExamScheduleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -93,5 +71,33 @@ class ExamScheduleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Get Exam Schedule Table.
+     *
+     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\ExamScheduleRequest  $request
+     */
+    public function getExamScheduleTable(ExamScheduleRequest $request)
+    {
+        $subjects = ClassSubject::where('class_id', $request->class_id)
+            ->with('subject')
+            ->get()
+            ->pluck('subject');
+
+        $data = [
+            'subjects' => $subjects,
+            'session_id' => $request->session_id,
+            'exam_id' => $request->exam_id,
+            'class_id' => $request->class_id,
+            'group_id' => $request->group_id
+        ];
+
+        $view = view('exam-schedule.get-exam-schedule-table', compact('data'))->render();
+        
+        return response()->success([
+            'view' => $view
+        ]);
     }
 }

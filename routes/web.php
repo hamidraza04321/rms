@@ -113,7 +113,11 @@ Route::middleware('auth')->group(function () {
 	});
 
 	//---------- EXAM SCHEDULE ROUTES ----------//
-	Route::resource('/exam-schedule', ExamScheduleController::class, ['except' => ['show']]);
+	Route::resource('/exam-schedule', ExamScheduleController::class, ['except' => ['show', 'store', 'update']]);
+	Route::controller(ExamScheduleController::class)->group(function(){
+		Route::post('/exam-schedule/get-exam-schedule-table', 'getExamScheduleTable')->name('get.exam.schedule.table');
+		Route::post('/exam-schedule/save', 'save')->name('exam-schedule.save');
+	});
 
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware('is.super.admin')->group(function () {

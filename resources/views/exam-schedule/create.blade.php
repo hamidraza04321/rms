@@ -35,7 +35,7 @@
                 </div>
                 <div id="search-exam-schedule" class="collapse show" aria-labelledby="exam-schedule-filters-heading" data-parent="#exam-schedule-filters">
                   <div class="card-body">
-                    <form action="{{ route('student.search') }}" id="search-student-form">
+                    <form action="{{ route('get.exam.schedule.table') }}" id="get-exam-schedule-form">
                       <div class="row">
                         <div class="col-md-3">
                           <div class="form-group">
@@ -87,6 +87,8 @@
               </div>
             </div>
           </div>
+        </div>
+        <div id="exam-schedule">
         </div>
       </div>
     </section>    
