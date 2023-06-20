@@ -194,6 +194,7 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response.status == true) {
                         $('#exam-schedule').html(response.view);
+                        ApplyTooltip();
                     } else {
                         showErrorMessages(response.errors);
                     }
@@ -220,6 +221,7 @@ $(document).ready(function() {
         if (type == 'grade' || type == '') {
             row.find('.marks, .categories').addClass('bg-disabled');
             row.find('.marks, .categories').find('input, button').prop('disabled', true);
+            row.find('.categories').find('input[type="checkbox"]').prop('checked', false);
             row.find('.marks, .categories').find('input').val('');
             row.find('.categories .d-flex:not(:first-child)').remove();
         }
@@ -228,6 +230,7 @@ $(document).ready(function() {
             row.find('.categories').addClass('bg-disabled');
             row.find('.categories .d-flex:not(:first-child)').remove();
             row.find('.categories').find('input, select, button').prop('disabled', true);
+            row.find('.categories').find('input[type="checkbox"]').prop('checked', false);
             row.find('.categories').find('input').val('');
             row.find('.marks').removeClass('bg-disabled');
             row.find('.marks').find('input').prop('disabled', false);
@@ -251,11 +254,16 @@ $(document).ready(function() {
 
         td.append(`
             <div class="d-flex">
-              <input type="text" name="exam_schedule[${subject_id}][categories][${length}][name]" placeholder="Enter Name" class="form-control mr-1 mt-1">
-              <input type="number" name="exam_schedule[${subject_id}][categories][${length}][marks]" class="form-control mr-1 mt-1" placeholder="Enter Marks">
-              <button class="btn btn-danger btn-remove-category mt-1"><i class="fa fa-minus"></i></button>
+                <input type="text" name="exam_schedule[${subject_id}][categories][${length}][name]" placeholder="Enter Name" class="form-control mr-1 mt-1">
+                <input type="number" name="exam_schedule[${subject_id}][categories][${length}][marks]" class="form-control mr-1 mt-1 category-marks" placeholder="Enter Marks">
+                <div class="chk-box mr-1 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
+                    <input type="checkbox" name="exam_schedule[${subject_id}[categories][${length}][is_grade]" class="grade-category">
+                </div>
+                <button class="btn btn-danger btn-remove-category mt-1"><i class="fa fa-minus"></i></button>
             </div>
         `);
+
+        ApplyTooltip();
     });
 
     //---------- ON CLICK REMOVE CATEGORY ----------//
@@ -346,13 +354,25 @@ $(document).ready(function() {
         }
     });
 
-    //---------- ON KEY UP NUMBER ----------//
-    $(document).on('keyup', 'input[type="number"]', function(e) {
+    //---------- ON CLICK SAVE EXAM SCHEDULE ----------//
+    $(document).on('change', '.grade-category', function(e) {
         e.preventDefault();
-        var val = $(this).val();
+        var row = $(this).parents('.d-flex');
+            marks_input = row.find('.category-marks');
 
-        if (val <= 0 && val != '') {
-            $(this).val(0);
+        if ($(this).is(':checked')) {
+            marks_input.val('').prop('disabled', true);
+        } else {
+            marks_input.prop('disabled', false);
         }
     });
+
+    //---------- Apply Tooltip after change element ----------//
+    function ApplyTooltip()
+    {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }
 });

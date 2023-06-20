@@ -45,7 +45,10 @@
                     <td class="categories bg-disabled">
                       <div class="d-flex">
                         <input type="text" name="exam_schedule[{{ $subject->id }}][categories][1][name]" placeholder="Enter Name" class="form-control mr-1" disabled>
-                        <input type="number" name="exam_schedule[{{ $subject->id }}][categories][1][marks]" class="form-control mr-1" placeholder="Enter Marks" disabled>
+                        <input type="number" name="exam_schedule[{{ $subject->id }}][categories][1][marks]" class="form-control mr-1 category-marks" placeholder="Enter Marks" disabled>
+                        <div class="chk-box mr-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
+                          <input type="checkbox" name="exam_schedule[{{ $subject->id }}][categories][1][is_grade]" class="grade-category" disabled>
+                        </div>
                         <button class="btn btn-primary btn-add-more-category" data-id="{{ $subject->id }}" disabled><i class="fa fa-plus"></i></button>
                       </div>
                     </td>
