@@ -40,16 +40,24 @@
                       </select>
                     </td>
                     <td class="marks bg-disabled">
-                      <input type="number" name="exam_schedule[{{ $subject->id }}][marks]" placeholder="Enter Marks" class="form-control" disabled>
+                      <input type="number" name="exam_schedule[{{ $subject->id }}][marks]" class="form-control" placeholder="Enter Marks" disabled>
                     </td>
                     <td class="categories bg-disabled">
-                      <div class="d-flex">
-                        <input type="text" name="exam_schedule[{{ $subject->id }}][categories][1][name]" placeholder="Enter Name" class="form-control mr-1" disabled>
-                        <input type="number" name="exam_schedule[{{ $subject->id }}][categories][1][marks]" class="form-control mr-1 category-marks" placeholder="Enter Marks" disabled>
-                        <div class="chk-box mr-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
-                          <input type="checkbox" name="exam_schedule[{{ $subject->id }}][categories][1][is_grade]" class="grade-category" disabled>
+                      <div class="row category-row">
+                        <div class="col-5 pr-0">
+                          <input type="text" name="exam_schedule[{{ $subject->id }}][categories][1][name]" class="form-control mr-1 category-name" placeholder="Enter Name" disabled>
                         </div>
-                        <button class="btn btn-primary btn-add-more-category" data-id="{{ $subject->id }}" disabled><i class="fa fa-plus"></i></button>
+                        <div class="col-5 pr-0">
+                          <input type="number" name="exam_schedule[{{ $subject->id }}][categories][1][marks]" class="form-control mr-1 category-marks" placeholder="Enter Marks" disabled>
+                        </div>
+                        <div class="col-1 pr-0">
+                          <div class="chk-box" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
+                            <input type="checkbox" name="exam_schedule[{{ $subject->id }}][categories][1][is_grade]" class="grade-category" disabled>
+                          </div>
+                        </div>
+                        <div class="col-1 pr-0">
+                          <button class="btn btn-primary btn-add-more-category" data-id="{{ $subject->id }}" disabled><i class="fa fa-plus"></i></button>
+                        </div>
                       </div>
                     </td>
                   </tr>

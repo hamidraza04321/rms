@@ -223,12 +223,12 @@ $(document).ready(function() {
             row.find('.marks, .categories').find('input, button').prop('disabled', true);
             row.find('.categories').find('input[type="checkbox"]').prop('checked', false);
             row.find('.marks, .categories').find('input').val('');
-            row.find('.categories .d-flex:not(:first-child)').remove();
+            row.find('.categories .category-row:not(:first-child)').remove();
         }
 
         if (type == 'marks') {
             row.find('.categories').addClass('bg-disabled');
-            row.find('.categories .d-flex:not(:first-child)').remove();
+            row.find('.categories .category-row:not(:first-child)').remove();
             row.find('.categories').find('input, select, button').prop('disabled', true);
             row.find('.categories').find('input[type="checkbox"]').prop('checked', false);
             row.find('.categories').find('input').val('');
@@ -249,17 +249,25 @@ $(document).ready(function() {
     $(document).on('click', '.btn-add-more-category', function(e) {
         e.preventDefault();
         var td = $(this).closest('td');
-            length = td.find('.d-flex').length + 1;
+            length = td.find('.category-row').length + 1;
             subject_id = $(this).attr('data-id');
 
         td.append(`
-            <div class="d-flex">
-                <input type="text" name="exam_schedule[${subject_id}][categories][${length}][name]" placeholder="Enter Name" class="form-control mr-1 mt-1">
-                <input type="number" name="exam_schedule[${subject_id}][categories][${length}][marks]" class="form-control mr-1 mt-1 category-marks" placeholder="Enter Marks">
-                <div class="chk-box mr-1 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
-                    <input type="checkbox" name="exam_schedule[${subject_id}[categories][${length}][is_grade]" class="grade-category">
+            <div class="row category-row">
+                <div class="col-5 pr-0">
+                    <input type="text" name="exam_schedule[${subject_id}][categories][${length}][name]" class="form-control mr-1 mt-1 category-name" placeholder="Enter Name">
                 </div>
-                <button class="btn btn-danger btn-remove-category mt-1"><i class="fa fa-minus"></i></button>
+                <div class="col-5 pr-0">
+                    <input type="number" name="exam_schedule[${subject_id}][categories][${length}][marks]" class="form-control mr-1 mt-1 category-marks" placeholder="Enter Marks">
+                </div>
+                <div class="col-1 pr-0">
+                    <div class="chk-box mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
+                        <input type="checkbox" name="exam_schedule[${subject_id}[categories][${length}][is_grade]" class="grade-category">
+                    </div>
+                </div>
+                <div class="col-1 pr-0">
+                    <button class="btn btn-danger btn-remove-category mt-1" data-id="${subject_id}"><i class="fa fa-minus"></i></button>
+                </div>
             </div>
         `);
 
@@ -269,7 +277,23 @@ $(document).ready(function() {
     //---------- ON CLICK REMOVE CATEGORY ----------//
     $(document).on('click', '.btn-remove-category', function(e) {
         e.preventDefault();
-        $(this).closest('.d-flex').remove();
+        var id = $(this).attr('data-id');
+            categories = $(this).parents('.categories');
+        
+        // Remove Row
+        $(this).closest('.category-row').remove();
+
+        // Update Name Attribute
+        categories.find('.category-row').each(function(key) {
+            var length = key + 1;
+                category_name = $(this).find('.category-name');
+                marks = $(this).find('.category-marks');
+                grade = $(this).find('.grade-category');
+
+            category_name.attr('name', 'exam_schedule['+id+'][categories]['+length+'][name]');
+            marks.attr('name', 'exam_schedule['+id+'][categories]['+length+'][marks]');
+            grade.attr('name', 'exam_schedule['+id+'][categories]['+length+'][is_grade]');
+        });
     });
 
     //---------- ON CLICK SAVE EXAM SCHEDULE ----------//
@@ -316,7 +340,30 @@ $(document).ready(function() {
             }
 
             if (type == 'categories') {
-                
+                var category_names = [];
+
+                row.find('.category-row').each(function(){
+                    var name = $(this).find('.category-name').val();
+                        marks = $(this).find('.category-marks').val();
+                        grade = $(this).find('.grade-category').is(':checked') ? true : false;
+
+                    if (name == '') {
+                        $(this).find('.category-name').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+                        flag = false;
+                    } else {
+                        if (category_names.includes(name)) {
+                            $(this).find('.category-name').addClass('is-invalid').after('<span class="invalid-feedback">The name is duplicate!</span>');
+                            flag = false;
+                        } else {
+                            category_names.push(name);
+                        }
+                    }
+
+                    if (!grade && marks == '') {
+                        $(this).find('.category-marks').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+                        flag = false;
+                    }
+                });
             }
 
             if (!flag) {
@@ -357,8 +404,10 @@ $(document).ready(function() {
     //---------- ON CLICK SAVE EXAM SCHEDULE ----------//
     $(document).on('change', '.grade-category', function(e) {
         e.preventDefault();
-        var row = $(this).parents('.d-flex');
+        var row = $(this).parents('.category-row');
             marks_input = row.find('.category-marks');
+
+        marks_input.removeClass('is-invalid').siblings('span.error').remove();
 
         if ($(this).is(':checked')) {
             marks_input.val('').prop('disabled', true);

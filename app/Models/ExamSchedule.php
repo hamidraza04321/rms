@@ -26,9 +26,9 @@ class ExamSchedule extends Model
     protected $fillable = [
         'exam_class_id',
         'subject_id',
-        'exam_date',
+        'date',
         'type',
-        'total_marks',
+        'marks',
     	'created_by',
     	'updated_by'
     ];
@@ -43,4 +43,9 @@ class ExamSchedule extends Model
     	'created_at',
     	'updated_at'
     ];
+
+    public function categories()
+    {
+        return $this->hasMany(ExamScheduleCategory::class, 'exam_schedule_id');
+    }
 }

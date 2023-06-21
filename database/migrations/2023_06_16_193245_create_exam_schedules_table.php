@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('exam_class_id')->constrained('exam_classes')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('cascade');
-            $table->date('exam_date');
+            $table->date('date');
             $table->string('type');
             $table->integer('marks')->nullable();
             $table->integer('created_by')->nullable();

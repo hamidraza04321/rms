@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('exam_schedule_id')->constrained('exam_schedules')->onDelete('cascade');
             $table->string('name');
-            $table->string('marks');
+            $table->string('marks')->nullable();
             $table->boolean('is_grade')->default('0');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
