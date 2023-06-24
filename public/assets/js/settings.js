@@ -38,8 +38,8 @@ $(document).ready(function() {
 	            		form[0].reset();
 	            		$('#app-logo').siblings('label').text('Choose file');
 	            		$('#edit-logo-modal').modal('hide');
-	            		$('.logo-image-preview').removeAttr('style').css('background-image', 'url('+response.image_src+'?'+Math.random()+')');
-	            		$('.brand-image').attr('src', response.image_src+'?'+Math.random());
+	            		$('.logo-image-preview').removeAttr('style').css(`background-image`, `url(${response.image_src}?${Math.random()})`);
+	            		$('.brand-image').attr(`src`, `${response.image_src}?${Math.random()}`);
 	            		toastr.success(response.message);
 	            	} else {
 	            		showErrorMessages(response.errors);

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\ActiveScopeTrait;
 use App\Traits\CurrentSessionTrait;
+use App\Models\Scopes\HasSession;
 
 class Exam extends Model
 {
@@ -55,5 +56,15 @@ class Exam extends Model
     public function classes()
     {
         return $this->hasMany(ExamClass::class, 'exam_id');
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        static::addGlobalScope(new HasSession);
     }
 }

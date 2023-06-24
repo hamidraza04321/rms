@@ -167,8 +167,8 @@
               @endcan
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) active @endif">
               <i class="nav-icon fas fa-file-signature"></i>
               <p>
                 Exam Schedule
@@ -177,13 +177,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('exam-schedule.index') }}" class="nav-link">
+                <a href="{{ route('exam-schedule.index') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.index') active @endif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('exam-schedule.create') }}" class="nav-link">
+                <a href="{{ route('exam-schedule.create') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.create') active @endif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Create</p>
                 </a>

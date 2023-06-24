@@ -19,7 +19,17 @@ class ExamScheduleController extends Controller
      */
     public function index()
     {
-        //
+        $exam_schedules = ExamClass::has('examSchedule')
+            ->with('exam', 'class', 'examSchedule')
+            ->get();
+
+        $data = [
+            'exam_schedules' => $exam_schedules,
+            'page_title' => 'Manage Exam Schedules',
+            'menu' => 'Exam Schedule'
+        ];
+
+        return view('exam-schedule.index', compact('data'));
     }
 
     /**
@@ -57,6 +67,9 @@ class ExamScheduleController extends Controller
         ])->value('id');
      
         if ($exam_class_id) {
+            // Store Creatings Exam Schedule Categories 
+            $creating_categories = [];
+
             foreach ($request->exam_schedule as $subject_id => $exam_schedule) {
                 // Where If Record Exists
                 $where = [
@@ -81,23 +94,32 @@ class ExamScheduleController extends Controller
                     $categories = $schedule->categories; // Get From Exam Schedule Category Relation
                     $undelete_category_ids = []; // Store Un Delete Category
 
-                    foreach ($exam_schedule['categories'] as $category) {
+                    foreach ($exam_schedule['categories'] as $categoryKey => $category) {
                         $data = [
                             'exam_schedule_id' => $schedule->id,
                             'name' => $category['name'],
-                            'marks' => (isset($category['marks'])) ? $category['marks'] : null
+                            'marks' => (isset($category['marks'])) ? $category['marks'] : null,
+                            'is_grade' => isset($category['is_grade']) ? 1 : 0
                         ];
-
-                        if (isset($category['is_grade'])) $data['is_grade'] = 1;
 
                         // If Category Id exists
                         if (isset($category['category_id'])) {
+                            // Get category from exam schedule categories and update it
                             $update_category = $categories->where('id', $category['category_id'])->first();
                             $update_category->update($data);
+                            // Save in to un delete ids
                             $undelete_category_ids[] = $update_category->id;
                         } else {
+                            // When category_id key not exists create category
                             $create_category = ExamScheduleCategory::create($data);
+                            // Save in to un delete ids
                             $undelete_category_ids[] = $create_category->id;
+                            // Save creating categories
+                            $creating_categories[] = [
+                                'category_id' => $create_category->id,
+                                'key' => $categoryKey, // From Which key of category 
+                                'subject_id' => $subject_id 
+                            ];
                         }
                     }
 
@@ -110,7 +132,10 @@ class ExamScheduleController extends Controller
                 }
             }
 
-            return response()->successMessage('Exam Schedule Saved Successfully!');
+            return response()->success([
+                'creating_categories' => $creating_categories,
+                'message' => 'Exam Schedule Saved Successfully!'
+            ]);
         }
 
         // Exam Class Not Exists
@@ -148,23 +173,46 @@ class ExamScheduleController extends Controller
      */
     public function getExamScheduleTable(ExamScheduleRequest $request)
     {
-        $subjects = ClassSubject::where('class_id', $request->class_id)
-            ->with('subject')
-            ->get()
-            ->pluck('subject');
-
-        $data = [
-            'subjects' => $subjects,
-            'session_id' => $request->session_id,
+        // Get Exam Class
+        $exam_class_id = ExamClass::where([
             'exam_id' => $request->exam_id,
-            'class_id' => $request->class_id,
-            'group_id' => $request->group_id
-        ];
+            'class_id' => $request->class_id
+        ])->value('id');
 
-        $view = view('exam-schedule.get-exam-schedule-table', compact('data'))->render();
-        
-        return response()->success([
-            'view' => $view
-        ]);
+        if ($exam_class_id) {
+            // Get Exam Schedules
+            $exam_schedules = ExamSchedule::where('exam_class_id', $exam_class_id)
+                ->with('categories')
+                ->get();
+
+            // Get Class Subjects
+            $subjects = ClassSubject::where('class_id', $request->class_id)
+                ->with('subject')
+                ->get()
+                ->pluck('subject')
+                ->map(function($subject) use($exam_schedules) {
+                    $subject['exam_schedule'] = $exam_schedules->where('subject_id', $subject->id)->first();
+                    return $subject;
+                });
+
+            $data = [
+                'subjects' => $subjects,
+                'exam_schedules' => $exam_schedules,
+                'session_id' => $request->session_id,
+                'exam_id' => $request->exam_id,
+                'class_id' => $request->class_id,
+                'group_id' => $request->group_id
+            ];
+
+            $view = view('exam-schedule.get-exam-schedule-table', compact('data'))->render();
+            
+            return response()->success([
+                'view' => $view
+            ]);
+        }
+
+        // Exam Class Not Exists
+        $class = Classes::find($request->class_id)->name;
+        return response()->errorMessage("The Class ( {$class} ) does'nt exists in exam.");
     }
 }

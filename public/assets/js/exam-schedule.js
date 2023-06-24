@@ -13,7 +13,7 @@ $(document).ready(function() {
 
         var self = $(this);
             session_id = self.val();
-            url = base_url + '/exam/get-exams-by-session';
+            url = `${base_url}/exam/get-exams-by-session`;
             message = '';
 
         if (session_id != '') {
@@ -23,11 +23,11 @@ $(document).ready(function() {
                 data: { session_id: session_id },
                 success: function(response) {
                     if (response.status == true) {
-                        var exams = '<option value="">Select</option>';
+                        var exams = `<option value="">Select</option>`;
 
                         if (response.exams.length) {
                             $.each(response.exams, function(key, value) {
-                                exams += '<option value="'+value.id+'">'+value.name+'</option>';
+                                exams += `<option value="${value.id}">${value.name}</option>`;
                             });
                         }
 
@@ -59,7 +59,7 @@ $(document).ready(function() {
 
         var self = $(this);
             exam_id = self.val();
-            url = base_url + '/exam/get-exam-classes';
+            url = `${base_url}/exam/get-exam-classes`;
             message = '';
 
         if (exam_id != '') {
@@ -69,11 +69,11 @@ $(document).ready(function() {
                 data: { exam_id: exam_id },
                 success: function(response) {
                     if (response.status == true) {
-                        var classes = '<option value="">Select</option>';
+                        var classes = `<option value="">Select</option>`;
 
                         if (response.classes.length) {
                             $.each(response.classes, function(key, value) {
-                                classes += '<option value="'+value.id+'">'+value.name+'</option>';
+                                classes += `<option value="${value.id}">${value.name}</option>`;
                             });
                         }
 
@@ -105,7 +105,7 @@ $(document).ready(function() {
 
         var self = $(this);
             class_id = self.val();
-            url = base_url + '/class/get-class-sections-and-groups';
+            url = `${base_url}/class/get-class-sections-and-groups`;
             message = '';
 
         if (class_id != '') {
@@ -115,11 +115,11 @@ $(document).ready(function() {
                 data: { class_id: class_id },
                 success: function(response) {
                     if (response.status == true) {
-                        var groups = '<option value="">Select</option>';
+                        var groups = `<option value="">Select</option>`;
 
                         if (response.groups.length) {
                             $.each(response.groups, function(key, value) {
-                                groups += '<option value="'+value.id+'">'+value.name+'</option>';
+                                groups += `<option value="${value.id}">${value.name}</option>`;
                             });
 		                    
 		                    $('#group-id').prop('disabled', false).html(groups);
@@ -249,7 +249,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-add-more-category', function(e) {
         e.preventDefault();
         var td = $(this).closest('td');
-            length = td.find('.category-row').length + 1;
+            length = td.find('.category-row').length;
             subject_id = $(this).attr('data-id');
 
         td.append(`
@@ -262,7 +262,7 @@ $(document).ready(function() {
                 </div>
                 <div class="col-1 pr-0">
                     <div class="chk-box mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
-                        <input type="checkbox" name="exam_schedule[${subject_id}[categories][${length}][is_grade]" class="grade-category">
+                        <input type="checkbox" name="exam_schedule[${subject_id}][categories][${length}][is_grade]" class="grade-category">
                     </div>
                 </div>
                 <div class="col-1 pr-0">
@@ -285,14 +285,16 @@ $(document).ready(function() {
 
         // Update Name Attribute
         categories.find('.category-row').each(function(key) {
-            var length = key + 1;
+            var length = key;
+                category_id = $(this).find('.category-id');
                 category_name = $(this).find('.category-name');
                 marks = $(this).find('.category-marks');
                 grade = $(this).find('.grade-category');
 
-            category_name.attr('name', 'exam_schedule['+id+'][categories]['+length+'][name]');
-            marks.attr('name', 'exam_schedule['+id+'][categories]['+length+'][marks]');
-            grade.attr('name', 'exam_schedule['+id+'][categories]['+length+'][is_grade]');
+            if (category_id != undefined) category_id.attr(`name`, `exam_schedule[${id}][categories][${length}][category_id]`);
+            category_name.attr(`name`, `exam_schedule[${id}][categories][${length}][name]`);
+            marks.attr(`name`, `exam_schedule[${id}][categories][${length}][marks]`);
+            grade.attr(`name`, `exam_schedule[${id}][categories][${length}][is_grade]`);
         });
     });
 
@@ -383,6 +385,17 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response.status == true) {
                         toastr.success(response.message);
+                        // Add hidden input of category id after create category
+                        if (response.creating_categories.length) {
+                            $.each(response.creating_categories, function(key, value) {
+                                 var subject_id = value.subject_id;
+                                     category_key = value.key;
+                                     category_id = value.category_id;
+                                     input_name = $(`input[name="exam_schedule[${subject_id}][categories][${category_key}][name]"]`);
+
+                                input_name.before(`<input type="hidden" name="exam_schedule[${subject_id}][categories][${category_key}][category_id]" value="${category_id}" class="category-id">`);
+                            });
+                        }
                     } else {
                         if (response?.errors) {
                             message = errorMessage('Check your input fields and try again !');

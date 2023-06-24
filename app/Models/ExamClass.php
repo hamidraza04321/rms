@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Scopes\HasExam;
+use App\Models\Scopes\HasClass;
 
 class ExamClass extends Model
 {
@@ -41,8 +43,29 @@ class ExamClass extends Model
     	'updated_at'
     ];
 
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
+
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    public function examSchedule()
+    {
+        return $this->hasMany(ExamSchedule::class, 'exam_class_id');
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        static::addGlobalScope(new HasExam);
+        static::addGlobalScope(new HasClass);
     }
 }

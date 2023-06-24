@@ -12,7 +12,7 @@ $(document).ready(function() {
 
         var self = $(this);
             class_id = self.val();
-            url = base_url + '/class/get-class-sections-and-groups';
+            url = `${base_url}/class/get-class-sections-and-groups`;
             message = '';
 
         if (class_id != '') {
@@ -22,12 +22,12 @@ $(document).ready(function() {
                 data: { class_id: class_id },
                 success: function(response) {
                     if (response.status == true) {
-                        var sections = '<option value="">Select</option>';
-                            groups = '<option value="">Select</option>';
+                        var sections = `<option value="">Select</option>`;
+                            groups = `<option value="">Select</option>`;
 
                         if (response.sections.length) {
                             $.each(response.sections, function(key, value) {
-                                sections += '<option value="'+value.id+'">'+value.name+'</option>';
+                                sections += `<option value="${value.id}">${value.name}</option>`;
                             });
                         }
 
@@ -35,7 +35,7 @@ $(document).ready(function() {
 
                         if (response.groups.length) {
                             $.each(response.groups, function(key, value) {
-                                groups += '<option value="'+value.id+'">'+value.name+'</option>';
+                                groups += `<option value="${value.id}">${value.name}</option>`;
                             });
 
                             $('#group-id').prop('disabled', false).html(groups);
@@ -132,9 +132,9 @@ $(document).ready(function() {
         $(this).prop('checked', true);
 
     	if ($(this).is(':checked')) {
-    		$('.attendance[data-id="'+id+'"]').prop('checked', true);
+    		$(`.attendance[data-id="${id}"]`).prop('checked', true);
     	} else {
-    		$('.attendance[data-id="'+id+'"]').prop('checked', false);
+    		$(`.attendance[data-id="${id}"]`).prop('checked', false);
     	}
     });
 
@@ -142,12 +142,12 @@ $(document).ready(function() {
     $(document).on('change', '.attendance', function(e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
-            total_checkboxes = $('.attendance[value="'+id+'"]').length;
-            total_checked = $('.attendance[value="'+id+'"]:checked').length;
+            total_checkboxes = $(`.attendance[value="${id}"]`).length;
+            total_checked = $(`.attendance[value="${id}"]:checked`).length;
 
         $('.check-all-attendance').prop('checked', false);
         if (total_checkboxes == total_checked) {
-            $('.check-all-attendance[data-id="'+id+'"]').prop('checked', true);
+            $(`.check-all-attendance[data-id="${id}"]`).prop('checked', true);
         }
     });
 

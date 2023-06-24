@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('cascade');
             $table->date('date');
-            $table->string('type');
+            $table->enum('type', [ 'grade', 'marks', 'categories' ]);
             $table->integer('marks')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

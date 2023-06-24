@@ -31,27 +31,27 @@ function removeErrorMessages()
 //---------- SUCCESS MESSAGE ----------//
 function successMessage(message)
 {
-	return '<div class="alert alert-success w-100">'+message+'</div>';
+	return `<div class="alert alert-success w-100">${message}</div>`;
 }
 
 //---------- ERROR MESSAGE ----------//
 function errorMessage(message = '')
 {
-	message = (message == '') ? 'Whoops Something went wrong please contact to the administrator.' : message;
-	return '<div class="alert alert-danger w-100">'+message+'</div>';
+	message = (message == '') ? `Whoops Something went wrong please contact to the administrator.` : message;
+	return `<div class="alert alert-danger w-100">${message}</div>`;
 }
 
 //---------- WARNING MESSAGE ----------//
 function warningMessage(message)
 {
-	return '<div class="alert alert-warning w-100">'+message+'</div>';
+	return `<div class="alert alert-warning w-100">${message}</div>`;
 }
 
 //---------- SHOW ERROR MESSAGES COME FROM REQUEST ----------//
 function showErrorMessages(errors) 
 {
 	$.each(errors, function(key, value) {
-		var input = $('input[name="'+key+'"]');
+		var input = $(`input[name="${key}"]`);
 
 		// If input exists
 		if (input.length) {
@@ -60,16 +60,16 @@ function showErrorMessages(errors)
 				if (input.attr('type') == 'file') {
 					var avatar = input.parents('.avatar-upload');
 					if (avatar.length) {
-						avatar.after('<span class="invalid-feedback d-block text-center">'+value.toString()+'</span>');
+						avatar.after(`<span class="invalid-feedback d-block text-center">${value.toString()}</span>`);
 					} else {
-						input.addClass('is-invalid').parent('.custom-file').after('<span class="invalid-feedback d-block">'+value.toString()+'</span>');
+						input.addClass('is-invalid').parent('.custom-file').after(`<span class="invalid-feedback d-block">${value.toString()}</span>`);
 					}
 				} else {
-					input.addClass('is-invalid').after('<span class="invalid-feedback">'+value.toString()+'</span>');
+					input.addClass('is-invalid').after(`<span class="invalid-feedback">${value.toString()}</span>`);
 				}
 			}
 		} else {
-			$('select[name="'+key+'"]').siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">'+value.toString()+'</span>');
+			$(`select[name="${key}"]`).siblings('span.select2-container').addClass('is-invalid').after(`<span class="invalid-feedback">${value.toString()}</span>`);
 		}
 
 	});

@@ -12,7 +12,7 @@ $(document).ready(function() {
 
         var self = $(this);
             class_id = self.val();
-            url = base_url + '/class/get-class-sections-and-groups';
+            url = `${base_url}/class/get-class-sections-and-groups`;
             message = '';
 
         if (class_id != '') {
@@ -22,12 +22,12 @@ $(document).ready(function() {
                 data: { class_id: class_id },
                 success: function(response) {
                     if (response.status == true) {
-                        var sections = '<option value="">Select</option>';
-                            groups = '<option value="">Select</option>';
+                        var sections = `<option value="">Select</option>`;
+                            groups = `<option value="">Select</option>`;
 
                         if (response.sections.length) {
                             $.each(response.sections, function(key, value) {
-                                sections += '<option value="'+value.id+'">'+value.name+'</option>';
+                                sections += `<option value="${value.id}">${value.name}</option>`;
                             });
                         }
 
@@ -35,7 +35,7 @@ $(document).ready(function() {
 
                         if (response.groups.length) {
                             $.each(response.groups, function(key, value) {
-                                groups += '<option value="'+value.id+'">'+value.name+'</option>';
+                                groups += `<option value="${value.id}">${value.name}</option>`;
                             });
                             
                             $('#group-id').prop('disabled', false).html(groups);

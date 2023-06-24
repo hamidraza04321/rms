@@ -119,22 +119,22 @@ $(document).ready(function() {
 
                         Swal.fire(
                             response.message,
-                            'Total Students Imported : ' + response.import_students_count,
-                            'success'
+                            `Total Students Imported : ${response.import_students_count}`,
+                            `success`
                         );
                     } else {
                         if (response?.errors) {
                             var errors_list = ``;
                             $.each(response.errors, function(key, value) {
                                 if (value?.errors) {
-                                    errors_list += `<li>`+value.errors.toString()+` at row : `+value.row+`</li>`;
+                                    errors_list += `<li>${value.errors.toString()} at row : ${value.row}</li>`;
                                 } else {
-                                    errors_list += `<li>`+value.toString()+`</li>`;
+                                    errors_list += `<li>${value.toString()}</li>`;
                                 }
                             });
 
                             $('#import-errors-modal').modal('show');
-                            $('#import-errors-modal-body').html(`<ul style="padding-left:20px;">`+errors_list+`</ul>`);
+                            $('#import-errors-modal-body').html(`<ul style="padding-left:20px;">${errors_list}</ul>`);
                         }
                     }
                 },
@@ -193,13 +193,13 @@ $(document).ready(function() {
                 {
                     "targets": 3,
                     "render": function (data) {
-                        return data.student.first_name + ' ' + data.student.last_name;
+                        return `${data.student.first_name} ${data.student.last_name}`;
                     }
                 },
                 {
                     "targets": 5,
                     "render": function (data) {
-                        return data.class.name + ' ( ' + data.section.name + ' ) ';
+                        return `${data.class.name} ( ${data.section.name} )`;
                     }
                 },
                 {
@@ -216,12 +216,12 @@ $(document).ready(function() {
                     "targets": 7,
                     "visible": can_update_status_permission,
                     "render": function (data) {
-                        var status_url = base_url + `/student/update-status/` + data.id;
+                        var status_url = `${base_url}/student/update-status/${data.id}`;
                         
                         if (data.is_active) {
-                            return `<button data-url="`+status_url+`" class="btn btn-sm btn-success btn-update-status">Active</button>`;
+                            return `<button data-url="${status_url}" class="btn btn-sm btn-success btn-update-status">Active</button>`;
                         } else {
-                            return `<button data-url="`+status_url+`" class="btn btn-sm btn-danger btn-update-status">Deactive</button>`;
+                            return `<button data-url="${status_url}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>`;
                         }
                     }
                 },
@@ -229,8 +229,8 @@ $(document).ready(function() {
                     "targets": 8,
                     "visible": can_any_action_permission,
                     "render": function (data) {
-                        var btn_edit = ($('#edit-permission').val() == 'true') ? `<a href="`+ base_url + `/student/` + data.id + `/edit` +`" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> ` : ``;
-                            btn_delete = ($('#delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-destroy-student" data-url="`+ base_url + `/student/` + data.id +`"><i class="fa fa-trash"> Delete</i></button>` : ``;
+                        var btn_edit = ($('#edit-permission').val() == 'true') ? `<a href="${base_url}/student/${data.id}/edit" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> ` : ``;
+                            btn_delete = ($('#delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-destroy-student" data-url="${base_url}/student/${data.id}"><i class="fa fa-trash"> Delete</i></button>` : ``;
 
                         return btn_edit + btn_delete;
                     }
@@ -295,13 +295,13 @@ $(document).ready(function() {
                 {
                     "targets": 3,
                     "render": function (data) {
-                        return data.student.first_name + ' ' + data.student.last_name;
+                        return `${data.student.first_name} ${data.student.last_name}`;
                     }
                 },
                 {
                     "targets": 5,
                     "render": function (data) {
-                        return data.class.name + ' ( ' + data.section.name + ' ) ';
+                        return `${data.class.name} ( ${data.section.name} )`;
                     }
                 },
                 {
@@ -318,8 +318,8 @@ $(document).ready(function() {
                     "targets": 8,
                     "visible": can_any_action_permission_from_trash,
                     "render": function (data) {
-                        var btn_restore = ($('#restore-permission').val() == 'true') ? `<button class="btn btn-sm btn-success btn-restore-student" data-url="`+ base_url + `/student/restore/` + data.id +`"><i class="fa fa-trash-restore"> Restore</i></button> ` : '';
-                            btn_permenant_delete = ($('#permenant-delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-delete-student" data-url="`+ base_url + `/student/delete/` + data.id +`"><i class="fa fa-trash"></i> Permanent Delete</button>` : '';
+                        var btn_restore = ($('#restore-permission').val() == 'true') ? `<button class="btn btn-sm btn-success btn-restore-student" data-url="${base_url}/student/restore/${data.id}"><i class="fa fa-trash-restore"> Restore</i></button> ` : '';
+                            btn_permenant_delete = ($('#permenant-delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-delete-student" data-url="${base_url}/student/delete/${data.id}"><i class="fa fa-trash"></i> Permanent Delete</button>` : '';
                         
                         return btn_restore + btn_permenant_delete;
                     }
@@ -469,7 +469,7 @@ $(document).ready(function() {
                     if (response.status == true) {
                         form[0].reset();
                         $('.select2').val('').change();
-                        $('.image-preview').css('background-image', 'url('+ $('#image-preview').attr('data-src') +')');
+                        $('.image-preview').css(`background-image`, `url(${$('#image-preview').attr('data-src')})`);
                         scrollToTop();
                         toastr.success(response.message);
                     } else {
@@ -703,7 +703,7 @@ $(document).ready(function() {
 
         var self = $(this);
             class_id = self.val();
-            url = base_url + '/class/get-class-sections-and-groups';
+            url = `${base_url}/class/get-class-sections-and-groups`;
             message = '';
 
         if (class_id != '') {
@@ -713,12 +713,12 @@ $(document).ready(function() {
                 data: { class_id: class_id },
                 success: function(response) {
                     if (response.status == true) {
-                        var sections = '<option value="">Select</option>';
-                            groups = '<option value="">Select</option>';
+                        var sections = `<option value="">Select</option>`;
+                            groups = `<option value="">Select</option>`;
 
                         if (response.sections.length) {
                             $.each(response.sections, function(key, value) {
-                                sections += '<option value="'+value.id+'">'+value.name+'</option>';
+                                sections += `<option value="${value.id}">${value.name}</option>`;
                             });
                         }
 
@@ -726,7 +726,7 @@ $(document).ready(function() {
 
                         if (response.groups.length) {
                             $.each(response.groups, function(key, value) {
-                                groups += '<option value="'+value.id+'">'+value.name+'</option>';
+                                groups += `<option value="${value.id}">${value.name}</option>`;
                             });
                             
                             $('#group-id').prop('disabled', false).html(groups);
@@ -858,7 +858,7 @@ $(document).ready(function() {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                preview.css('background-image', 'url('+e.target.result +')');
+                preview.css(`background-image`, `url(${e.target.result})`);
                 preview.hide();
                 preview.fadeIn(650);
             }
