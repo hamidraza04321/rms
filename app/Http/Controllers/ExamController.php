@@ -73,15 +73,34 @@ class ExamController extends Controller
         $data = $request->safe()->except('class_id');
         $exam = Exam::create($data);
 
+        // Get Classes with group
+        $classes = Classes::whereIn('id', $request->class_id)->with('groups')->get();
+
         // Save Exam Classes
         $exam_classes = [];
         foreach ($request->class_id as $class_id) {
-            $exam_classes[] = [
-                'exam_id' => $exam->id,
-                'class_id' => $class_id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
+            $class = $classes->where('id', $class_id)->first();
+
+            // Class Groups is exists
+            if (count($class->groups)) {
+                foreach ($class->groups as $group) {
+                    $exam_classes[] = [
+                        'exam_id' => $exam->id,
+                        'class_id' => $class_id,
+                        'group_id' => $group->group_id,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                }
+            } else {
+                $exam_classes[] = [
+                    'exam_id' => $exam->id,
+                    'class_id' => $class_id,
+                    'group_id' => null,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ];
+            }
         }
 
         ExamClass::insert($exam_classes);
@@ -123,7 +142,9 @@ class ExamController extends Controller
      */
     public function update(ExamRequest $request, $id)
     {
-        $exam = Exam::withoutGlobalScope(ActiveScope::class)->find($id);
+        $exam = Exam::withoutGlobalScope(ActiveScope::class)
+            ->with('classes')
+            ->find($id);
 
         if ($exam) {
             $data = $request->safe()->except('class_id');
@@ -131,15 +152,42 @@ class ExamController extends Controller
 
             // Delete where class id not exists in request
             $exam->classes->whereNotIn('class_id', $request->class_id)->each->delete();
+            // Get exists class ids
+            $exists_class_ids = $exam->classes->pluck('class_id')->toArray();
+            // Merge Exists and delete class ids to get which ids to create
+            $create_class_ids = array_diff($request->class_id, $exists_class_ids);
+            // Get Classes with groups
+            $classes = Classes::whereIn('id', $create_class_ids)->with('groups')->get();
 
             // Save exam classes
-            collect($request->class_id)
-                ->each(function($class_id) use($exam) {
-                    ExamClass::withTrashed()->firstOrCreate([
+            $exam_classes = [];
+
+            foreach ($create_class_ids as $class_id) {
+                $class = $classes->where('id', $class_id)->first();
+
+                // Class Groups Exists
+                if (count($class->groups)) {
+                    foreach ($class->groups as $group) {
+                        $exam_classes[] = [
+                            'exam_id' => $exam->id,
+                            'class_id' => $class_id,
+                            'group_id' => $group->group_id,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ];
+                    }
+                } else {
+                    $exam_classes[] = [
                         'exam_id' => $exam->id,
-                        'class_id' => $class_id
-                    ])->restore();
-                });
+                        'class_id' => $class_id,
+                        'group_id' => null,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                }
+            }
+
+            ExamClass::insert($exam_classes);
 
             return response()->successMessage('Exam Updated Successfully !');
         }
@@ -277,10 +325,11 @@ class ExamController extends Controller
     public function getExamClasses(ExamRequest $request)
     {
         $classes = ExamClass::where('exam_id', $request->exam_id)
+            ->groupBy('class_id')
             ->with('class')
             ->get()
             ->pluck('class');
-        
+
         return response()->success([
             'classes' => $classes
         ]);

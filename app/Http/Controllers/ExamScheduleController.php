@@ -61,11 +61,9 @@ class ExamScheduleController extends Controller
     public function save(ExamScheduleRequest $request)
     {
         // Get Exam Class
-        $exam_class_id = ExamClass::where([
-            'exam_id' => $request->exam_id,
-            'class_id' => $request->class_id
-        ])->value('id');
-     
+        $where = $request->except('session_id', 'exam_schedule');
+        $exam_class_id = ExamClass::where($where)->value('id');
+
         if ($exam_class_id) {
             // Store Creatings Exam Schedule Categories 
             $creating_categories = [];
@@ -76,8 +74,6 @@ class ExamScheduleController extends Controller
                     'exam_class_id' => $exam_class_id,
                     'subject_id' => $subject_id
                 ];
-
-                if ($request->group_id) $where['group_id'] = $request->group_id;
 
                 $data = [
                     'date' => date('Y-m-d', strtotime($exam_schedule['date'])),
@@ -174,10 +170,8 @@ class ExamScheduleController extends Controller
     public function getExamScheduleTable(ExamScheduleRequest $request)
     {
         // Get Exam Class
-        $exam_class_id = ExamClass::where([
-            'exam_id' => $request->exam_id,
-            'class_id' => $request->class_id
-        ])->value('id');
+        $where = $request->except('session_id');
+        $exam_class_id = ExamClass::where($where)->value('id');
 
         if ($exam_class_id) {
             // Get Exam Schedules
@@ -205,7 +199,7 @@ class ExamScheduleController extends Controller
             ];
 
             $view = view('exam-schedule.get-exam-schedule-table', compact('data'))->render();
-            
+
             return response()->success([
                 'view' => $view
             ]);

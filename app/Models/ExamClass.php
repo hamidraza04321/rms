@@ -28,6 +28,7 @@ class ExamClass extends Model
     protected $fillable = [
         'exam_id',
         'class_id',
+        'group_id',
     	'created_by',
     	'updated_by'
     ];
@@ -51,6 +52,11 @@ class ExamClass extends Model
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 
     public function examSchedule()
