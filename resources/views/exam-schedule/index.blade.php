@@ -39,6 +39,7 @@
                       <th>Sesion</th>
                       <th>Exam</th>
                       <th>Class</th>
+                      <th>Group</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -48,7 +49,10 @@
                         <td>{{ $exam_schedule->exam->session->name }}</td>
                         <td>{{ $exam_schedule->exam->name }}</td>
                         <td>{{ $exam_schedule->class->name }}</td>
-                        <td></td>
+                        <td>{{ $exam_schedule->group->name }}</td>
+                        <td>
+                          <button class="btn btn-sm btn-danger" data-id="{{ $exam_schedule->id }}"><i class="fa fa-trash"></i> Delete</button>
+                        </td>
                       </tr>
                     @endforeach
                   </tbody>

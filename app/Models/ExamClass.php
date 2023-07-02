@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Scopes\HasExam;
 use App\Models\Scopes\HasClass;
+use App\Models\Scopes\HasGroup;
 
 class ExamClass extends Model
 {
@@ -73,5 +74,6 @@ class ExamClass extends Model
     {
         static::addGlobalScope(new HasExam);
         static::addGlobalScope(new HasClass);
+        static::addGlobalScope(new HasGroup);
     }
 }
