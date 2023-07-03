@@ -158,7 +158,14 @@ class ExamScheduleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $exam_class = ExamClass::find($id);
+
+        if ($exam_class) {
+            $exam_class->examSchedule()->delete();
+            return response()->successMessage('Exam Schedule Deleted Successfully!');
+        }
+
+        return response()->errorMessage('Exam Schedule not Found!');
     }
 
     /**
