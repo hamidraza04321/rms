@@ -37,47 +37,49 @@
                 </div>
               </div>
               <div class="card-body">
-                <table id="section-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      @can('update-section-status')
-                        <th>Status</th>
-                      @endcan
-                      @canany(['edit-section', 'delete-section'])
-                        <th>Action</th>
-                      @endcanany
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['sections'] as $section)
+                <div class="table-responsive">
+                  <table id="section-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $section->name }}</td>
+                        <th>S No.</th>
+                        <th>Name</th>
                         @can('update-section-status')
-                          <td>
-                            @if($section->is_active)
-                              <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                            @else
-                              <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                            @endif
-                          </td>
+                          <th>Status</th>
                         @endcan
                         @canany(['edit-section', 'delete-section'])
-                          <td>
-                            @can('edit-section')
-                              <a href="{{ route('section.edit', $section->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            @endcan
-                            @can('delete-section')
-                              <button class="btn btn-sm btn-danger btn-destroy-section" data-url="{{ route('section.destroy', $section->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                            @endcan
-                          </td>
+                          <th>Action</th>
                         @endcanany
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['sections'] as $section)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $section->name }}</td>
+                          @can('update-section-status')
+                            <td>
+                              @if($section->is_active)
+                                <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                              @else
+                                <button data-url="{{ route('section.update.status', $section->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                              @endif
+                            </td>
+                          @endcan
+                          @canany(['edit-section', 'delete-section'])
+                            <td>
+                              @can('edit-section')
+                                <a href="{{ route('section.edit', $section->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                              @endcan
+                              @can('delete-section')
+                                <button class="btn btn-sm btn-danger btn-destroy-section" data-url="{{ route('section.destroy', $section->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

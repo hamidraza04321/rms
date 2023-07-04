@@ -478,6 +478,68 @@ $(document).ready(function() {
         });
     });
 
+    //---------- ON CLICK EDIT EXAM SCHEDULE ----------//
+    $(document).on('click', '.btn-edit-exam-schedule', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            session_id = self.attr('session-id');
+            exam_id = self.attr('exam-id');
+            class_id = self.attr('class-id');
+            group_id = self.attr('group-id');
+            modal = $('#edit-exam-schedule');
+            message = '';
+            url = `${base_url}/exam-schedule/get-exam-schedule-table`;
+            formData = {
+                session_id: session_id,
+                exam_id: exam_id,
+                class_id: class_id,
+                group_id: (group_id == undefined ? '' : group_id)
+            };
+
+        // Button Loading
+        self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function(response){
+                if (response.status == false) {
+                    if (response?.errors) {
+                        var errors_list = ``;
+
+                        $.each(response.errors, function(key, value) {
+                             errors_list += `<li>${value.toString()}</li>`;
+                        });
+
+                        message = `<ul class="alert alert-danger">${errors_list}</ul>`;
+                    } else {
+                        message = errorMessage(response.errorMessage);
+                    }
+                } else {
+                    // Remove table from card
+                    modal.find('.modal-body').html(response.view);
+                    var table = modal.find('.card-body').html();
+                    modal.find('.modal-body').html(table);
+                    modal.modal('show');
+                }
+            },
+            error: function(){
+                message = errorMessage();
+            },
+            complete: function(){
+                if (message != '') {
+                    showAlertInTop(message);
+                }
+
+                self.removeClass('disabled').html(self_html);
+            }
+        });
+    });
+
     //---------- Apply Tooltip after change element ----------//
     function ApplyTooltip()
     {

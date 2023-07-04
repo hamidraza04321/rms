@@ -37,47 +37,49 @@
                 </div>
               </div>
               <div class="card-body">
-                <table id="session-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      @can('update-session-status')
-                        <th>Status</th>
-                      @endcan
-                      @canany(['edit-session', 'delete-session'])
-                        <th>Action</th>
-                      @endcanany
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['sessions'] as $session)
+                <div class="table-responsive">
+                  <table id="session-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $session->name }}</td>
+                        <th>S No.</th>
+                        <th>Name</th>
                         @can('update-session-status')
-                          <td>
-                            @if($session->is_active)
-                              <button data-url="{{ route('session.update.status', $session->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                            @else
-                              <button data-url="{{ route('session.update.status', $session->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                            @endif
-                          </td>
+                          <th>Status</th>
                         @endcan
                         @canany(['edit-session', 'delete-session'])
-                          <td>
-                            @can('edit-session')
-                              <a href="{{ route('session.edit', $session->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            @endcan
-                            @can('delete-session')
-                              <button class="btn btn-sm btn-danger btn-destroy-session" data-url="{{ route('session.destroy', $session->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                            @endcan
-                          </td>
+                          <th>Action</th>
                         @endcanany
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['sessions'] as $session)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $session->name }}</td>
+                          @can('update-session-status')
+                            <td>
+                              @if($session->is_active)
+                                <button data-url="{{ route('session.update.status', $session->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                              @else
+                                <button data-url="{{ route('session.update.status', $session->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                              @endif
+                            </td>
+                          @endcan
+                          @canany(['edit-session', 'delete-session'])
+                            <td>
+                              @can('edit-session')
+                                <a href="{{ route('session.edit', $session->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                              @endcan
+                              @can('delete-session')
+                                <button class="btn btn-sm btn-danger btn-destroy-session" data-url="{{ route('session.destroy', $session->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

@@ -8,7 +8,9 @@ $.ajaxSetup({
 
 //---------- DATATABLE ----------//
 if ($.isFunction($.fn.DataTable)) {
-    $('.datatable').DataTable();
+    $('.datatable').DataTable({
+    	responsive: true
+    });
 }
 
 //---------- SELECT 2 ----------//

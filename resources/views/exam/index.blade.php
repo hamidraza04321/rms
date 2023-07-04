@@ -37,49 +37,51 @@
                 </div>
               </div>
               <div class="card-body">
-                <table id="exam-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Session</th>
-                      <th>Name</th>
-                      @can('update-exam-status')
-                        <th>Status</th>
-                      @endcan
-                      @canany(['edit-exam', 'delete-exam'])
-                        <th>Action</th>
-                      @endcanany
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['exams'] as $exam)
+                <div class="table-responsive">
+                  <table id="exam-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $exam->session->name }}</td>
-                        <td>{{ $exam->name }}</td>
+                        <th>S No.</th>
+                        <th>Session</th>
+                        <th>Name</th>
                         @can('update-exam-status')
-                          <td>
-                            @if($exam->is_active)
-                              <button data-url="{{ route('exam.update.status', $exam->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                            @else
-                              <button data-url="{{ route('exam.update.status', $exam->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                            @endif
-                          </td>
+                          <th>Status</th>
                         @endcan
                         @canany(['edit-exam', 'delete-exam'])
-                          <td>
-                            @can('edit-exam')
-                              <a href="{{ route('exam.edit', $exam->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            @endcan
-                            @can('delete-exam')
-                              <button class="btn btn-sm btn-danger btn-destroy-exam" data-url="{{ route('exam.destroy', $exam->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                            @endcan
-                          </td>
+                          <th>Action</th>
                         @endcanany
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['exams'] as $exam)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $exam->session->name }}</td>
+                          <td>{{ $exam->name }}</td>
+                          @can('update-exam-status')
+                            <td>
+                              @if($exam->is_active)
+                                <button data-url="{{ route('exam.update.status', $exam->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                              @else
+                                <button data-url="{{ route('exam.update.status', $exam->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                              @endif
+                            </td>
+                          @endcan
+                          @canany(['edit-exam', 'delete-exam'])
+                            <td>
+                              @can('edit-exam')
+                                <a href="{{ route('exam.edit', $exam->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                              @endcan
+                              @can('delete-exam')
+                                <button class="btn btn-sm btn-danger btn-destroy-exam" data-url="{{ route('exam.destroy', $exam->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

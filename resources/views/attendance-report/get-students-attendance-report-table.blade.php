@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="row" style="overflow-x: scroll;" id="attendance-report">
+        <div class="table-responsive" style="overflow-x: scroll;" id="attendance-report">
           <table id="attendance-report-table" class="table table-bordered table-hover no-wrap">
             <thead>
               <tr>

@@ -29,31 +29,33 @@
                 <div class="card-title"><i class="fa fa-trash"></i> {{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
-                <table id="user-trash-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Deleted At</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['users'] as $user)
+                <div class="table-responsive">
+                  <table id="user-trash-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->deleted_at->diffForHumans() }}</td>
-                        <td>
-                          <button class="btn btn-sm btn-success btn-restore-user" data-url="{{ route('user.restore', $user->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                          <button class="btn btn-sm btn-danger btn-delete-user" data-url="{{ route('user.delete', $user->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                        </td>
+                        <th>S No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Deleted At</th>
+                        <th>Action</th>
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['users'] as $user)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $user->name }}</td>
+                          <td>{{ $user->email }}</td>
+                          <td>{{ $user->deleted_at->diffForHumans() }}</td>
+                          <td>
+                            <button class="btn btn-sm btn-success btn-restore-user" data-url="{{ route('user.restore', $user->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                            <button class="btn btn-sm btn-danger btn-delete-user" data-url="{{ route('user.delete', $user->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                          </td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

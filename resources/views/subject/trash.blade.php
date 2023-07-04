@@ -29,37 +29,39 @@
                 <div class="card-title"><i class="fa fa-trash"></i> {{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
-                <table id="subject-trash-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      <th>Deleted At</th>
-                      @canany(['restore-subject', 'permanent-delete-subject'])
-                        <th>Action</th>
-                      @endcanany
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['subjects'] as $subject)
+                <div class="table-responsive">
+                  <table id="subject-trash-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $subject->name }}</td>
-                        <td>{{ $subject->deleted_at->diffForHumans() }}</td>
+                        <th>S No.</th>
+                        <th>Name</th>
+                        <th>Deleted At</th>
                         @canany(['restore-subject', 'permanent-delete-subject'])
-                          <td>
-                            @can('restore-subject')
-                              <button class="btn btn-sm btn-success btn-restore-subject" data-url="{{ route('subject.restore', $subject->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                            @endcan
-                            @can('permanent-delete-subject')
-                              <button class="btn btn-sm btn-danger btn-delete-subject" data-url="{{ route('subject.delete', $subject->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                            @endcan
-                          </td>
+                          <th>Action</th>
                         @endcanany
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['subjects'] as $subject)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $subject->name }}</td>
+                          <td>{{ $subject->deleted_at->diffForHumans() }}</td>
+                          @canany(['restore-subject', 'permanent-delete-subject'])
+                            <td>
+                              @can('restore-subject')
+                                <button class="btn btn-sm btn-success btn-restore-subject" data-url="{{ route('subject.restore', $subject->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                              @endcan
+                              @can('permanent-delete-subject')
+                                <button class="btn btn-sm btn-danger btn-delete-subject" data-url="{{ route('subject.delete', $subject->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

@@ -13,7 +13,7 @@
           <input type="hidden" name="session_id" value="{{ $data['session_id'] }}">
           <input type="hidden" name="class_id" value="{{ $data['class_id'] }}">
           <input type="hidden" name="group_id" value="{{ $data['group_id'] }}">
-          <div class="row" style="overflow-x: auto;">
+          <div class="row exam-schedule-table-row" style="overflow-x: auto;">
             <table id="exam-schedule-table" class="table table-bordered table-hover no-wrap">
               <thead>
                 <tr>

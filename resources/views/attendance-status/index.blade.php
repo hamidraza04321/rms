@@ -37,53 +37,55 @@
                 </div>
               </div>
               <div class="card-body">
-                <table id="attendance-status-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      <th>Short Code</th>
-                      <th>Color</th>
-                      @can('update-attendance-status')
-                        <th>Status</th>
-                      @endcan
-                      @canany(['edit-attendance-status', 'delete-attendance-status'])
-                        <th>Action</th>
-                      @endcanany
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['attendance_statuses'] as $attendance_status)
+                <div class="table-responsive">
+                  <table id="attendance-status-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $attendance_status->name }}</td>
-                        <td>{{ $attendance_status->short_code }}</td>
-                        <td>
-                          <button class="btn-color" style="background-color: {{ $attendance_status->color }};"></button>
-                        </td>
+                        <th>S No.</th>
+                        <th>Name</th>
+                        <th>Short Code</th>
+                        <th>Color</th>
                         @can('update-attendance-status')
-                          <td>
-                            @if($attendance_status->is_active)
-                              <button data-url="{{ route('attendance-status.update.status', $attendance_status->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                            @else
-                              <button data-url="{{ route('attendance-status.update.status', $attendance_status->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                            @endif
-                          </td>
+                          <th>Status</th>
                         @endcan
                         @canany(['edit-attendance-status', 'delete-attendance-status'])
-                          <td>
-                            @can('edit-attendance-status')
-                              <a href="{{ route('attendance-status.edit', $attendance_status->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            @endcan
-                            @can('delete-attendance-status')
-                              <button class="btn btn-sm btn-danger btn-destroy-attendance-status" data-url="{{ route('attendance-status.destroy', $attendance_status->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                            @endcan
-                          </td>
+                          <th>Action</th>
                         @endcanany
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['attendance_statuses'] as $attendance_status)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $attendance_status->name }}</td>
+                          <td>{{ $attendance_status->short_code }}</td>
+                          <td>
+                            <button class="btn-color" style="background-color: {{ $attendance_status->color }};"></button>
+                          </td>
+                          @can('update-attendance-status')
+                            <td>
+                              @if($attendance_status->is_active)
+                                <button data-url="{{ route('attendance-status.update.status', $attendance_status->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                              @else
+                                <button data-url="{{ route('attendance-status.update.status', $attendance_status->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                              @endif
+                            </td>
+                          @endcan
+                          @canany(['edit-attendance-status', 'delete-attendance-status'])
+                            <td>
+                              @can('edit-attendance-status')
+                                <a href="{{ route('attendance-status.edit', $attendance_status->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                              @endcan
+                              @can('delete-attendance-status')
+                                <button class="btn btn-sm btn-danger btn-destroy-attendance-status" data-url="{{ route('attendance-status.destroy', $attendance_status->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

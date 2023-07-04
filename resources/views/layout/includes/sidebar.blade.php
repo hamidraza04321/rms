@@ -169,7 +169,7 @@
           </li>
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) active @endif">
-              <i class="nav-icon fas fa-file-signature"></i>
+              <i class="nav-icon fas fa-calendar-week"></i>
               <p>
                 Exam Schedule
                 <i class="right fas fa-angle-left"></i>

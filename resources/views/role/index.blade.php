@@ -32,29 +32,31 @@
                 </div>
               </div>
               <div class="card-body">
-                <table id="role-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['roles'] as $role)
+                <div class="table-responsive">
+                  <table id="role-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $role->name }}</td>
-                        <td>
-                          @if($role->name != 'Super Admin')
-                            <a href="{{ route('role.edit', $role->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            <a class="btn btn-sm btn-danger btn-delete-role" data-url="{{ route('role.destroy', $role->id) }}"><i class="fa fa-trash"></i> Delete</a>
-                          @endif
-                        </td>
+                        <th>S No.</th>
+                        <th>Name</th>
+                        <th>Action</th>
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['roles'] as $role)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $role->name }}</td>
+                          <td>
+                            @if($role->name != 'Super Admin')
+                              <a href="{{ route('role.edit', $role->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                              <a class="btn btn-sm btn-danger btn-delete-role" data-url="{{ route('role.destroy', $role->id) }}"><i class="fa fa-trash"></i> Delete</a>
+                            @endif
+                          </td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

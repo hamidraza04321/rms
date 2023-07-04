@@ -29,37 +29,39 @@
                 <div class="card-title"><i class="fa fa-trash"></i> {{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
-                <table id="exam-trash-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      <th>Deleted At</th>
-                      @canany(['restore-exam', 'permanent-delete-exam'])
-                        <th>Action</th>
-                      @endcanany
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['exams'] as $exam)
+                <div class="table-responsive">
+                  <table id="exam-trash-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $exam->name }}</td>
-                        <td>{{ $exam->deleted_at->diffForHumans() }}</td>
+                        <th>S No.</th>
+                        <th>Name</th>
+                        <th>Deleted At</th>
                         @canany(['restore-exam', 'permanent-delete-exam'])
-                          <td>
-                            @can('restore-exam')
-                              <button class="btn btn-sm btn-success btn-restore-exam" data-url="{{ route('exam.restore', $exam->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                            @endcan
-                            @can('permanent-delete-exam')
-                              <button class="btn btn-sm btn-danger btn-delete-exam" data-url="{{ route('exam.delete', $exam->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                            @endcan
-                          </td>
+                          <th>Action</th>
                         @endcanany
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['exams'] as $exam)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $exam->name }}</td>
+                          <td>{{ $exam->deleted_at->diffForHumans() }}</td>
+                          @canany(['restore-exam', 'permanent-delete-exam'])
+                            <td>
+                              @can('restore-exam')
+                                <button class="btn btn-sm btn-success btn-restore-exam" data-url="{{ route('exam.restore', $exam->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                              @endcan
+                              @can('permanent-delete-exam')
+                                <button class="btn btn-sm btn-danger btn-delete-exam" data-url="{{ route('exam.delete', $exam->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

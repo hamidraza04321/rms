@@ -37,47 +37,49 @@
                 </div>
               </div>
               <div class="card-body">
-                <table id="class-table" class="table table-bordered table-hover datatable">
-                  <thead>
-                    <tr>
-                      <th>S No.</th>
-                      <th>Name</th>
-                      @can('update-class-status')
-                        <th>Status</th>
-                      @endcan
-                      @canany(['edit-class', 'delete-class'])
-                        <th>Action</th>
-                      @endcanany
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data['classes'] as $class)
+                <div class="table-responsive">
+                  <table id="class-table" class="table table-bordered table-hover datatable">
+                    <thead>
                       <tr>
-                        <td>{{ ++$loop->index }}</td>
-                        <td>{{ $class->name }}</td>
+                        <th>S No.</th>
+                        <th>Name</th>
                         @can('update-class-status')
-                          <td>
-                            @if($class->is_active)
-                              <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                            @else
-                              <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                            @endif
-                          </td>
+                          <th>Status</th>
                         @endcan
                         @canany(['edit-class', 'delete-class'])
-                          <td>
-                            @can('edit-class')
-                              <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                            @endcan
-                            @can('delete-class')
-                              <button class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></button>
-                            @endcan
-                          </td>
+                          <th>Action</th>
                         @endcanany
                       </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @foreach($data['classes'] as $class)
+                        <tr>
+                          <td>{{ ++$loop->index }}</td>
+                          <td>{{ $class->name }}</td>
+                          @can('update-class-status')
+                            <td>
+                              @if($class->is_active)
+                                <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                              @else
+                                <button data-url="{{ route('class.update.status', $class->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                              @endif
+                            </td>
+                          @endcan
+                          @canany(['edit-class', 'delete-class'])
+                            <td>
+                              @can('edit-class')
+                                <a href="{{ route('class.edit', $class->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                              @endcan
+                              @can('delete-class')
+                                <button class="btn btn-sm btn-danger btn-destroy-class" data-url="{{ route('class.destroy', $class->id) }}"><i class="fa fa-trash"> Delete</i></button>
+                              @endcan
+                            </td>
+                          @endcanany
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- /.card-body -->
             </div>
