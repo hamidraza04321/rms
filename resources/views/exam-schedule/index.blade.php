@@ -34,7 +34,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table id="exam-schedule-table" class="table table-bordered table-hover datatable">
+                  <table id="prepared-exam-schedule-table" class="table table-bordered table-hover datatable">
                     <thead>
                       <tr>
                         <th>Sesion</th>
@@ -48,8 +48,12 @@
                       @foreach($data['exam_schedules'] as $exam_schedule)
                         <tr>
                           <td>{{ $exam_schedule->exam->session->name }}</td>
-                          <td>{{ $exam_schedule->exam->name }}</td>
-                          <td>{{ $exam_schedule->class->name }}</td>
+                          <td>
+                            <span class="exam-name">{{ $exam_schedule->exam->name }}</span>
+                          </td>
+                          <td>
+                            <span class="class-name">{{ $exam_schedule->class->name }}</span>
+                          </td>
                           <td>{{ $exam_schedule->group->name }}</td>
                           <td>
                             <button class="btn btn-sm btn-primary btn-edit-exam-schedule" session-id="{{ $exam_schedule->exam->session_id }}" exam-id="{{ $exam_schedule->exam_id }}" class-id="{{ $exam_schedule->class_id }}" group-id="{{ $exam_schedule->group_id }}"><i class="fa fa-edit"></i> Edit</button>
@@ -78,17 +82,16 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Exam Schedule ( <span class="exam-name">First Mid Term</span> ) <span class="class-name">Class II</span></h4>
+          <h4 class="modal-title">Edit Exam Schedule ( <span class="exam-name"></span> ) <span class="class-name"></span></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">
-          
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" id="btn-save-exam-schedule">Save</button>
+          <button type="button" class="btn btn-success btn-save-exam-schedule">Save</button>
         </div>
       </div>
       <!-- /.modal-content -->

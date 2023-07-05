@@ -45,19 +45,19 @@
                     <td class="categories {{ $subject->exam_schedule?->type == 'categories' ?: 'bg-disabled' }}">
                       @forelse($subject->exam_schedule?->categories ?? [] as $categoryKey => $category)
                         <div class="row category-row">
-                          <div class="col-5 pr-0">
+                          <div class="category-col-5 col-5 pr-0">
                             <input type="hidden" name="exam_schedule[{{ $subject->id }}][categories][{{ $categoryKey }}][category_id]" value="{{ $category->id }}" class="category-id">
                             <input type="text" name="exam_schedule[{{ $subject->id }}][categories][{{ $categoryKey }}][name]" class="form-control mr-1 mw-120 category-name {{ ($loop->first) ?: 'mt-1' }}" placeholder="Enter Name" value="{{ $category->name }}">
                           </div>
-                          <div class="col-5 pr-0">
+                          <div class="category-col-5 col-5 pr-0">
                             <input type="number" name="exam_schedule[{{ $subject->id }}][categories][{{ $categoryKey }}][marks]" class="form-control mr-1 mw-120 category-marks {{ ($loop->first) ?: 'mt-1' }}" placeholder="Enter Marks" value="{{ $category->marks }}" @disabled($category->is_grade)>
                           </div>
-                          <div class="col-1 pr-0">
+                          <div class="category-col-1 col-1 pr-0">
                             <div class="chk-box {{ ($loop->first) ?: 'mt-1' }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
                               <input type="checkbox" name="exam_schedule[{{ $subject->id }}][categories][{{ $categoryKey }}][is_grade]" class="grade-category" @checked($category->is_grade)>
                             </div>
                           </div>
-                          <div class="col-1 pr-0">
+                          <div class="category-col-1 col-1 pr-0">
                             @if($loop->first)
                               <button class="btn btn-primary btn-add-more-category" data-id="{{ $subject->id }}"><i class="fa fa-plus"></i></button>
                             @else
@@ -67,18 +67,18 @@
                         </div>
                       @empty
                         <div class="row category-row">
-                          <div class="col-5 pr-0">
+                          <div class="category-col-5 col-5 pr-0">
                             <input type="text" name="exam_schedule[{{ $subject->id }}][categories][0][name]" class="form-control mr-1 category-name mw-120" placeholder="Enter Name" disabled>
                           </div>
-                          <div class="col-5 pr-0">
+                          <div class="category-col-5 col-5 pr-0">
                             <input type="number" name="exam_schedule[{{ $subject->id }}][categories][0][marks]" class="form-control mr-1 category-marks mw-120" placeholder="Enter Marks" disabled>
                           </div>
-                          <div class="col-1 pr-0">
+                          <div class="category-col-1 col-1 pr-0">
                             <div class="chk-box" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
                               <input type="checkbox" name="exam_schedule[{{ $subject->id }}][categories][0][is_grade]" class="grade-category" disabled>
                             </div>
                           </div>
-                          <div class="col-1 pr-0">
+                          <div class="category-col-1 col-1 pr-0">
                             <button class="btn btn-primary btn-add-more-category" data-id="{{ $subject->id }}" disabled><i class="fa fa-plus"></i></button>
                           </div>
                         </div>

@@ -254,18 +254,18 @@ $(document).ready(function() {
 
         td.append(`
             <div class="row category-row">
-                <div class="col-5 pr-0">
+                <div class="category-col-5 col-5 pr-0">
                     <input type="text" name="exam_schedule[${subject_id}][categories][${length}][name]" class="form-control mr-1 mt-1 category-name" placeholder="Enter Name">
                 </div>
-                <div class="col-5 pr-0">
+                <div class="category-col-5 col-5 pr-0">
                     <input type="number" name="exam_schedule[${subject_id}][categories][${length}][marks]" class="form-control mr-1 mt-1 category-marks" placeholder="Enter Marks">
                 </div>
-                <div class="col-1 pr-0">
+                <div class="category-col-1 col-1 pr-0">
                     <div class="chk-box mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Apply Gradings">
                         <input type="checkbox" name="exam_schedule[${subject_id}][categories][${length}][is_grade]" class="grade-category">
                     </div>
                 </div>
-                <div class="col-1 pr-0">
+                <div class="category-col-1 col-1 pr-0">
                     <button class="btn btn-danger btn-remove-category mt-1" data-id="${subject_id}"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
@@ -490,6 +490,9 @@ $(document).ready(function() {
             class_id = self.attr('class-id');
             group_id = self.attr('group-id');
             modal = $('#edit-exam-schedule');
+            row = $(this).closest('tr');
+            exam_name = row.find('.exam-name').text();
+            class_name = row.find('.class-name').text();
             message = '';
             url = `${base_url}/exam-schedule/get-exam-schedule-table`;
             formData = {
@@ -525,6 +528,10 @@ $(document).ready(function() {
                     var table = modal.find('.card-body').html();
                     modal.find('.modal-body').html(table);
                     modal.modal('show');
+
+                    // Show Names
+                    modal.find('.exam-name').text(exam_name);
+                    modal.find('.class-name').text(class_name);
                 }
             },
             error: function(){
