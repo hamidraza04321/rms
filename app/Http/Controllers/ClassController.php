@@ -78,44 +78,10 @@ class ClassController extends Controller
         // Create class
         $class = Classes::create([ 'name' => $request->name ]);
 
-        // Save class: sections, groups, subjects
-        $sections = [];
-        $groups = [];
-        $subjects = [];
-
-        // Sections
-        foreach ($request->section_id as $section_id) {
-            $sections[] = [
-                'class_id' => $class->id,
-                'section_id' => $section_id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-        }
-
-        // Groups
-        foreach ($request->group_id ?? [] as $group_id) {
-            $groups[] = [
-                'class_id' => $class->id,
-                'group_id' => $group_id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-        }
-
-        // Subjects
-        foreach ($request->subject_id as $subject_id) {
-            $subjects[] = [
-                'class_id' => $class->id,
-                'subject_id' => $subject_id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-        }
-
-        ClassSection::insert($sections);
-        ClassGroup::insert($groups);
-        ClassSubject::insert($subjects);
+        // Attach class: sections, groups, subjects
+        $class->sections()->attach($request->section_id);
+        $class->groups()->attach($request->group_id);
+        $class->subjects()->attach($request->subject_id);
 
         return response()->successMessage('Class Created Successfully');
     }
@@ -129,9 +95,10 @@ class ClassController extends Controller
     public function edit($id)
     {
         $class = Classes::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-        $section_ids = $class->sections->pluck('section_id')->toArray();
-        $group_ids = $class->groups->pluck('group_id')->toArray();
-        $subject_ids = $class->subjects->pluck('subject_id')->toArray();
+
+        $section_ids = ClassSection::where('class_id', $class->id)->pluck('section_id')->toArray();
+        $group_ids = ClassGroup::where('class_id', $class->id)->pluck('group_id')->toArray();
+        $subject_ids = ClassSubject::where('class_id', $class->id)->pluck('subject_id')->toArray();
 
         $selected = [ 'id', 'name' ];
         $sections = Section::get($selected);
@@ -169,59 +136,10 @@ class ClassController extends Controller
                 'name' => $request->name
             ]);
 
-            // Delete where section, group, subject ids not exists in request
-            $class->sections->whereNotIn('section_id', $request->section_id)->each->delete();
-            $class->groups->whereNotIn('group_id', $request->group_id)->each->delete();
-            $class->subjects->whereNotIn('subject_id', $request->subject_id)->each->delete();
-
-            // Get exists section, group, subject ids
-            $exists_section_ids = $class->sections->pluck('section_id')->toArray();
-            $exists_group_ids = $class->groups->pluck('group_id')->toArray();
-            $exists_subject_ids = $class->subjects->pluck('subject_id')->toArray();
-
-            // Merge Exists and delete class ids to get which ids to create
-            $create_section_ids = array_diff($request->section_id, $exists_section_ids);
-            $create_group_ids = array_diff($request->group_id ?? [], $exists_group_ids);
-            $create_subject_ids = array_diff($request->subject_id, $exists_subject_ids);
-
-            // Save class: sections, groups, subjects
-            $sections = [];
-            $groups = [];
-            $subjects = [];
-
-            // Sections
-            foreach ($create_section_ids as $section_id) {
-                $sections[] = [
-                    'class_id' => $class->id,
-                    'section_id' => $section_id,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
-            }
-
-            // Groups
-            foreach ($create_group_ids as $group_id) {
-                $groups[] = [
-                    'class_id' => $class->id,
-                    'group_id' => $group_id,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
-            }
-
-            // Subjects
-            foreach ($create_subject_ids as $subject_id) {
-                $subjects[] = [
-                    'class_id' => $class->id,
-                    'subject_id' => $subject_id,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
-            }
-
-            ClassSection::insert($sections);
-            ClassGroup::insert($groups);
-            ClassSubject::insert($subjects);
+            // Sync class: sections, groups, subjects
+            $class->sections()->sync($request->section_id);
+            $class->groups()->sync($request->group_id);
+            $class->subjects()->sync($request->subject_id);
 
             return response()->successMessage('Class Updated Successfully !');
         }

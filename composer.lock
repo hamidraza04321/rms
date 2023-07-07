@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ba8c4fb2fa3966a609c880159c1e10a",
+    "content-hash": "27055465b1e69ddddcbca91d5b596abb",
     "packages": [
         {
             "name": "awobaz/compoships",
@@ -204,6 +204,59 @@
                 }
             ],
             "time": "2022-04-01T19:23:25+00:00"
+        },
+        {
+            "name": "ddzobov/laravel-pivot-softdeletes",
+            "version": "2.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddzobov/laravel-pivot-softdeletes.git",
+                "reference": "34c9704078eddb998dc2bacdcb87f26884a4bac8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddzobov/laravel-pivot-softdeletes/zipball/34c9704078eddb998dc2bacdcb87f26884a4bac8",
+                "reference": "34c9704078eddb998dc2bacdcb87f26884a4bac8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": ">=5.8 <11.0"
+            },
+            "require-dev": {
+                "laravel/framework": ">=5.8 <11.0",
+                "mockery/mockery": "^1.4.4",
+                "orchestra/testbench-core": "^7.1",
+                "phpunit/phpunit": "^9.5.8"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "DDZobov\\PivotSoftDeletes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniil Zobov",
+                    "email": "ddzobov@gmail.com"
+                }
+            ],
+            "description": "Make your Eloquent models pivots be able to soft deleted in Laravel/Lumen",
+            "homepage": "https://github.com/ddzobov/laravel-pivot-softdeletes",
+            "keywords": [
+                "laravel",
+                "lumen",
+                "pivot",
+                "softdelete"
+            ],
+            "support": {
+                "issues": "https://github.com/ddzobov/laravel-pivot-softdeletes/issues",
+                "source": "https://github.com/ddzobov/laravel-pivot-softdeletes"
+            },
+            "time": "2023-05-06T20:03:39+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

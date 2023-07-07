@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use DDZobov\PivotSoftDeletes\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\ActiveScopeTrait;
 use App\Models\Scopes\HasUserClass;
@@ -46,17 +46,23 @@ class Classes extends Model
 
     public function sections()
     {
-    	return $this->hasMany(ClassSection::class, 'class_id');
+    	return $this->belongsToMany(ClassSection::class, 'class_sections', 'class_id', 'section_id')
+            ->withSoftDeletes()
+            ->withTimestamps();
     }
 
     public function groups()
     {
-    	return $this->hasMany(ClassGroup::class, 'class_id');
+    	return $this->belongsToMany(ClassGroup::class, 'class_groups', 'class_id', 'group_id')
+            ->withSoftDeletes()
+            ->withTimestamps();
     }
 
     public function subjects()
     {
-        return $this->hasMany(ClassSubject::class, 'class_id');
+        return $this->belongsToMany(ClassSubject::class, 'class_subjects', 'class_id', 'subject_id')
+            ->withSoftDeletes()
+            ->withTimestamps();
     }
 
     public function userClass()
