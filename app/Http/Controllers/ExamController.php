@@ -8,6 +8,7 @@ use App\Models\Exam;
 use App\Models\Classes;
 use App\Models\Session;
 use App\Models\ExamClass;
+use App\Models\ClassGroup;
 
 class ExamController extends Controller
 {
@@ -73,17 +74,17 @@ class ExamController extends Controller
         $data = $request->safe()->except('class_id');
         $exam = Exam::create($data);
 
-        // Get Classes with group
-        $classes = Classes::whereIn('id', $request->class_id)->with('groups')->get();
+        // Get Class groups
+        $class_groups = ClassGroup::whereIn('class_id', $request->class_id)->get();
 
         // Save Exam Classes
         $exam_classes = [];
         foreach ($request->class_id as $class_id) {
-            $class = $classes->where('id', $class_id)->first();
+            $groups = $class_groups->where('class_id', $class_id);
 
             // Class Groups is exists
-            if (count($class->groups)) {
-                foreach ($class->groups as $group) {
+            if (count($groups)) {
+                foreach ($groups as $group) {
                     $exam_classes[] = [
                         'exam_id' => $exam->id,
                         'class_id' => $class_id,
@@ -118,6 +119,7 @@ class ExamController extends Controller
     {
         $exam = Exam::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $class_ids = $exam->classes->pluck('class_id')->toArray();
+
         $sessions = Session::get();
         $classes = Classes::get();
 
@@ -156,18 +158,18 @@ class ExamController extends Controller
             $exists_class_ids = $exam->classes->pluck('class_id')->toArray();
             // Merge Exists and delete class ids to get which ids to create
             $create_class_ids = array_diff($request->class_id, $exists_class_ids);
-            // Get Classes with groups
-            $classes = Classes::whereIn('id', $create_class_ids)->with('groups')->get();
+            // Get Class groups
+            $class_groups = ClassGroup::whereIn('class_id', $create_class_ids)->get();
 
             // Save exam classes
             $exam_classes = [];
 
             foreach ($create_class_ids as $class_id) {
-                $class = $classes->where('id', $class_id)->first();
+                $groups = $class_groups->where('class_id', $class_id);
 
                 // Class Groups Exists
-                if (count($class->groups)) {
-                    foreach ($class->groups as $group) {
+                if (count($groups)) {
+                    foreach ($groups as $group) {
                         $exam_classes[] = [
                             'exam_id' => $exam->id,
                             'class_id' => $class_id,

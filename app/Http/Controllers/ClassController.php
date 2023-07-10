@@ -263,10 +263,12 @@ class ClassController extends Controller
     public function getClassSectionsAndGroups(ClassRequest $request)
     {
         $class = Classes::find($request->class_id);
+        $sections = ClassSection::where('class_id', $request->class_id)->with('section')->get()->pluck('section');
+        $groups = ClassGroup::where('class_id', $request->class_id)->with('group')->get()->pluck('group');
 
         return response()->success([
-            'sections' => $class->sections->pluck('section'),
-            'groups' => $class->groups->pluck('group')
+            'sections' => $sections,
+            'groups' => $groups
         ]);
     }
 }

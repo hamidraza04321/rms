@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('session_id')->constrained('sessions')->onDelete('cascade');
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->boolean('is_active')->default('1');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

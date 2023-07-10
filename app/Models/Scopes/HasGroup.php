@@ -17,6 +17,7 @@ class HasGroup implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->has('group');
+        $builder->whereNull('group_id')
+            ->orWhere(fn($query) => $query->has('group'));
     }
 }
