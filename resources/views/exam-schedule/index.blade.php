@@ -54,7 +54,7 @@
                           <td>
                             <span class="class-name">{{ $exam_schedule->class->name }}</span>
                           </td>
-                          <td>{{ $exam_schedule->group->name }}</td>
+                          <td>{{ $exam_schedule->group->name ?? '--' }}</td>
                           <td>
                             <button class="btn btn-sm btn-primary btn-edit-exam-schedule" session-id="{{ $exam_schedule->exam->session_id }}" exam-id="{{ $exam_schedule->exam_id }}" class-id="{{ $exam_schedule->class_id }}" group-id="{{ $exam_schedule->group_id }}"><i class="fa fa-edit"></i> Edit</button>
                             <button class="btn btn-sm btn-danger btn-destroy-exam-schedule" data-url="{{ route('exam-schedule.destroy', $exam_schedule->id) }}"><i class="fa fa-trash"></i> Delete</button>

@@ -457,7 +457,7 @@ $(document).ready(function() {
                     type: 'DELETE',
                     success: function(response) {
                         if (response.status == true) {
-                            var table = $('#exam-schedule-table').DataTable();
+                            var table = $('#prepared-exam-schedule-table').DataTable();
                             table.row(self.parents('tr')).remove().draw();
                             toastr.success(response.message);
                         } else {

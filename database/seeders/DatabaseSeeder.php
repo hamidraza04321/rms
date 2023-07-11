@@ -29,7 +29,10 @@ class DatabaseSeeder extends Seeder
             MenuTableSeeder::class,
             UserTableSeeder::class,
             StudentTableSeeder::class,
-            AttendanceStatusTableSeeder::class
+            AttendanceStatusTableSeeder::class,
+            ExamTableSeeder::class,
+            ExamClassTableSeeder::class,
+            ExamScheduleTableSeeder::class
         ]);
     }
 }

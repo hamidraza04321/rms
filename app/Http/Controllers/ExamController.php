@@ -336,4 +336,22 @@ class ExamController extends Controller
             'classes' => $classes
         ]);
     }
+
+    /**
+     * Print the datesheet of exam.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function datesheet($id)
+    {
+        $exam = Exam::with('classes.examSchedule')->findOrFail($id);
+
+        $data = [
+            'page_title' => 'Print Datesheet',
+            'exam' => $exam
+        ];
+
+        return view('exam.datesheet', compact('data'));
+    }
 }
