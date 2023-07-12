@@ -15,15 +15,22 @@ class GroupTableSeeder extends Seeder
      */
     public function run()
     {
-        $groups = collect([
+        $groups = [
             [ 'name' => 'Computer' ], 
             [ 'name' => 'Biology' ], 
             [ 'name' => 'General Science' ], 
             [ 'name' => 'Commerce' ]
-        ]);
+        ];
 
-        $groups->each(function($group){
-            Group::create($group);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($groups as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        Group::insert($data);
     }
 }

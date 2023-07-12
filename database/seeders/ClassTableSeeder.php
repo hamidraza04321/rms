@@ -15,7 +15,7 @@ class ClassTableSeeder extends Seeder
      */
     public function run()
     {
-        $classes = collect([
+        $classes = [
             [ 'name' => 'Class I' ],
             [ 'name' => 'Class II' ],
             [ 'name' => 'Class III' ],
@@ -26,10 +26,17 @@ class ClassTableSeeder extends Seeder
             [ 'name' => 'Class VIII' ],
             [ 'name' => 'Class IX' ],
             [ 'name' => 'Class X' ]
-        ]);
+        ];
 
-        $classes->each(function($class){
-            Classes::create($class);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($classes as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        Classes::insert($data);
     }
 }

@@ -15,17 +15,24 @@ class SectionTableSeeder extends Seeder
      */
     public function run()
     {
-        $sections = collect([
+        $sections = [
             [ 'name' => 'A' ], 
             [ 'name' => 'B' ], 
             [ 'name' => 'C' ], 
             [ 'name' => 'D' ], 
             [ 'name' => 'E' ], 
             [ 'name' => 'F' ] 
-        ]);
+        ];
 
-        $sections->each(function($section){
-            Section::create($section);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($sections as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        Section::insert($data);
     }
 }

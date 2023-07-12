@@ -167,27 +167,56 @@
               @endcan
             </ul>
           </li>
-          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) menu-open @endif">
-            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) active @endif">
-              <i class="nav-icon fas fa-calendar-week"></i>
+        @endcanany
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) menu-open @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) active @endif">
+            <i class="nav-icon fas fa-calendar-week"></i>
+            <p>
+              Exam Schedule
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('exam-schedule.index') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.index') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manage</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('exam-schedule.create') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.create') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        @canany(['view-grade', 'create-grade'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'grade.index', 'grade.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'grade.index', 'grade.create', 'grade.edit', 'grade.trash' ]))) active @endif">
+              <i class="nav-icon fas fa-medal"></i>
               <p>
-                Exam Schedule
+                Grade
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('exam-schedule.index') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.index') active @endif">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Manage</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('exam-schedule.create') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.create') active @endif">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Create</p>
-                </a>
-              </li>
+              @can('view-grade')
+                <li class="nav-item">
+                  <a href="{{ route('grade.index') }}" class="nav-link @if(Route::currentRouteName() == 'grade.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-session')
+                <li class="nav-item">
+                  <a href="{{ route('grade.create') }}" class="nav-link @if(Route::currentRouteName() == 'grade.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
             </ul>
           </li>
         @endcanany
@@ -390,7 +419,7 @@
           <li class="nav-header">System Settings</li>
           <li class="nav-item @if(Route::currentRouteName() == 'settings.index') menu-open @endif">
             <a href="{{ route('settings.index') }}" class="nav-link @if(Route::currentRouteName() == 'settings.index') active @endif">
-              <i class="nav-icon ion-gear-a"></i>
+              <i class="fas fa-cogs"></i>
               <p>Settings</p>
             </a>
           </li>

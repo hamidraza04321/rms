@@ -15,7 +15,7 @@ class SubjectTableSeeder extends Seeder
      */
     public function run()
     {
-        $subjects = collect([
+        $subjects = [
         	[ 'name' => 'English' ],
         	[ 'name' => 'Urdu' ],
         	[ 'name' => 'Mathematics' ],
@@ -24,10 +24,17 @@ class SubjectTableSeeder extends Seeder
         	[ 'name' => 'Computer' ],
             [ 'name' => 'Physics' ],
         	[ 'name' => 'Chemistry' ]
-        ]);
+        ];
 
-        $subjects->each(function($subject){
-            Subject::create($subject);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($subjects as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        Subject::insert($data);
     }
 }

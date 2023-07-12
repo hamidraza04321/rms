@@ -15,7 +15,7 @@ class MenuTableSeeder extends Seeder
      */
     public function run()
     {
-        $menus = collect([
+        $menus = [
 
         	// SESSION MODULE
         	[
@@ -315,10 +315,52 @@ class MenuTableSeeder extends Seeder
 	        	'name' => 'Permanent Delete',
 	        	'permission' => 'permanent-delete-exam'
 	        ],
-    	]);
 
-    	$menus->each(function($menu){
-    		Menu::create($menu);
-    	});
+	        // GRADE MODULE
+	        [
+	        	'module_id' => 10,
+	        	'name' => 'View',
+	        	'permission' => 'view-grade'
+	        ], [
+	        	'module_id' => 10,
+	        	'name' => 'Create',
+	        	'permission' => 'create-grade'
+	        ], [
+	        	'module_id' => 10,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-grade'
+	        ], [
+	        	'module_id' => 10,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-grade'
+	        ], [
+	        	'module_id' => 10,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-grade-status'
+	        ], [
+	        	'module_id' => 10,
+	        	'name' => 'View Trash',
+	        	'permission' => 'view-grade-trash'
+	        ], [
+	        	'module_id' => 10,
+	        	'name' => 'Restore',
+	        	'permission' => 'restore-grade'
+	        ], [
+	        	'module_id' => 10,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-grade'
+	        ]
+    	];
+
+		// TIMESTAMPS
+        $data = [];
+        foreach ($menus as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+		Menu::insert($data);
     }
 }

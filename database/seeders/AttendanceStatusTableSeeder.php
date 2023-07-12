@@ -15,7 +15,7 @@ class AttendanceStatusTableSeeder extends Seeder
      */
     public function run()
     {
-        $attendance_statuses = collect([
+        $attendance_statuses = [
         	[
         		'name' => 'Present',
                 'short_code'=> 'P',
@@ -40,10 +40,17 @@ class AttendanceStatusTableSeeder extends Seeder
                 'color'=> '#007bff',
         		'show_in_result_card' => 0
         	]
-        ]);
+        ];
 
-        $attendance_statuses->each(function($attendance_status) {
-	        AttendanceStatus::create($attendance_status);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($attendance_statuses as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        AttendanceStatus::insert($data);
     }
 }

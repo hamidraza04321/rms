@@ -15,7 +15,7 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        $permissions = collect([
+        $permissions = [
 
             // SESSION
             [ 'name' => 'view-session' ],
@@ -103,10 +103,26 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'restore-exam' ],
             [ 'name' => 'permanent-delete-exam' ],
 
-        ]);
+            // GRADE
+            [ 'name' => 'view-grade' ],
+            [ 'name' => 'create-grade' ],
+            [ 'name' => 'edit-grade' ],
+            [ 'name' => 'delete-grade' ],
+            [ 'name' => 'update-grade-status' ],
+            [ 'name' => 'view-grade-trash' ],
+            [ 'name' => 'restore-grade' ],
+            [ 'name' => 'permanent-delete-grade' ],
+        ];
 
-        $permissions->each(function($permission) {
-        	Permission::create($permission);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($permissions as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+    	Permission::insert($data);
     }
 }

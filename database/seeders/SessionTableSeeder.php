@@ -15,7 +15,7 @@ class SessionTableSeeder extends Seeder
      */
     public function run()
     {
-        $sessions = collect([
+        $sessions = [
             [
                 'name' => date('Y', strtotime("-2 year")) . '-' . date('Y', strtotime("-1 year")),
                 'start_date' => date('Y', strtotime("-2 year")) . '-04-01',
@@ -31,10 +31,17 @@ class SessionTableSeeder extends Seeder
                 'start_date' => date('Y') . '-04-01',
                 'end_date' => date('Y', strtotime("+1 year")) . '-03-31'
             ]
-        ]);
+        ];
 
-        $sessions->each(function($session){
-            Session::create($session);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($sessions as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        Session::insert($data);
     }
 }

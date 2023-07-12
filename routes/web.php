@@ -120,6 +120,15 @@ Route::middleware('auth')->group(function () {
 		Route::post('/exam-schedule/save', 'save')->name('exam-schedule.save');
 	});
 
+	//---------- GRADE ROUTES ----------//
+	Route::resource('/grade', GradeController::class, ['except' => ['show']]);
+	Route::controller(GradeController::class)->group(function(){
+		Route::get('/grade/trash', 'trash')->name('grade.trash');
+		Route::put('/grade/restore/{id}', 'restore')->name('grade.restore');
+		Route::put('/grade/update-status/{id}', 'updateGradeStatus')->name('grade.update.status');
+		Route::delete('/grade/delete/{id}', 'delete')->name('grade.delete');
+	});
+
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware('is.super.admin')->group(function () {
 		//---------- USER ROLES ROUTES ----------//

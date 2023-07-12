@@ -15,7 +15,7 @@ class ModuleTableSeeder extends Seeder
      */
     public function run()
     {
-        $modules = collect([
+        $modules = [
             [
                 'name' => 'Session',
                 'order_level' => 1
@@ -51,11 +51,22 @@ class ModuleTableSeeder extends Seeder
             [
                 'name' => 'Exams',
                 'order_level' => 9
+            ],
+            [
+                'name' => 'Grade',
+                'order_level' => 10
             ]
-        ]);
+        ];
 
-        $modules->each(function($module) {
-	        Module::create($module);
-        });
+        // TIMESTAMPS
+        $data = [];
+        foreach ($modules as $value) {
+            $data[] = array_merge($value, [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        Module::insert($data);
     }
 }
