@@ -8,6 +8,9 @@ use App\Models\Scopes\ActiveScope;
 use App\Models\User;
 use App\Models\Classes;
 use App\Models\UserClass;
+use App\Models\ClassSection;
+use App\Models\ClassGroup;
+use App\Models\ClassSubject;
 
 class UserController extends Controller
 {
@@ -37,7 +40,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::where('name', '!=', 'Super Admin')->get();
-        $classes = Classes::with('sections', 'groups', 'subjects')->get();
+        $classes = $this->getClasses();
 
         $data = [
             'roles' => $roles,
@@ -88,7 +91,7 @@ class UserController extends Controller
         $user = User::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $role_id = $user->roles->first()?->id;
         $roles = Role::where('name', '!=', 'Super Admin')->get();
-        $classes = Classes::with('sections', 'groups', 'subjects')->get();
+        $classes = $this->getClasses();
 
         // Get user Class section, subject and group id
         $user_classes = $user->classes()->get()->pluck('pivot.class_id')->toArray();
@@ -102,7 +105,7 @@ class UserController extends Controller
         $class_subject_id = $classes->pluck('subjects')->collapse()->pluck('id')->toArray();
         $class_group_id = $classes->pluck('groups')->collapse()->pluck('id')->toArray();
 
-        // Check user ha all permission
+        // Check user has all permission
         $has_all_permission[] = empty(array_diff($class_id, $user_classes));
         $has_all_permission[] = empty(array_diff($class_section_id, $user_class_sections));
         $has_all_permission[] = empty(array_diff($class_subject_id, $user_class_subjects));
@@ -277,5 +280,28 @@ class UserController extends Controller
         }
 
         return response()->errorMessage('User not Found !');
+    }
+
+    /**
+     * Get classses with their sections, groups & subjects.
+     */
+    public function getClasses()
+    {
+        $classes = Classes::get();
+
+        // Get class ids array
+        $class_ids = $classes->pluck('id')->toArray();
+
+        // Get class group, section, subjects
+        $sections = ClassSection::whereIn('class_id', $class_ids)->with('section')->get();
+        $groups = ClassGroup::whereIn('class_id', $class_ids)->with('group')->get();
+        $subjects = ClassSubject::whereIn('class_id', $class_ids)->with('subject')->get();
+
+        return $classes->map(function($class) use($sections, $groups, $subjects){
+            $class->sections = $sections->where('class_id', $class->id);
+            $class->groups = $groups->where('class_id', $class->id);
+            $class->subjects = $subjects->where('class_id', $class->id);
+            return $class;
+        });
     }
 }

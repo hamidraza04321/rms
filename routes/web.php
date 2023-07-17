@@ -145,8 +145,9 @@ Route::middleware('auth')->group(function () {
 
 		//---------- USER ROUTES ----------//
 		Route::controller(SettingController::class)->group(function(){
-			Route::get('/settings', 'index')->name('settings.index');
+			Route::get('/general/settings', 'generalSettings')->name('general.settings');
 			Route::post('/settings/update-logo', 'updateLogo')->name('settings.update.logo');
+			Route::put('/settings/update', 'update')->name('settings.update');
 		});
 	});
 

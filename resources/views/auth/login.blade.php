@@ -31,7 +31,10 @@
 </style>
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>Admin</b>LTE</a>
+    <img src="{{ url($settings->school_logo) }}">
+  </div>
+  <div class="login-logo">
+    <a href="#">{{ $settings->school_name }}</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

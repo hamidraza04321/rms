@@ -2,7 +2,7 @@
   <!-- Brand Logo -->
   <a href="{{ route('dashboard.index') }}" class="brand-link">
     <img src="{{ url($settings->school_logo) }}" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">{{ $settings->school_name }}</span>
+    <span class="brand-text font-weight-light school-name-in-short">{{ $settings->school_name_in_short }}</span>
   </a>
 
   <!-- Sidebar -->
@@ -417,11 +417,22 @@
             </ul>
           </li>
           <li class="nav-header">System Settings</li>
-          <li class="nav-item @if(Route::currentRouteName() == 'settings.index') menu-open @endif">
-            <a href="{{ route('settings.index') }}" class="nav-link @if(Route::currentRouteName() == 'settings.index') active @endif">
-              <i class="fas fa-cogs"></i>
-              <p>Settings</p>
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'general.settings' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'general.settings' ]))) active @endif">
+              <i class="nav-icon fas fa-cogs"></i>
+              <p>
+                Settings
+                <i class="right fas fa-angle-left"></i>
+              </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('general.settings') }}" class="nav-link @if(Route::currentRouteName() == 'general.settings') active @endif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>General Settings</p>
+                </a>
+              </li>
+            </ul>
           </li>
         @endrole
       </ul>

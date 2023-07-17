@@ -118,8 +118,9 @@ class PermissionTableSeeder extends Seeder
         $data = [];
         foreach ($permissions as $value) {
             $data[] = array_merge($value, [
+                'guard_name' => 'web',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ]);
         }
 
