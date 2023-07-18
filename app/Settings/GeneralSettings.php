@@ -21,6 +21,8 @@ class GeneralSettings extends Settings
 
     public string $date_format;
 
+    public string $date_format_in_js;
+
     public int $current_session_id;
 
     public static function group(): string

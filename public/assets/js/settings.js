@@ -69,6 +69,7 @@ $(document).ready(function() {
 			phone_no = $('#phone-no').val();
 			current_session_id = $('#current-session-id').val();
 			date_format = $('#date-format').val();
+			date_format_in_js = $('#date-format-in-js').val();
 			school_address = $('#school-address').val();
 			message = '';
 			flag = true;
@@ -103,6 +104,11 @@ $(document).ready(function() {
 			flag = false;
 		}
 
+		if (date_format_in_js == '') {
+			$('#date-format-in-js').addClass('is-invalid').after('<span class="invalid-feedback d-block">The field is required !</span>');
+			flag = false;
+		}
+
 		if (school_address == '') {
 			$('#school-address').addClass('is-invalid').after('<span class="invalid-feedback d-block">The field is required !</span>');
 			flag = false;
@@ -132,6 +138,7 @@ $(document).ready(function() {
 	            		$('.phone-no').text(phone_no);
 	            		$('.current-session').text($('#current-session-id option:selected').text());
 	            		$('.date-format').text(date_format);
+	            		$('.date-format-in-js').text(date_format_in_js);
 	            		$('.school-address').text(school_address);
 	            	} else {
 	            		showErrorMessages(response.errors);

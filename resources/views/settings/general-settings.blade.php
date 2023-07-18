@@ -70,6 +70,10 @@
                       <td class="date-format">{{ $settings->date_format }}</td>
                     </tr>
                     <tr>
+                      <td><strong>Date Format In JS</strong></td>
+                      <td class="date-format-in-js">{{ $settings->date_format_in_js }}</td>
+                    </tr>
+                    <tr>
                       <td><strong>Address</strong></td>
                       <td class="school-address">{{ $settings->school_address }}</td>
                     </tr>
@@ -156,7 +160,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>Current Session <span class="error">*</span></label>
                   <select name="current_session_id" id="current-session-id" class="form-control select2">
@@ -167,10 +171,16 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>Date Format <span class="error">*</span></label>
                   <input type="text" name="date_format" id="date-format" class="form-control" value="{{ $settings->date_format }}">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Date Format In JS <span class="error">*</span></label>
+                  <input type="text" name="date_format_in_js" id="date-format-in-js" class="form-control" value="{{ $settings->date_format_in_js }}">
                 </div>
               </div>
             </div>
