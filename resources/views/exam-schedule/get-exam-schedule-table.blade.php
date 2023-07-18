@@ -29,7 +29,7 @@
                   <tr>
                     <td>{{ $subject->name }}</td>
                     <td>
-                      <input type="date" name="exam_schedule[{{ $subject->id }}][date]" class="form-control exam-date" value="{{ $subject->exam_schedule?->date ? date('Y-m-d', strtotime($subject->exam_schedule->date)) : '' }}">
+                      <input type="text" name="exam_schedule[{{ $subject->id }}][date]" class="form-control exam-date date-picker" value="{{ $subject->exam_schedule?->date ? $subject->exam_schedule->date->format($settings->date_format) : '' }}" placeholder="Enter Date">
                     </td>
                     <td>
                       <select name="exam_schedule[{{ $subject->id }}][type]" class="form-control subject-type mw-120">

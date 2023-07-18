@@ -116,8 +116,8 @@
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
-                                  <label>Date of Birth <span class="error">*</span></label>
-                                  <input type="date" name="dob" id="dob" class="form-control" placeholder="Enter Date of Birth">
+                                  <label>Date of Birth</label>
+                                  <input type="text" name="dob" id="dob" class="form-control date-picker" placeholder="Enter Date of Birth" />
                                 </div>
                               </div>
                               <div class="col-md-3">
@@ -149,7 +149,7 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Admission Date</label>
-                                  <input type="date" name="admission_date" id="admission-date" class="form-control">
+                                  <input type="text" name="admission_date" id="admission-date" class="form-control date-picker" placeholder="Enter Date of Admission">
                                 </div>
                               </div>
                             </div>

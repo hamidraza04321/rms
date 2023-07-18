@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-md-3">
                         	<label>Date <span class="error">*</span></label>
-                          <input type="date" name="attendance_date" id="attendance-date" class="form-control">
+                          <input type="text" name="attendance_date" id="attendance-date" class="form-control date-picker" placeholder="Enter Date">
                         </div>
                       </div>
                       <div class="row">

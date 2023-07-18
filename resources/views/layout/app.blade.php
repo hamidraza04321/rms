@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="{{ url('/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ url('/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ url('/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <!-- jQuery UI -->
+  <link rel="stylesheet" href="{{ url('/assets/plugins/jquery-ui/jquery-ui.min.css') }}">
   <!-- Toastr -->
   <link rel="stylesheet" href="{{ url('/assets/plugins/toastr/toastr.min.css') }}">
   <!-- SweetAlert2 -->
@@ -56,6 +58,8 @@
   <input type="hidden" id="base-url" value="{{ url('/') }}">
   <!-- CURRENT SESSION ID -->
   <input type="hidden" id="current-session-id" value="{{ $settings->current_session_id }}">
+  <!-- DATE FORMAT -->
+  <input type="hidden" id="date-format-in-js" value="{{ $settings->date_format_in_js }}">
 </div>
 <!-- ./wrapper -->
 
@@ -78,6 +82,9 @@
 <script src="{{ url('/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ url('/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ url('/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{{ url('/assets/plugins/moment/moment.min.js') }}"></script>
+<script src="{{ url('/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <!-- SweetAlert2 -->
 <script src="{{ url('/assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- Select2 -->

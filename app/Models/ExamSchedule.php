@@ -44,6 +44,8 @@ class ExamSchedule extends Model
     	'updated_at'
     ];
 
+    protected $dates = [ 'date' ];
+
     public function categories()
     {
         return $this->hasMany(ExamScheduleCategory::class, 'exam_schedule_id');

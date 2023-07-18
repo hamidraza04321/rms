@@ -44,4 +44,9 @@ class Session extends Model
     	'created_at',
     	'updated_at'
     ];
+
+    protected $dates = [
+        'start_date',
+        'end_date'
+    ];
 }

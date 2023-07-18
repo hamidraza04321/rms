@@ -36,11 +36,11 @@
                   </div>
                   <div class="form-group">
                     <label>Start Date <span class="error">*</span></label>
-                    <input type="date" name="start_date" id="start-date" class="form-control" value="{{ date('Y-m-d', strtotime($data['session']->start_date)) }}">
+                    <input type="text" name="start_date" id="start-date" class="form-control date-picker" value="{{ $data['session']->start_date->format($settings->date_format) }}">
                   </div>
                   <div class="form-group">
                     <label>End Date <span class="error">*</span></label>
-                    <input type="date" name="end_date" id="end-date" class="form-control" value="{{ date('Y-m-d', strtotime($data['session']->end_date)) }}">
+                    <input type="text" name="end_date" id="end-date" class="form-control date-picker" value="{{ $data['session']->end_date->format($settings->date_format) }}">
                   </div>
                   <button class="btn btn-success" id="btn-update-session">Update</button>
                   <a class="btn btn-danger" href="{{ route('session.index') }}">Back</a>

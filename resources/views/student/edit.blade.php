@@ -87,8 +87,8 @@
                                   <label>Section <span class="error">*</span></label>
                                   <select name="section_id" id="section-id" class="select2 form-control">
                                     <option value="">Select</option>
-                                    @foreach($data['student_session']->class->sections as $section)
-                                      <option @selected($data['student_session']->section_id == $section->section->id) value="{{ $section->section->id }}">{{ $section->section->name }}</option>
+                                    @foreach($data['sections'] as $section)
+                                      <option @selected($data['student_session']->section_id == $section->id) value="{{ $section->id }}">{{ $section->name }}</option>
                                     @endforeach
                                   </select>
                                 </div>
@@ -105,10 +105,10 @@
                                 </div>
                                 <div class="form-group">
                                   <label>Group </label>
-                                  <select name="group_id" id="group-id" @disabled(!count($data['student_session']->class->groups)) class="select2 form-control">
+                                  <select name="group_id" id="group-id" @disabled(!count($data['groups'])) class="select2 form-control">
                                     <option value="">Select</option>
-                                    @foreach($data['student_session']->class->groups as $group)
-                                      <option @selected($data['student_session']->group_id == $group->group->id) value="{{ $group->group->id }}">{{ $group->group->name }}</option>
+                                    @foreach($data['groups'] as $group)
+                                      <option @selected($data['student_session']->group_id == $group->id) value="{{ $group->id }}">{{ $group->name }}</option>
                                     @endforeach
                                   </select>
                                 </div>
@@ -140,7 +140,7 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Date of Birth <span class="error">*</span></label>
-                                  <input type="date" name="dob" id="dob" class="form-control" placeholder="Enter Date of Birth"  value="{{ $data['student_session']->student->dob->format('Y-m-d') }}">
+                                  <input type="text" name="dob" id="dob" class="form-control date-picker" placeholder="Enter Date of Birth"  value="{{ $data['student_session']->student->dob->format($settings->date_format) }}">
                                 </div>
                               </div>
                             </div>
@@ -172,7 +172,7 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Admission Date</label>
-                                  <input type="date" name="admission_date" id="admission-date" class="form-control" value="{{ $data['student_session']->student->admission_date->format('Y-m-d') }}">
+                                  <input type="text" name="admission_date" id="admission-date" class="form-control" value="{{ $data['student_session']->student->admission_date->format($settings->date_format) }}">
                                 </div>
                               </div>
                             </div>

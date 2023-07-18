@@ -22,6 +22,21 @@ if ($.isFunction($.fn.select2)) {
 	});
 }
 
+//---------- DATE PICKER ----------//
+if ($.isFunction($.fn.datepicker)) {
+	$('.date-picker').datepicker({
+		dateFormat: $('#date-format-in-js').val()
+	});
+}
+
+//---------- DATE PICKER INITIALIZE ----------//
+function initializeDatePicker()
+{
+	$('.date-picker').datepicker({
+		dateFormat: $('#date-format-in-js').val()
+	});
+}
+
 //---------- REMOVE VALIDATION ERROR ALERT MESSAGES ----------//
 function removeErrorMessages()
 {

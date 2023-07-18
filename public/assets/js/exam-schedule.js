@@ -195,6 +195,9 @@ $(document).ready(function() {
                     if (response.status == true) {
                         $('#exam-schedule').html(response.view);
                         ApplyTooltip();
+
+                        // Initialize date picker
+                        initializeDatePicker();
                     } else {
                         showErrorMessages(response.errors);
                     }
@@ -532,6 +535,9 @@ $(document).ready(function() {
                     // Show Names
                     modal.find('.exam-name').text(exam_name);
                     modal.find('.class-name').text(class_name);
+
+                    // Initialize date picker
+                    initializeDatePicker();
                 }
             },
             error: function(){

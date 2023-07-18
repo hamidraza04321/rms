@@ -14,6 +14,8 @@ use App\Models\Student;
 use App\Models\Classes;
 use App\Models\Session;
 use App\Models\Section;
+use App\Models\ClassSection;
+use App\Models\ClassGroup;
 use Excel;
 
 class StudentController extends Controller
@@ -235,10 +237,24 @@ class StudentController extends Controller
         $sessions = Session::get();
         $classes = Classes::get();
 
+        // Get class sections
+        $sections = ClassSection::where('class_id', $student_session->class_id)
+            ->with('section')
+            ->get()
+            ->pluck('section');
+
+        // Get class groups
+        $groups = ClassGroup::where('class_id', $student_session->class_id)
+            ->with('group')
+            ->get()
+            ->pluck('group');
+
         $data = [
             'student_session' => $student_session,
             'sessions' => $sessions,
             'classes' => $classes,
+            'sections' => $sections,
+            'groups' => $groups,
             'page_title' => 'Edit Student',
             'menu' => 'Student'
         ];

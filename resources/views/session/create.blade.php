@@ -36,11 +36,11 @@
                   </div>
                   <div class="form-group">
                     <label>Start Date <span class="error">*</span></label>
-                    <input type="date" name="start_date" id="start-date" class="form-control">
+                    <input type="text" name="start_date" id="start-date" class="form-control date-picker" placeholder="Enter Date">
                   </div>
                   <div class="form-group">
                     <label>End Date <span class="error">*</span></label>
-                    <input type="date" name="end_date" id="end-date" class="form-control">
+                    <input type="text" name="end_date" id="end-date" class="form-control date-picker" placeholder="Enter Date">
                   </div>
                   <button class="btn btn-success" id="btn-save-session">Save</button>
                   <a class="btn btn-danger" href="{{ route('session.index') }}">Back</a>

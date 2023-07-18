@@ -58,6 +58,7 @@ class SettingsRequest extends FormRequest
             'phone_no' => 'nullable|string|max:20',
             'current_session_id' => $this->sessionRule('nullable'),
             'date_format' => 'nullable|string',
+            'date_format_in_js' => 'nullable|string',
             'school_address' => 'nullable|string'
         ];
     }
