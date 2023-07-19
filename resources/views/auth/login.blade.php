@@ -31,11 +31,12 @@
 </style>
 <div class="login-box">
   <div class="login-logo">
-    <img src="{{ url($settings->school_logo) }}">
+    <img src="{{ url($settings->school_logo) }}" class="rounded-circle" width="120" height="120">
   </div>
   <div class="login-logo">
     <a href="#">{{ $settings->school_name }}</a>
   </div>
+  <div class="error-message"></div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">

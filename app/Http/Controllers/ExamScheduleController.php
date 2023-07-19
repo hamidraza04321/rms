@@ -12,6 +12,14 @@ use App\Models\ClassSubject;
 
 class ExamScheduleController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view-exam-schedule', [ 'only' => 'index' ]);
+        $this->middleware('permission:create-exam-schedule', [ 'only' => [ 'create', 'save' ]]);
+        $this->middleware('permission:edit-exam-schedule', [ 'only' => [ 'save' ]]);
+        $this->middleware('permission:delete-exam-schedule', [ 'only' => [ 'destroy' ]]);
+    }
+
     /**
      * Display a listing of the resource.
      *

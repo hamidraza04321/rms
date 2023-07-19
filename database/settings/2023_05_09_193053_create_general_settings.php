@@ -13,7 +13,7 @@ return new class extends SettingsMigration
         $this->migrator->add('general.school_address', 'School Address');
         $this->migrator->add('general.school_logo', 'assets/dist/img/your-school-logo.png');
         $this->migrator->add('general.date_format', 'd-m-Y');
-        $this->migrator->add('general.date_format_in_js', 'dd-mm-yyyy');
+        $this->migrator->add('general.date_format_in_js', 'dd-mm-yy');
         $this->migrator->add('general.current_session_id', 2);
     }
 };

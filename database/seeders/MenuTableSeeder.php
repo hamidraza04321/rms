@@ -349,6 +349,25 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 10,
 	        	'name' => 'Permanent Delete',
 	        	'permission' => 'permanent-delete-grade'
+	        ],
+
+	        // EXAM SCHEDULE MODULE
+	        [
+	        	'module_id' => 11,
+	        	'name' => 'View',
+	        	'permission' => 'view-exam-schedule'
+	        ], [
+	        	'module_id' => 11,
+	        	'name' => 'Create',
+	        	'permission' => 'create-exam-schedule'
+	        ], [
+	        	'module_id' => 11,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-exam-schedule'
+	        ], [
+	        	'module_id' => 11,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-exam-schedule'
 	        ]
     	];
 

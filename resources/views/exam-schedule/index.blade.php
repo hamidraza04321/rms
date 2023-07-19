@@ -27,7 +27,7 @@
               <div class="card-header">
                 <div class="card-title"><i class="fa fa-calendar-week"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  @can('create-class')
+                  @can('create-exam-schedule')
                     <a href="{{ route('exam-schedule.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Exam Schedule</a>
                   @endcan
                 </div>
@@ -41,7 +41,9 @@
                         <th>Exam</th>
                         <th>Class</th>
                         <th>Group</th>
-                        <th>Action</th>
+                        @canany(['edit-exam-schedule', 'delete-exam-schedule'])
+                          <th>Action</th>
+                        @endcanany
                       </tr>
                     </thead>
                     <tbody>
@@ -55,10 +57,16 @@
                             <span class="class-name">{{ $exam_schedule->class->name }}</span>
                           </td>
                           <td>{{ $exam_schedule->group->name ?? '--' }}</td>
-                          <td>
-                            <button class="btn btn-sm btn-primary btn-edit-exam-schedule" session-id="{{ $exam_schedule->exam->session_id }}" exam-id="{{ $exam_schedule->exam_id }}" class-id="{{ $exam_schedule->class_id }}" group-id="{{ $exam_schedule->group_id }}"><i class="fa fa-edit"></i> Edit</button>
-                            <button class="btn btn-sm btn-danger btn-destroy-exam-schedule" data-url="{{ route('exam-schedule.destroy', $exam_schedule->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                          </td>
+                          @canany(['edit-exam-schedule', 'delete-exam-schedule'])
+                            <td>
+                              @can('edit-exam-schedule')
+                                <button class="btn btn-sm btn-primary btn-edit-exam-schedule" session-id="{{ $exam_schedule->exam->session_id }}" exam-id="{{ $exam_schedule->exam_id }}" class-id="{{ $exam_schedule->class_id }}" group-id="{{ $exam_schedule->group_id }}"><i class="fa fa-edit"></i> Edit</button>
+                              @endcan
+                              @can('delete-exam-schedule')
+                                <button class="btn btn-sm btn-danger btn-destroy-exam-schedule" data-url="{{ route('exam-schedule.destroy', $exam_schedule->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
                         </tr>
                       @endforeach
                     </tbody>
@@ -77,27 +85,29 @@
     </section>
   </div>
 
-  <!-- Modal edit exam schedule -->
-  <div class="modal fade" id="edit-exam-schedule" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Exam Schedule ( <span class="exam-name"></span> ) <span class="class-name"></span></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
+  @can('edit-exam-schedule')
+    <!-- Modal edit exam schedule -->
+    <div class="modal fade" id="edit-exam-schedule" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Exam Schedule ( <span class="exam-name"></span> ) <span class="class-name"></span></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success btn-save-exam-schedule">Save</button>
+          </div>
         </div>
-        <div class="modal-body">
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success btn-save-exam-schedule">Save</button>
-        </div>
+        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-content -->
+      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-  </div>
+  @endcan
 @endsection
 @section('scripts')
 <script src="{{ url('/assets/js/exam-schedule.js') }}"></script>

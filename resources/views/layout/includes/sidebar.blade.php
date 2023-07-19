@@ -136,7 +136,7 @@
             </ul>
           </li>
         @endcanany
-        @canany(['view-exam', 'create-exam'])
+        @canany(['view-exam', 'create-exam', 'view-exam-schedule', 'create-exam-schedule'])
           <li class="nav-header">Examination</li>
         @endcanany
         @canany(['view-exam', 'create-exam'])
@@ -168,29 +168,35 @@
             </ul>
           </li>
         @endcanany
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) active @endif">
-            <i class="nav-icon fas fa-calendar-week"></i>
-            <p>
-              Exam Schedule
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('exam-schedule.index') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.index') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('exam-schedule.create') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.create') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+        @canany(['view-exam-schedule', 'create-exam-schedule'])
+          <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) menu-open @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'exam-schedule.index', 'exam-schedule.create' ]))) active @endif">
+              <i class="nav-icon fas fa-calendar-week"></i>
+              <p>
+                Exam Schedule
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('view-exam-schedule')
+                <li class="nav-item">
+                  <a href="{{ route('exam-schedule.index') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-exam-schedule')
+                <li class="nav-item">
+                  <a href="{{ route('exam-schedule.create') }}" class="nav-link @if(Route::currentRouteName() == 'exam-schedule.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+        @endcanany
         @canany(['view-grade', 'create-grade'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'grade.index', 'grade.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'grade.index', 'grade.create', 'grade.edit', 'grade.trash' ]))) active @endif">

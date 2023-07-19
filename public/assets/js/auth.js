@@ -63,7 +63,7 @@ $(document).ready(function() {
 					message = errorMessage();
 				},
 				complete: function() {
-					if (message != '') $('.login-logo').after(message); $('.alert').addClass('text-center');
+					if (message != '') $('.error-message').after(message); $('.alert').addClass('text-center');
 					self.removeClass('disabled').html(self_html);
 				}
 			});

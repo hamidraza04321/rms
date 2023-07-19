@@ -48,7 +48,7 @@ class ClassSubject extends Model
             ->select(['id', 'name']);
     }
 
-    public function userClassSection()
+    public function userClassSubject()
     {
         return $this->belongsTo(UserClassSubject::class, 'id', 'class_subject_id')
             ->where('user_id', auth()->id());

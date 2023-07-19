@@ -112,6 +112,12 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'view-grade-trash' ],
             [ 'name' => 'restore-grade' ],
             [ 'name' => 'permanent-delete-grade' ],
+
+            // EXAM SCHEDULE
+            [ 'name' => 'view-exam-schedule' ],
+            [ 'name' => 'create-exam-schedule' ],
+            [ 'name' => 'edit-exam-schedule' ],
+            [ 'name' => 'delete-exam-schedule' ]
         ];
 
         // TIMESTAMPS
