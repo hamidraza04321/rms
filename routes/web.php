@@ -116,7 +116,7 @@ Route::middleware('auth')->group(function () {
 	//---------- EXAM SCHEDULE ROUTES ----------//
 	Route::resource('/exam-schedule', ExamScheduleController::class, ['except' => ['show', 'store', 'update']]);
 	Route::controller(ExamScheduleController::class)->group(function(){
-		Route::post('/exam-schedule/get-exam-schedule-table', 'getExamScheduleTable')->name('get.exam.schedule.table');
+		Route::get('/exam-schedule/get-exam-schedule-table', 'getExamScheduleTable')->name('get.exam.schedule.table');
 		Route::post('/exam-schedule/save', 'save')->name('exam-schedule.save');
 	});
 
@@ -127,6 +127,12 @@ Route::middleware('auth')->group(function () {
 		Route::put('/grade/restore/{id}', 'restore')->name('grade.restore');
 		Route::put('/grade/update-status/{id}', 'updateGradeStatus')->name('grade.update.status');
 		Route::delete('/grade/delete/{id}', 'delete')->name('grade.delete');
+	});
+
+	//---------- MAKR SLIP ROUTES ----------//
+	Route::resource('/markslip', MarkSlipController::class, ['except' => ['show']]);
+	Route::controller(MarkSlipController::class)->group(function(){
+		Route::get('/markslip/get-markslip', 'getMarkSlip')->name('get.markslip');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//

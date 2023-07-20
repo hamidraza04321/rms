@@ -189,7 +189,7 @@ $(document).ready(function() {
 
             $.ajax({
                 url: url,
-                type: 'POST',
+                type: 'GET',
                 data: formData,
                 success: function(response) {
                     if (response.status == true) {
@@ -510,7 +510,7 @@ $(document).ready(function() {
 
         $.ajax({
             url: url,
-            type: 'POST',
+            type: 'GET',
             data: formData,
             success: function(response){
                 if (response.status == false) {

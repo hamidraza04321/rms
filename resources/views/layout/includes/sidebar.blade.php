@@ -226,6 +226,35 @@
             </ul>
           </li>
         @endcanany
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create' ]))) menu-open @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create' ]))) active @endif">
+            <i class="nav-icon fas fa-file"></i>
+            <p>
+              Mark Slip
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('markslip.index') }}" class="nav-link @if(Route::currentRouteName() == 'markslip.index') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manage</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('markslip.create') }}" class="nav-link @if(Route::currentRouteName() == 'markslip.create') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('markslip.create') }}" class="nav-link @if(Route::currentRouteName() == 'markslip.tabulation') active @endif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tabulation Sheet</p>
+              </a>
+            </li>
+          </ul>
+        </li>
         @canany(['view-class', 'create-class', 'view-section', 'create-section', 'view-group', 'create-group', 'view-subject', 'create-subject'])
           <li class="nav-header">Academics</li>
         @endcanany
