@@ -1,5 +1,8 @@
 @extends('layout.app')
 @section('page-title', $data['page_title'])
+@section('styles')
+<link rel="stylesheet" href="{{ url('assets/css/markslip.css') }}">
+@endsection
 @section('main-content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -37,7 +40,7 @@
                   <div class="card-body">
                     <form action="{{ route('get.markslip') }}" id="get-markslip-form">
                       <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Session <span class="error">*</span></label>
                             <select name="session_id" id="session-id" class="select2 form-control">
@@ -48,7 +51,7 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Exam <span class="error">*</span></label>
                             <select name="exam_id" id="exam-id" class="select2 form-control">
@@ -59,7 +62,7 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Class <span class="error">*</span></label>
                             <select name="class_id" id="class-id" disabled class="select2 form-control">
@@ -67,7 +70,7 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Section <span class="error">*</span></label>
                             <select name="section_id[]" id="section-id" disabled class="select2 form-control" multiple>
@@ -75,7 +78,7 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Group </label>
                             <select name="group_id" id="group-id" disabled class="select2 form-control">
@@ -83,10 +86,18 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="form-group">
-                            <button id="btn-search-markslip" class="btn btn-primary mt-30"><i class="fa fa-search"></i> Search</button>
+                            <label>Subject <span class="error">*</span></label>
+                            <select name="subject_id" id="subject-id" disabled class="select2 form-control" multiple>
+                              <option value="">Select</option>
+                            </select>
                           </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 text-right">
+                          <button id="btn-search-markslip" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
                         </div>
                       </div>
                     </form>
@@ -102,13 +113,41 @@
             <div class="col-12">
               <div class="card card-primary card-outline">
                 <div class="card-header">
-                  <div class="card-title"><i class="fa fa-users"></i> Mark Slip </div>
+                  <div class="card-title"><i class="fa fa-file"></i> Mark Slip </div>
                   <div class="card-tools">
                     <button class="btn btn-success btn-save-markslip">Save</button>
                   </div>
                 </div>
                 <div class="card-body">
-                  
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-3 text-center">
+                        <div class="logo">
+                          <img src="{{ url($settings->school_logo) }}" alt="">
+                        </div>
+                      </div>
+                      <div class="col-md-9">
+                        <h2 class="school-name text-center">{{ $settings->school_name }}</h2>
+                        <h3 class="exam-name text-center">First Mid Term ( 2022-2023 )</h3>
+                        <table class="markslip-details">
+                          <tbody>
+                            <tr>
+                              <td class="text-bold">Class :</td>
+                              <td>Class I</td>
+                              <td class="text-bold">Section :</td>
+                              <td>A</td>
+                            </tr>
+                            <tr>
+                              <td class="text-bold pt-3">Group :</td>
+                              <td>Computer</td>
+                              <td class="text-bold">Subject :</td>
+                              <td>English</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="card-footer text-right">
                   <button class="btn btn-success btn-save-exam-schedule">Save</button>

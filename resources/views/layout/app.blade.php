@@ -27,6 +27,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ url('/assets/dist/css/adminlte.min.css') }}">
   
+  @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

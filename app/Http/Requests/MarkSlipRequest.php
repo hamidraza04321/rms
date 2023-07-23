@@ -45,7 +45,8 @@ class MarkSlipRequest extends FormRequest
             'exam_id' => $this->examRule(),
             'class_id' => $this->classRule(),
             'group_id' => $this->groupRule($this->class_id),
-            'section_id.*' => 'required|exists:sections,id'
+            'section_id.*' => 'required|exists:sections,id',
+            'subject_id.*' => 'required|exists:subjects,id'
         ];
     }
 }

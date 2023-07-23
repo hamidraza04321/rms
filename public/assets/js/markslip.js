@@ -59,7 +59,7 @@ $(document).ready(function() {
 
         var self = $(this);
             class_id = self.val();
-            url = `${base_url}/class/get-class-sections-and-groups`;
+            url = `${base_url}/class/get-class-sections-groups-and-subjects`;
             message = '';
 
         if (class_id != '') {
@@ -70,7 +70,8 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response.status == true) {
                         var groups = `<option value="">Select</option>`;
-                        	sections = `<option value="">Select</option>`;
+                            sections = `<option value="">Select</option>`;
+                        	subjects = `<option value="">Select</option>`;
 
                         if (response.groups.length) {
                             $.each(response.groups, function(key, value) {
@@ -86,6 +87,14 @@ $(document).ready(function() {
                             });
 		                    
 		                    $('#section-id').prop('disabled', false).html(sections);
+                        }
+
+                        if (response.subjects.length) {
+                            $.each(response.subjects, function(key, value) {
+                                subjects += `<option value="${value.id}">${value.name}</option>`;
+                            });
+
+                            $('#subject-id').prop('disabled', false).html(subjects);
                         }
 
                     } else {
@@ -118,6 +127,7 @@ $(document).ready(function() {
             class_id = $('#class-id').val();
             group_id = $('#group-id').val();
             section_id = $('#section-id').val();
+            subject_id = $('#subject-id').val();
             message = '';
             flag = true;
 
@@ -138,6 +148,11 @@ $(document).ready(function() {
 
         if (!section_id.length) {
             $("#section-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if (!subject_id.length) {
+            $("#subject-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
         }
 
@@ -163,9 +178,6 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response.status == true) {
                         $('#markslips').html(response.view);
-
-                        // Initialize date picker
-                        initializeDatePicker();
                     } else {
                         showErrorMessages(response.errors);
                     }

@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
 	Route::controller(ClassController::class)->group(function(){
 		Route::get('/class/trash', 'trash')->name('class.trash');
 		Route::get('/class/get-class-sections-and-groups', 'getClassSectionsAndGroups')->name('get.class.sections.and.groups');
+		Route::get('/class/get-class-sections-groups-and-subjects', 'getClassSectionsGroupsAndSubjects')->name('get.class.sections.groups.and.subjects');
 		Route::put('/class/restore/{id}', 'restore')->name('class.restore');
 		Route::put('/class/update-status/{id}', 'updateClassStatus')->name('class.update.status');
 		Route::delete('/class/delete/{id}', 'delete')->name('class.delete');

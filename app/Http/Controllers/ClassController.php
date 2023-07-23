@@ -271,4 +271,25 @@ class ClassController extends Controller
             'groups' => $groups
         ]);
     }
+
+    /**
+     * Get sections, groups and subjects of class.
+     *
+     * @param  \App\Http\Requests\ClassRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getClassSectionsGroupsAndSubjects(ClassRequest $request)
+    {
+        $class = Classes::find($request->class_id);
+        $sections = ClassSection::where('class_id', $request->class_id)->with('section')->get()->pluck('section');
+        $groups = ClassGroup::where('class_id', $request->class_id)->with('group')->get()->pluck('group');
+        $subjects = ClassSubject::where('class_id', $request->class_id)->with('subject')->get()->pluck('subject');
+
+        return response()->success([
+            'sections' => $sections,
+            'groups' => $groups,
+            'subjects' => $subjects
+        ]);
+    }
 }
