@@ -113,11 +113,11 @@ trait CustomValidationTrait
      *
      * @return array
      */
-    public function examRule()
+    public function examRule($session_id = null)
     {
         return [
             'required',
-            new ExamRule()
+            new ExamRule($session_id)
         ];
     }
 }

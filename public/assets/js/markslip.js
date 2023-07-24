@@ -9,7 +9,7 @@ $(document).ready(function() {
         e.preventDefault();
         removeErrorMessages();
 
-        $('#class-id, #group-id').prop('disabled', true).html('');
+        $('#class-id, #group-id, #section-id, #subject-id').prop('disabled', true).html('');
 
         var self = $(this);
             exam_id = self.val();
@@ -55,7 +55,7 @@ $(document).ready(function() {
         e.preventDefault();
         removeErrorMessages();
 
-        $('#group-id').prop('disabled', true).html('');
+        $('#group-id, #section-id, #subject-id').prop('disabled', true).html('');
 
         var self = $(this);
             class_id = self.val();

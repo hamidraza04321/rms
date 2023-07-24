@@ -39,3 +39,7 @@
     text-align: center;
     border-bottom: 1px solid;
 }
+
+.bg-light-blue {
+    background: lightblue;
+}

@@ -89,7 +89,7 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Subject <span class="error">*</span></label>
-                            <select name="subject_id" id="subject-id" disabled class="select2 form-control" multiple>
+                            <select name="subject_id[]" id="subject-id" disabled class="select2 form-control" multiple>
                               <option value="">Select</option>
                             </select>
                           </div>
@@ -109,55 +109,6 @@
         </div>
         <!-- /.row -->
         <div id="markslips">
-          <div class="row">
-            <div class="col-12">
-              <div class="card card-primary card-outline">
-                <div class="card-header">
-                  <div class="card-title"><i class="fa fa-file"></i> Mark Slip </div>
-                  <div class="card-tools">
-                    <button class="btn btn-success btn-save-markslip">Save</button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-md-3 text-center">
-                        <div class="logo">
-                          <img src="{{ url($settings->school_logo) }}" alt="">
-                        </div>
-                      </div>
-                      <div class="col-md-9">
-                        <h2 class="school-name text-center">{{ $settings->school_name }}</h2>
-                        <h3 class="exam-name text-center">First Mid Term ( 2022-2023 )</h3>
-                        <table class="markslip-details">
-                          <tbody>
-                            <tr>
-                              <td class="text-bold">Class :</td>
-                              <td>Class I</td>
-                              <td class="text-bold">Section :</td>
-                              <td>A</td>
-                            </tr>
-                            <tr>
-                              <td class="text-bold pt-3">Group :</td>
-                              <td>Computer</td>
-                              <td class="text-bold">Subject :</td>
-                              <td>English</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer text-right">
-                  <button class="btn btn-success btn-save-exam-schedule">Save</button>
-                </div>
-                <!-- /.card-body -->
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
-          </div>
         </div>
       </div>
       <!-- /.container-fluid -->

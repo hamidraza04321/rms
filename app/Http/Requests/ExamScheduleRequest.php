@@ -43,7 +43,7 @@ class ExamScheduleRequest extends FormRequest
     {
         return [
             'session_id' => $this->sessionRule(),
-            'exam_id' => $this->examRule(),
+            'exam_id' => $this->examRule($this->session_id),
             'class_id' => $this->classRule(),
             'group_id' => $this->groupRule($this->class_id)
         ];
@@ -56,7 +56,7 @@ class ExamScheduleRequest extends FormRequest
     {
         return [
             'session_id' => $this->sessionRule(),
-            'exam_id' => $this->examRule(),
+            'exam_id' => $this->examRule($this->session_id),
             'class_id' => $this->classRule(),
             'group_id' => $this->groupRule($this->class_id),
             'exam_schedule.*' => 'required'

@@ -8,6 +8,16 @@ use App\Models\Exam;
 class ExamRule implements InvokableRule
 {
     /**
+     * Create a new rule instance.
+     *
+     * @return void
+     */
+    public function __construct($session_id)
+    {
+        $this->session_id = $session_id;        
+    }
+
+    /**
      * Run the validation rule.
      *
      * @param  string  $attribute
@@ -21,6 +31,10 @@ class ExamRule implements InvokableRule
 
         if (!$exam) {
             return $fail('The selected exam id is invalid.');
+        }
+
+        if ($this->session_id && $this->session_id != $exam->session_id) {
+            return $fail('The selected exam is not exists in session.');
         }
 
         if (!$exam->is_active) {

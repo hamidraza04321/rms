@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MarkSlipRequest;
 use App\Models\Session;
 use App\Models\Exam;
+use App\Models\Classes;
+use App\Models\ExamClass;
+use App\Services\MarkSlipService;
 
 class MarkSlipController extends Controller
 {
@@ -51,7 +54,12 @@ class MarkSlipController extends Controller
      */    
     public function getMarkSlip(MarkSlipRequest $request)
     {
-        //
+        $markslips = (new MarkSlipService)->getMarkSlips($request);
+        $data = [ 'markslips' => $markslips ];
+        $view = view('markslip.get-markslip', compact('data'))->render();
+        return response()->success([
+            'view' => $view
+        ]);
     }
 
     /**
