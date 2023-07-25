@@ -96,7 +96,7 @@ class MarkAttendanceController extends Controller
             $data[] = [
                 'student_session_id' => (int)$student_session_id,
                 'attendance_status_id' => (int)$attendance_status_id,
-                'attendance_date' => $request->attendance_date
+                'attendance_date' => date('Y-m-d', strtotime($request->attendance_date))
             ];
         }
 
