@@ -55,8 +55,13 @@ class MarkSlipController extends Controller
     public function getMarkSlip(MarkSlipRequest $request)
     {
         $markslips = (new MarkSlipService)->getMarkSlips($request);
-        $data = [ 'markslips' => $markslips ];
-        $view = view('markslip.get-markslip', compact('data'))->render();
+        
+        if (!count($markslips)) {
+            $class = Classes::find($request->class_id);
+            return response()->errorMessage("The exam schedule for class ( $class->name ) is not prepared !");
+        }
+
+        $view = view('markslip.get-markslip', compact('markslips'))->render();
         return response()->success([
             'view' => $view
         ]);

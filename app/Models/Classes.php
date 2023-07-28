@@ -71,6 +71,11 @@ class Classes extends Model
             ->where('user_id', auth()->id());
     }
 
+    public function grades()
+    {
+        return $this->hasMany(Grade::class, 'class_id');
+    }
+
     /**
      * The "booted" method of the model.
      *

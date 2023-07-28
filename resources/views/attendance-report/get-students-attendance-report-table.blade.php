@@ -34,7 +34,7 @@
                   <td>{{ ++$loop->index }}</td>
                   <td>{{ $student_session->student->fullName() }}</td>
                   @foreach($student_session->attendances as $attendance)
-                    <td class="text-center">
+                    <td class="text-center font-italic">
                       <span @if($attendance->color) style="color: {{ $attendance->color; }}" @endif>{{ $attendance->short_code }}</span>
                     </td>
                   @endforeach

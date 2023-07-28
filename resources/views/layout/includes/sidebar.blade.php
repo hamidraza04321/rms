@@ -228,7 +228,7 @@
         @endcanany
         <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create' ]))) menu-open @endif">
           <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create' ]))) active @endif">
-            <i class="nav-icon fas fa-file"></i>
+            <i class="nav-icon fas fa-paste"></i>
             <p>
               Mark Slip
               <i class="right fas fa-angle-left"></i>

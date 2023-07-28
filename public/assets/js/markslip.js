@@ -176,10 +176,21 @@ $(document).ready(function() {
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    if (response.status == true) {
-                        $('#markslips').html(response.view);
+                    if (response.status == false) {
+                        if (response?.errors) {
+                            showErrorMessages(response.errors);
+                        } else {
+                            message = errorMessage(response.message);
+                        }
                     } else {
-                        showErrorMessages(response.errors);
+                        $('#markslips').html(response.view);
+
+                        // Initialize Grades select2
+                        $('.grade').select2({
+                            width: '100%',
+                            placeholder: "Grade",
+                            allowClear: true
+                        });
                     }
                 },
                 error: function() {

@@ -36,7 +36,7 @@ $(document).ready(function() {
 			$("#percentage-to").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
 		} else {
-			if (percentage_to <= percentage_from) {
+			if (parseInt(percentage_to) <= parseInt(percentage_from)) {
 				$("#percentage-to").addClass('is-invalid').after('<span class="invalid-feedback">The percentage to is must be greater than from percentage !</span>');
 	            flag = false;
 			}

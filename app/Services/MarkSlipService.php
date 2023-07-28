@@ -1,12 +1,14 @@
 <?php 
 
 namespace App\Services;
+
 use App\Models\StudentSession;
 use App\Models\Exam;
 use App\Models\Classes;
 use App\Models\Subject;
 use App\Models\Section;
 use App\Models\Group;
+use App\Models\ExamClass;
  
 class MarkSlipService
 {
@@ -21,7 +23,7 @@ class MarkSlipService
         $markslips = [];
 
 		$exam = Exam::with('session')->find($request->exam_id);
-        $class = Classes::find($request->class_id);
+        $class = Classes::with('grades')->find($request->class_id);
         $group = Group::find($request->group_id);
         $sections = Section::whereIn('id', $request->section_id)->get();
         $subjects = Subject::whereIn('id', $request->subject_id)->get();
@@ -30,32 +32,42 @@ class MarkSlipService
 		$students = $this->getStudents($request);
 
         // Get exam schedules of class
-        // $exam_schedules = $this->getExamSchedules($request);
+        $exam_schedules = $this->getExamSchedules($request);
 
-        // Loop in subject
-        foreach ($subjects as $subject) {
-            // Loop in sections
-            foreach ($sections as $section) {
-                // Get new stdClass
-                $markslip = new \stdClass;
-                
-                // Filter from collection
-                $section = $sections->firstWhere('id', $section->id);
-                $subject = $subjects->firstWhere('id', $subject->id);
+        // Check if exam schedule exists
 
-                // Store Names
-                $markslip->session = $exam->session->name;
-                $markslip->exam = $exam->name;
-                $markslip->class = $class->name;
-                $markslip->section = $section->name;
-                $markslip->subject = $subject->name;
-                $markslip->group = $group->name;
+        if (count($exam_schedules)) {
+            // Loop in subject
+            foreach ($subjects as $subject) {
+                // Loop in sections
+                foreach ($sections as $section) {
+                    // Get new stdClass
+                    $markslip = new \stdClass;
+                    
+                    // Filter from collection
+                    $section = $sections->firstWhere('id', $section->id);
+                    $subject = $subjects->firstWhere('id', $subject->id);
 
-                // Get student by section key from collecion
-                $markslip->students = $students[$section->id];
+                    // Store Names
+                    $markslip->session = $exam->session->name;
+                    $markslip->exam = $exam->name;
+                    $markslip->class = $class->name;
+                    $markslip->section = $section->name;
+                    $markslip->subject = $subject->name;
+                    $markslip->group = $group->name ?? '---';
 
-                // Push in to collection
-                $markslips[] = $markslip;
+                    // Class Gradeings
+                    $markslip->grades = $class->grades;
+
+                    // Get student by section key from collecion
+                    $markslip->students = $students[$section->id];
+
+                    // Exam Schedule by subject filter from exam schedules
+                    $markslip->exam_schedule = $exam_schedules->firstWhere('subject_id', $subject->id);
+
+                    // Push in to collection
+                    $markslips[] = $markslip;
+                }
             }
         }
 
@@ -97,4 +109,42 @@ class MarkSlipService
 
         return $students;
 	}
+
+    /**
+     * Get Exam Schedules of class subjects.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
+    public function getExamSchedules($request)
+    {
+        $where = [
+            'exam_id' => $request->exam_id,
+            'class_id' => $request->class_id
+        ];
+
+        // Add Group when exists
+        if ($request->group_id) $where['group_id'] = $request->group_id;
+
+        // Get Exam schedules
+        $exam_schedules = ExamClass::where($where)
+            ->with([
+                'examSchedule' => function($query) use($request) {
+                    $query->select(
+                            'id',
+                            'exam_class_id',
+                            'subject_id',
+                            'group_id', 
+                            'date',
+                            'type',
+                            'marks'
+                        )
+                        ->whereIn('subject_id', $request->subject_id)
+                        ->with('categories');
+                }
+            ])
+            ->first()
+            ->examSchedule;
+
+        return $exam_schedules;
+    }
 }

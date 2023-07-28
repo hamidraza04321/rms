@@ -193,7 +193,8 @@ $(document).ready(function() {
                 {
                     "targets": 3,
                     "render": function (data) {
-                        return `${data.student.first_name} ${data.student.last_name}`;
+                        var last_name = data.student.last_name ? data.student.last_name : '';
+                        return `${data.student.first_name} ${last_name}`;
                     }
                 },
                 {
