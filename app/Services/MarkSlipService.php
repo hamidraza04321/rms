@@ -9,6 +9,7 @@ use App\Models\Subject;
 use App\Models\Section;
 use App\Models\Group;
 use App\Models\ExamClass;
+use App\Models\Grade;
  
 class MarkSlipService
 {
@@ -27,6 +28,11 @@ class MarkSlipService
         $group = Group::find($request->group_id);
         $sections = Section::whereIn('id', $request->section_id)->get();
         $subjects = Subject::whereIn('id', $request->subject_id)->get();
+
+        // Apply Default Gradings where grade not exists in class
+        if (!count($class->grades)) {
+            $class->grades = Grade::withoutGlobalScopes()->where('is_default', 1)->get();
+        }
 
         // Get Student according to group by section key
 		$students = $this->getStudents($request);

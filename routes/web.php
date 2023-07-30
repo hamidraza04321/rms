@@ -134,6 +134,7 @@ Route::middleware('auth')->group(function () {
 	Route::resource('/markslip', MarkSlipController::class, ['except' => ['show']]);
 	Route::controller(MarkSlipController::class)->group(function(){
 		Route::get('/markslip/get-markslip', 'getMarkSlip')->name('get.markslip');
+		Route::post('/markslip/save', 'save')->name('save.markslip');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//

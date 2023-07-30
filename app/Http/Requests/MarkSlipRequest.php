@@ -31,7 +31,8 @@ class MarkSlipRequest extends FormRequest
     public function rules()
     {
         return match(Route::currentRouteName()) {
-            'get.markslip' => $this->getMarkSlip()
+            'get.markslip' => $this->getMarkSlip(),
+            'save.markslip' => $this->save()
         };
     }
 
@@ -47,6 +48,16 @@ class MarkSlipRequest extends FormRequest
             'group_id' => $this->groupRule($this->class_id),
             'section_id.*' => 'required|exists:sections,id',
             'subject_id.*' => 'required|exists:subjects,id'
+        ];
+    }
+
+    /**
+     * Validate rules for save markslip request
+     */
+    public function save()
+    {
+        return [
+            'student_marks' => 'required|array'
         ];
     }
 }

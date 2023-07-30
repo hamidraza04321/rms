@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
             AttendanceStatusTableSeeder::class,
             ExamTableSeeder::class,
             ExamClassTableSeeder::class,
-            ExamScheduleTableSeeder::class
+            ExamScheduleTableSeeder::class,
+            GradeTableSeeder::class
         ]);
     }
 }

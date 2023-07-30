@@ -203,4 +203,82 @@ $(document).ready(function() {
             });
         }
     });
+
+    //---------- ON CHANGE INPUT NUMBER ----------//
+    $(document).on('change', 'input[type="number"]', function(e) {
+        e.preventDefault();
+        var val = parseInt($(this).val());
+            min = parseInt($(this).attr('min'));
+            max = parseInt($(this).attr('max'));
+
+        // Validate according to min-max value
+        if (val != '') {
+            if (val > max) {
+                $(this).val(max);
+            }
+
+            if (val < min) {
+                $(this).val(min);
+            }
+        }
+    });
+
+    //---------- ON CHANGE OBTAIN MARKS ----------//
+    $(document).on('change', '.obtain-marks', function(e) {
+        e.preventDefault();
+        var row = $(this).closest('tr');
+            total_obtain_marks = 0;
+
+        row.find('.obtain-marks').each(function(){
+            var val = $(this).val();
+            if (val != '') {
+                total_obtain_marks += parseInt($(this).val());
+            }
+        });
+
+        row.find('.total-obtain-marks').text(total_obtain_marks);
+    });
+
+    $(document).on('click', '.btn-save-markslip', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            flag = true;
+            message = '';
+
+        if (flag) {
+            // Button Loading
+            $('.btn-save-markslip').addClass('disabled');
+            self.html('<div class="spinner-border"></div>');
+
+            var form = $('#save-markslip-form');
+                url = form.attr('action');
+                formData = form.serialize();
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.status == true) {
+                        toastr.success(response.message);
+                    } else {
+                        if (response?.errors) {
+                            message = errorMessage('Check your input fields and try again !');
+                        }
+                    }
+                },
+                error: function() {
+                    message = errorMessage();
+                },
+                complete: function() {
+                    if (message != '') showAlertInTop(message);
+                    $('.btn-save-markslip').removeClass('disabled');
+                    self.html(self_html);
+                }
+            });
+        }
+    });
 });

@@ -13,20 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('grades', function (Blueprint $table) {
+        Schema::create('exam_remarks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('cascade');
-            $table->string('grade');
-            $table->integer('percentage_from');
-            $table->integer('percentage_to');
-            $table->string('color');
-            $table->boolean('is_fail')->default('0');
-            $table->boolean('is_default')->default('0');
-            $table->boolean('is_active')->default('1');
+            $table->morphs('remarkable');
+            $table->foreignId('student_session_id')->constrained('student_sessions')->onDelete('cascade');
+            $table->integer('remarks');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -37,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grades');
+        Schema::dropIfExists('exam_remarks');
     }
 };

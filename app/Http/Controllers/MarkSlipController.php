@@ -68,6 +68,17 @@ class MarkSlipController extends Controller
     }
 
     /**
+     * Save Markslip.
+     *
+     * @param \App\Http\Requests\MarkSlipRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function save(MarkSlipRequest $request)
+    {
+        dd($request->all());
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\MarkSlipRequest $request
