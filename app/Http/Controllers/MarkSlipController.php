@@ -75,7 +75,25 @@ class MarkSlipController extends Controller
      */
     public function save(MarkSlipRequest $request)
     {
-        dd($request->all());
+        // Four type of remarks
+        $grades = [];
+        $marks = [];
+        $categories = [];
+        $grading_categories = [];
+
+        foreach ($request->student_remarks as $student_id => $remarks) {
+            
+            // If the grades key are exists
+            if (isset($remarks['grades'])) {
+                foreach ($remarks['grades'] as $exam_schedule_id => $grade_id) {
+                    $grades[] = [
+                        'student_id' => $student_id,
+                        ''
+                    ];
+                }
+            }
+
+        }
     }
 
     /**

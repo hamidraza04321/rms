@@ -42,4 +42,14 @@ class ExamScheduleCategory extends Model
     	'created_at',
     	'updated_at'
     ];
+
+    public function remarks()
+    {
+        return $this->morphMany(ExamRemarks::class, 'remarkable');
+    }
+
+    public function gradeRemarks()
+    {
+        return $this->morphMany(ExamGradeRemarks::class, 'remarkable');
+    }
 }

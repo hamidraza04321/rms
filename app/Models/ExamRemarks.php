@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ExamSchedule extends Model
+class ExamRemarks extends Model
 {
     use HasFactory,
     	SoftDeletes;
@@ -16,7 +16,7 @@ class ExamSchedule extends Model
      *
      * @var string
      */
-    protected $table = 'exam_schedules';
+    protected $table = 'exam_remarks';
     
     /**
      * The attributes that are mass assignable.
@@ -24,11 +24,6 @@ class ExamSchedule extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'exam_class_id',
-        'subject_id',
-        'date',
-        'type',
-        'marks',
     	'created_by',
     	'updated_by'
     ];
@@ -44,20 +39,11 @@ class ExamSchedule extends Model
     	'updated_at'
     ];
 
-    protected $dates = [ 'date' ];
-
-    public function categories()
+    /**
+     * Get all of the models that own remarks.
+     */
+    public function remarkable()
     {
-        return $this->hasMany(ExamScheduleCategory::class, 'exam_schedule_id');
-    }
-
-    public function remarks()
-    {
-        return $this->morphMany(ExamRemarks::class, 'remarkable');
-    }
-
-    public function gradeRemarks()
-    {
-        return $this->morphMany(ExamGradeRemarks::class, 'remarkable');
+        return $this->morphTo();
     }
 }
