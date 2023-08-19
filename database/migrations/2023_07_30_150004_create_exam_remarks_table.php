@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('exam_remarks', function (Blueprint $table) {
             $table->id();
             $table->morphs('remarkable');
+            $table->foreignId('mark_slip_id')->constrained('mark_slips')->onDelete('cascade');
             $table->foreignId('student_session_id')->constrained('student_sessions')->onDelete('cascade');
+            $table->unique([ 'remarkable_type', 'remarkable_id', 'student_session_id' ])->index('unique_exam_remarks');
             $table->integer('remarks');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

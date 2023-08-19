@@ -15,6 +15,8 @@ use App\Models\StudentAttendance;
 use App\Models\Exam;
 use App\Models\ExamSchedule;
 use App\Models\ExamScheduleCategory;
+use App\Models\ExamRemarks;
+use App\Models\ExamGradeRemarks;
 use App\Observers\SectionObserver;
 use App\Observers\SessionObserver;
 use App\Observers\GroupObserver;
@@ -28,6 +30,8 @@ use App\Observers\StudentAttendanceObserver;
 use App\Observers\ExamObserver;
 use App\Observers\ExamScheduleObserver;
 use App\Observers\ExamScheduleCategoryObserver;
+use App\Observers\ExamGradeRemarksObserver;
+use App\Observers\ExamRemarksObserver;
 use Illuminate\Support\Facades\View;
 use App\Settings\GeneralSettings;
 
@@ -63,6 +67,8 @@ class AppServiceProvider extends ServiceProvider
         Exam::observe(ExamObserver::class);
         ExamSchedule::observe(ExamScheduleObserver::class);
         ExamScheduleCategory::observe(ExamScheduleCategoryObserver::class);
+        ExamRemarks::observe(ExamRemarksObserver::class);
+        ExamGradeRemarks::observe(ExamGradeRemarksObserver::class);
 
         // GENERAL SETTINGS TO ALL VIEW
         $settings = new GeneralSettings;

@@ -43,6 +43,7 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr class="bg-light-blue">
+                      <th>S No.</th>
                       <th>Roll No.</th>
                       <th>Student Name</th>
                       {{-- SWITCH EXAM SCHEDULE TYPE --}}
@@ -83,6 +84,7 @@
                   <tbody>
                     @foreach($markslip->students as $student)
                       <tr>
+                        <td>{{ ++$loop->index }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->first_name }} {{ $student->last_name }}</td>
 
@@ -92,7 +94,7 @@
                           {{-- GRADE --}}
                           @case('grade')
                             <td>
-                              <select name="student_remarks[{{ $student->id }}][grades][{{ $markslip->exam_schedule->id }}]" class="form-control grade">
+                              <select name="student_remarks[{{ $student->student_session_id }}][grades][{{ $markslip->exam_schedule->id }}]" class="form-control grade">
                                 <option value="">Grade</option>
                                 @foreach($markslip->grades as $grade)
                                   <option value="{{ $grade->id }}">{{ $grade->grade }}</option>
@@ -104,7 +106,7 @@
                           {{-- MARKS --}}
                           @case('marks')
                             <td>
-                              <input type="number" name="student_remarks[{{ $student->id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks">
+                              <input type="number" name="student_remarks[{{ $student->student_session_id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks">
                             </td>
                             <td>
                               <span class="total-obtain-marks">0</span> / {{ $markslip->exam_schedule->marks }}
@@ -116,14 +118,14 @@
                             @foreach($markslip->exam_schedule->categories as $category)
                               <td>
                                 @if($category->is_grade)
-                                  <select name="student_remarks[{{ $student->id }}][grading_categories][{{ $category->id }}]" class="form-control grade">
+                                  <select name="student_remarks[{{ $student->student_session_id }}][grading_categories][{{ $category->id }}]" class="form-control grade">
                                     <option value="">Grade</option>
                                     @foreach($markslip->grades as $grade)
                                       <option value="{{ $grade->id }}">{{ $grade->grade }}</option>
                                     @endforeach
                                   </select>
                                 @else
-                                  <input type="number" name="student_remarks[{{ $student->id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks">
+                                  <input type="number" name="student_remarks[{{ $student->student_session_id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks">
                                 @endif
                               </td>
 
