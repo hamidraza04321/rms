@@ -9,12 +9,13 @@
       </div>
       <div class="card-body">
         <form action="{{ route('save.markslip') }}" id="save-markslip-form">
+          <input type="hidden" name="exam_class_id" value="{{ $markslips[0]->exam_schedule->exam_class_id }}">
           @foreach($markslips as $markslip)
             <div class="container">
               <div class="row">
                 <div class="col-md-3 text-center">
                   <div class="logo">
-                    <img src="{{ url($settings->school_logo) }}" alt="">
+                    <img src="{{ url($settings->school_logo) }}">
                   </div>
                 </div>
                 <div class="col-md-9">
@@ -46,21 +47,14 @@
                       <th>S No.</th>
                       <th>Roll No.</th>
                       <th>Student Name</th>
-                      {{-- SWITCH EXAM SCHEDULE TYPE --}}
                       @switch($markslip->exam_schedule->type)
-                        
-                        {{-- GRADE --}}
                         @case('grade')
                           <th>Grade</th>
                         @break
-                        
-                        {{-- MAKRS --}}
                         @case('marks')
                           <th>Obtain Marks</th>
                           <th>Total Marks</th>
                         @break
-
-                        {{-- CATEGORIES --}}
                         @case('categories')
                           @foreach($markslip->exam_schedule->categories as $category)
                             <th class="text-center">
@@ -70,31 +64,27 @@
                                 [ {{ $category->marks }} ]
                               @endif
                             </th>
-
-                            {{-- CHECK IF ANY CATEGORY IS MARKS AND LOOP IS LAST --}}
                             @if($loop->last && $markslip->exam_schedule->categories->firstWhere('is_grade', 0))
                               <th>Total Marks</th>
                             @endif
                           @endforeach
                         @break
-
                       @endswitch
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($markslip->students as $student)
+                      @php
+                        $key = "{$student->section_id}-{$markslip->exam_schedule->subject_id}";
+                      @endphp
                       <tr>
                         <td>{{ ++$loop->index }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->first_name }} {{ $student->last_name }}</td>
-
-                        {{-- SWITCH EXAM SCHEDULE TYPE --}}
                         @switch($markslip->exam_schedule->type)
-
-                          {{-- GRADE --}}
                           @case('grade')
                             <td>
-                              <select name="student_remarks[{{ $student->student_session_id }}][grades][{{ $markslip->exam_schedule->id }}]" class="form-control grade">
+                              <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grades][{{ $markslip->exam_schedule->id }}]" class="form-control grade">
                                 <option value="">Grade</option>
                                 @foreach($markslip->grades as $grade)
                                   <option value="{{ $grade->id }}">{{ $grade->grade }}</option>
@@ -102,34 +92,28 @@
                               </select>
                             </td>
                           @break
-                          
-                          {{-- MARKS --}}
                           @case('marks')
                             <td>
-                              <input type="number" name="student_remarks[{{ $student->student_session_id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks">
+                              <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks">
                             </td>
                             <td>
                               <span class="total-obtain-marks">0</span> / {{ $markslip->exam_schedule->marks }}
                             </td>
                           @break
-
-                          {{-- CATEGORIES --}}
                           @case('categories')
                             @foreach($markslip->exam_schedule->categories as $category)
                               <td>
                                 @if($category->is_grade)
-                                  <select name="student_remarks[{{ $student->student_session_id }}][grading_categories][{{ $category->id }}]" class="form-control grade">
+                                  <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grading_categories][{{ $category->id }}]" class="form-control grade">
                                     <option value="">Grade</option>
                                     @foreach($markslip->grades as $grade)
                                       <option value="{{ $grade->id }}">{{ $grade->grade }}</option>
                                     @endforeach
                                   </select>
                                 @else
-                                  <input type="number" name="student_remarks[{{ $student->student_session_id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks">
+                                  <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks">
                                 @endif
                               </td>
-
-                              {{-- IF LOOP IS LAST FROM CATEGORIES. AND ALSO CHECK IF ANY MARKS CATEGORY IS EXISTS --}}
                               @if($loop->last && $markslip->exam_schedule->categories->firstWhere('is_grade', 0))
                                 <td>
                                   <span class="total-obtain-marks">0</span> / {{ $markslip->exam_schedule->categories->sum('marks') }}

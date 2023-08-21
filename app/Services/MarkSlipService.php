@@ -10,6 +10,9 @@ use App\Models\Section;
 use App\Models\Group;
 use App\Models\ExamClass;
 use App\Models\Grade;
+use App\Models\MarkSlip;
+use App\Models\ExamGradeRemarks;
+use App\Models\ExamRemarks;
  
 class MarkSlipService
 {
@@ -47,6 +50,11 @@ class MarkSlipService
             foreach ($subjects as $subject) {
                 // Loop in sections
                 foreach ($sections as $section) {
+                    // Check if the student exists in section by thier key in group by
+                    if (!isset($students[$section->id])) {
+                        continue;
+                    }
+
                     // Get new stdClass
                     $markslip = new \stdClass;
                     
@@ -152,5 +160,103 @@ class MarkSlipService
             ->examSchedule;
 
         return $exam_schedules;
+    }
+
+    /**
+     * Get Exam Schedules of class subjects.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function saveMarkSlip($request)
+    {
+        // Get markslips from exam class id
+        $markslips = MarkSlip::where('exam_class_id', $request->exam_class_id)->get();
+
+        // Store Remarks
+        $exam_remarks = [];
+        $exam_grade_remarks = [];
+
+        foreach ($request->student_remarks as $key => $student_remarks) {
+            $key = explode('-', $key);
+            $section_id = $key[0];
+            $subject_id = $key[1];
+
+            // Check if markslip exists
+            $markslip = $markslips->where('section_id', $section_id)->where('subject_id', $subject_id)->first();
+
+            // Create markslip where not exits
+            if (!$markslip && !empty($student_remarks)) {
+                $markslip = MarkSlip::create([
+                    'exam_class_id' => $request->exam_class_id,
+                    'section_id' => $section_id,
+                    'subject_id' => $subject_id
+                ]);
+            }
+
+            foreach ($student_remarks as $student_session_id => $remarks) {
+
+                // If the grades key are exists
+                if (isset($remarks['grades'])) {
+                    foreach ($remarks['grades'] as $exam_schedule_id => $grade_id) {
+                        $exam_grade_remarks[] = [
+                            'mark_slip_id' => $markslip->id,
+                            'remarkable_type' => ExamSchedule::class,
+                            'remarkable_id' => $exam_schedule_id,
+                            'student_session_id' => $student_session_id,
+                            'grade_id' => $grade_id,
+                            'created_by' => auth()->id()
+                        ];
+                    }
+                }
+
+                // If the grading categories key are exists
+                if (isset($remarks['grading_categories'])) {
+                    foreach ($remarks['grading_categories'] as $exam_schedule_category_id => $grade_id) {
+                        $exam_grade_remarks[] = [
+                            'mark_slip_id' => $markslip->id,
+                            'remarkable_type' => ExamScheduleCategory::class,
+                            'remarkable_id' => $exam_schedule_category_id,
+                            'student_session_id' => $student_session_id,
+                            'grade_id' => $grade_id,
+                            'created_by' => auth()->id()
+                        ];
+                    }
+                }
+
+                // If the categories key are exists
+                if (isset($remarks['categories'])) {
+                    foreach ($remarks['categories'] as $exam_schedule_category_id => $marks) {
+                        $exam_remarks[] = [
+                            'mark_slip_id' => $markslip->id,
+                            'remarkable_type' => ExamScheduleCategory::class,
+                            'remarkable_id' => $exam_schedule_category_id,
+                            'student_session_id' => $student_session_id,
+                            'remarks' => $marks,
+                            'created_by' => auth()->id()
+                        ];
+                    }
+                }
+
+                // If the marks key are exists
+                if (isset($remarks['marks'])) {
+                    foreach ($remarks['marks'] as $exam_schedule_id => $marks) {
+                        $exam_remarks[] = [
+                            'mark_slip_id' => $markslip->id,
+                            'remarkable_type' => ExamSchedule::class,
+                            'remarkable_id' => $exam_schedule_id,
+                            'student_session_id' => $student_session_id,
+                            'remarks' => $marks,
+                            'created_by' => auth()->id()
+                        ];
+                    }
+                }
+            }
+        }
+
+        // Upsert Remarks
+        ExamGradeRemarks::upsert($exam_grade_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['grade_id']);
+        ExamRemarks::upsert($exam_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['remarks']);
+
+        return true;
     }
 }

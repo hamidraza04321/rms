@@ -57,6 +57,7 @@ class MarkSlipRequest extends FormRequest
     public function save()
     {
         return [
+            'exam_class_id' => 'required|exists:exam_classes,id',
             'student_remarks' => 'required|array'
         ];
     }

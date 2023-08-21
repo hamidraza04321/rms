@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Scopes\HasSubject;
+use App\Models\Scopes\HasSection;
+use App\Models\Scopes\HasExamClass;
 
 class MarkSlip extends Model
 {
@@ -41,4 +44,31 @@ class MarkSlip extends Model
     	'created_at',
     	'updated_at'
     ];
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    public function examClass()
+    {
+        return $this->belongsTo(ExamClass::class, 'exam_class_id');
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        static::addGlobalScope(new HasSubject);
+        static::addGlobalScope(new HasSection);
+        static::addGlobalScope(new HasExamClass);
+    }
 }

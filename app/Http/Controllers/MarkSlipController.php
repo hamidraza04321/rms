@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MarkSlipRequest;
 use App\Services\MarkSlipService;
-use App\Models\ExamGradeRemarks;
-use App\Models\ExamRemarks;
 use App\Models\ExamSchedule;
 use App\Models\ExamScheduleCategory;
 use App\Models\Session;
 use App\Models\Classes;
 use App\Models\Exam;
+use App\Models\MarkSlip;
 use Auth;
+use DB;
 
 class MarkSlipController extends Controller
 {
@@ -79,70 +79,14 @@ class MarkSlipController extends Controller
      */
     public function save(MarkSlipRequest $request)
     {
-        // Store Remarks
-        $exam_remarks = [];
-        $exam_grade_remarks = [];
-
-        foreach ($request->student_remarks as $student_session_id => $remarks) {
-
-            // If the grades key are exists
-            if (isset($remarks['grades'])) {
-                foreach ($remarks['grades'] as $exam_schedule_id => $grade_id) {
-                    $exam_grade_remarks[] = [
-                        'remarkable_type' => ExamSchedule::class,
-                        'remarkable_id' => $exam_schedule_id,
-                        'student_session_id' => $student_session_id,
-                        'grade_id' => $grade_id,
-                        'created_by' => Auth::id()
-                    ];
-                }
-            }
-
-            // If the grading categories key are exists
-            if (isset($remarks['grading_categories'])) {
-                foreach ($remarks['grading_categories'] as $exam_schedule_category_id => $grade_id) {
-                    $exam_grade_remarks[] = [
-                        'remarkable_type' => ExamScheduleCategory::class,
-                        'remarkable_id' => $exam_schedule_category_id,
-                        'student_session_id' => $student_session_id,
-                        'grade_id' => $grade_id,
-                        'created_by' => Auth::id()
-                    ];
-                }
-            }
-
-            // If the categories key are exists
-            if (isset($remarks['categories'])) {
-                foreach ($remarks['categories'] as $exam_schedule_category_id => $marks) {
-                    $exam_remarks[] = [
-                        'remarkable_type' => ExamScheduleCategory::class,
-                        'remarkable_id' => $exam_schedule_category_id,
-                        'student_session_id' => $student_session_id,
-                        'remarks' => $marks,
-                        'created_by' => Auth::id()
-                    ];
-                }
-            }
-
-            // If the marks key are exists
-            if (isset($remarks['marks'])) {
-                foreach ($remarks['marks'] as $exam_schedule_id => $marks) {
-                    $exam_remarks[] = [
-                        'remarkable_type' => ExamSchedule::class,
-                        'remarkable_id' => $exam_schedule_id,
-                        'student_session_id' => $student_session_id,
-                        'remarks' => $marks,
-                        'created_by' => Auth::id()
-                    ];
-                }
-            }           
+        try {
+            DB::transaction(function() use($request) {
+                $saveMarkslip = (new MarkSlipService)->saveMarkSlip($request);
+                return response()->successMessage('Markslip Saved Successfully!');
+            });
+        } catch(\Exception $e) {
+            return response()->errorMessage('Check your input fields and try again!');
         }
-
-        // Upsert Remarks
-        ExamGradeRemarks::upsert($exam_grade_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['grade_id']);
-        ExamRemarks::upsert($exam_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['remarks']);
-
-        return response()->successMessage('Markslip Saved Successfully!');
     }
 
     /**

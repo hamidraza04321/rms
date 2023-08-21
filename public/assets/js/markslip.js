@@ -239,6 +239,7 @@ $(document).ready(function() {
         row.find('.total-obtain-marks').text(total_obtain_marks);
     });
 
+    //---------- ON CLICK SAVE MARKSLIP BUTTON ----------//
     $(document).on('click', '.btn-save-markslip', function(e) {
         e.preventDefault();
         removeErrorMessages();
@@ -266,6 +267,14 @@ $(document).ready(function() {
                         toastr.success(response.message);
                     } else {
                         if (response?.errors) {
+                            var errors_list = ``;
+
+                            $.each(response.errors, function(key, value) {
+                                 errors_list += `<li>${value}</li>`;
+                            });
+
+                            message += `<ul class="alert alert-danger">${value}</ul>`;
+                        } else {
                             message = errorMessage('Check your input fields and try again !');
                         }
                     }
