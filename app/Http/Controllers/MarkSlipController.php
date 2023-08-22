@@ -81,9 +81,10 @@ class MarkSlipController extends Controller
     {
         try {
             DB::transaction(function() use($request) {
-                $saveMarkslip = (new MarkSlipService)->saveMarkSlip($request);
-                return response()->successMessage('Markslip Saved Successfully!');
+                (new MarkSlipService)->saveMarkSlip($request);
             });
+
+            return response()->successMessage('Markslip Saved Successfully!');
         } catch(\Exception $e) {
             return response()->errorMessage('Check your input fields and try again!');
         }

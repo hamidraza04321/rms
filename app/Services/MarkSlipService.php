@@ -153,7 +153,11 @@ class MarkSlipService
                             'marks'
                         )
                         ->whereIn('subject_id', $request->subject_id)
-                        ->with('categories');
+                        ->with([
+                            'categories' => [ 'remarks', 'gradeRemarks' ],
+                            'remarks', 
+                            'gradeRemarks'
+                        ]);
                 }
             ])
             ->first()
@@ -200,11 +204,12 @@ class MarkSlipService
                     foreach ($remarks['grades'] as $exam_schedule_id => $grade_id) {
                         $exam_grade_remarks[] = [
                             'mark_slip_id' => $markslip->id,
-                            'remarkable_type' => ExamSchedule::class,
+                            'remarkable_type' => 'App\Models\ExamSchedule',
                             'remarkable_id' => $exam_schedule_id,
                             'student_session_id' => $student_session_id,
                             'grade_id' => $grade_id,
-                            'created_by' => auth()->id()
+                            'created_by' => auth()->id(),
+                            'updated_by' => auth()->id()
                         ];
                     }
                 }
@@ -214,11 +219,12 @@ class MarkSlipService
                     foreach ($remarks['grading_categories'] as $exam_schedule_category_id => $grade_id) {
                         $exam_grade_remarks[] = [
                             'mark_slip_id' => $markslip->id,
-                            'remarkable_type' => ExamScheduleCategory::class,
+                            'remarkable_type' => 'App\Models\ExamScheduleCategory',
                             'remarkable_id' => $exam_schedule_category_id,
                             'student_session_id' => $student_session_id,
                             'grade_id' => $grade_id,
-                            'created_by' => auth()->id()
+                            'created_by' => auth()->id(),
+                            'updated_by' => auth()->id()
                         ];
                     }
                 }
@@ -228,11 +234,12 @@ class MarkSlipService
                     foreach ($remarks['categories'] as $exam_schedule_category_id => $marks) {
                         $exam_remarks[] = [
                             'mark_slip_id' => $markslip->id,
-                            'remarkable_type' => ExamScheduleCategory::class,
+                            'remarkable_type' => 'App\Models\ExamScheduleCategory',
                             'remarkable_id' => $exam_schedule_category_id,
                             'student_session_id' => $student_session_id,
                             'remarks' => $marks,
-                            'created_by' => auth()->id()
+                            'created_by' => auth()->id(),
+                            'updated_by' => auth()->id()
                         ];
                     }
                 }
@@ -242,11 +249,12 @@ class MarkSlipService
                     foreach ($remarks['marks'] as $exam_schedule_id => $marks) {
                         $exam_remarks[] = [
                             'mark_slip_id' => $markslip->id,
-                            'remarkable_type' => ExamSchedule::class,
+                            'remarkable_type' => 'App\Models\ExamSchedule',
                             'remarkable_id' => $exam_schedule_id,
                             'student_session_id' => $student_session_id,
                             'remarks' => $marks,
-                            'created_by' => auth()->id()
+                            'created_by' => auth()->id(),
+                            'updated_by' => auth()->id()
                         ];
                     }
                 }
@@ -254,9 +262,7 @@ class MarkSlipService
         }
 
         // Upsert Remarks
-        ExamGradeRemarks::upsert($exam_grade_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['grade_id']);
-        ExamRemarks::upsert($exam_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['remarks']);
-
-        return true;
+        ExamGradeRemarks::upsert($exam_grade_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['grade_id', 'updated_by']);
+        ExamRemarks::upsert($exam_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['remarks', 'updated_by']);
     }
 }

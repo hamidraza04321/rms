@@ -19,7 +19,7 @@
 
 <!-- Preloader -->
 <div class="preloader flex-column justify-content-center align-items-center">
-  <img class="animation__shake" src="{{ url('/assets/dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
+  <img class="animation__shake" src="{{ url($settings->school_logo) }}" alt="logo" height="60" width="60">
 </div>
 <style>
   .float-right {
@@ -31,7 +31,7 @@
 </style>
 <div class="login-box">
   <div class="login-logo">
-    <img src="{{ url($settings->school_logo) }}" class="rounded-circle" width="120" height="120">
+    <img src="{{ url($settings->school_logo) }}" class="rounded-circle">
   </div>
   <div class="login-logo">
     <a href="#">{{ $settings->school_name }}</a>

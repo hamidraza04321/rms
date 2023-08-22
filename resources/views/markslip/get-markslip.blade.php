@@ -87,17 +87,20 @@
                               <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grades][{{ $markslip->exam_schedule->id }}]" class="form-control grade">
                                 <option value="">Grade</option>
                                 @foreach($markslip->grades as $grade)
-                                  <option value="{{ $grade->id }}">{{ $grade->grade }}</option>
+                                  <option @selected($grade->id == $markslip->exam_schedule?->gradeRemarks?->firstWhere('student_session_id', $student->student_session_id)?->grade_id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
                                 @endforeach
                               </select>
                             </td>
                           @break
                           @case('marks')
                             <td>
-                              <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks">
+                              <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks" value="{{ $markslip->exam_schedule?->remarks?->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
                             </td>
                             <td>
-                              <span class="total-obtain-marks">0</span> / {{ $markslip->exam_schedule->marks }}
+                              <span class="total-obtain-marks">
+                                {{ $markslip->exam_schedule?->remarks?->firstWhere('student_session_id', $student->student_session_id)?->remarks ?? '0' }}
+                              </span>
+                              / {{ $markslip->exam_schedule->marks }}
                             </td>
                           @break
                           @case('categories')
@@ -107,16 +110,19 @@
                                   <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grading_categories][{{ $category->id }}]" class="form-control grade">
                                     <option value="">Grade</option>
                                     @foreach($markslip->grades as $grade)
-                                      <option value="{{ $grade->id }}">{{ $grade->grade }}</option>
+                                      <option @selected($grade->id == $category->gradeRemarks?->firstWhere('student_session_id', $student->student_session_id)?->grade_id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
                                     @endforeach
                                   </select>
                                 @else
-                                  <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks">
+                                  <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks" value="{{ $category->remarks?->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
                                 @endif
                               </td>
                               @if($loop->last && $markslip->exam_schedule->categories->firstWhere('is_grade', 0))
                                 <td>
-                                  <span class="total-obtain-marks">0</span> / {{ $markslip->exam_schedule->categories->sum('marks') }}
+                                  <span class="total-obtain-marks">
+                                    {{ $markslip->exam_schedule->categories->pluck('remarks')->collapse()->where('student_session_id', $student->student_session_id)->sum('remarks') ?? '0' }}
+                                  </span>
+                                   / {{ $markslip->exam_schedule->categories->sum('marks') }}
                                 </td>
                               @endif
                             @endforeach

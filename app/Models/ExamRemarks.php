@@ -24,6 +24,11 @@ class ExamRemarks extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'remarkable_type',
+        'remarkable_id',
+        'mark_slip_id',
+        'student_session_id',
+        'remarks',
     	'created_by',
     	'updated_by'
     ];
