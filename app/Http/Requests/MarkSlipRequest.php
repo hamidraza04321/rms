@@ -31,9 +31,25 @@ class MarkSlipRequest extends FormRequest
     public function rules()
     {
         return match(Route::currentRouteName()) {
+            'search.markslip' => $this->search(),
             'get.markslip' => $this->getMarkSlip(),
             'save.markslip' => $this->save()
         };
+    }
+
+    /**
+     * Validate rules for search markslip request
+     */
+    public function search()
+    {
+        return [
+            'session_id' => $this->sessionRule('nullable'),
+            'exam_id' => $this->examRule($this->session_id, 'nullable'),
+            'class_id' => $this->classRule('nullable'),
+            'group_id' => $this->groupRule($this->class_id),
+            'section_id' => $this->sectionRule($this->class_id, 'nullable'),
+            'subject_id' => $this->subjectRule($this->class_id, 'nullable')
+        ];
     }
 
     /**

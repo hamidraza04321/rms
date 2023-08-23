@@ -152,7 +152,7 @@
                           <td>{{ $student_session->student->fullName() }}</td>
                           <td>{{ $student_session->student->father_name }}</td>
                           <td>{{ $student_session->class->name }} ( {{ $student_session->section->name }} )</td>
-                          <td>{{ $student_session->group->name ?? null }}</td>
+                          <td>{{ $student_session->group->name ?? '-' }}</td>
                           <td>
                             @if($student_session->is_active)
                               <button data-url="{{ route('student.update.status', $student_session->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>

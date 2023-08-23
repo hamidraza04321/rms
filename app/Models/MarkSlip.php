@@ -47,17 +47,20 @@ class MarkSlip extends Model
 
     public function subject()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(Subject::class)
+            ->select([ 'id', 'name' ]);
     }
 
     public function section()
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Section::class)
+            ->select([ 'id', 'name' ]);
     }
 
     public function examClass()
     {
-        return $this->belongsTo(ExamClass::class, 'exam_class_id');
+        return $this->belongsTo(ExamClass::class, 'exam_class_id')
+            ->select([ 'id', 'exam_id', 'class_id' ]);
     }
 
     /**

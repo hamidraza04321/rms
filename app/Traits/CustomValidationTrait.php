@@ -5,6 +5,7 @@ use App\Rules\{
     SessionRule,
     ClassRule,
     SectionRule,
+    SubjectRule,
     GroupRule,
     UniqueAdmissionNoRule,
     UniqueClassRollNoRule,
@@ -50,6 +51,19 @@ trait CustomValidationTrait
         return [
             $default,
             new SectionRule($class_id)
+        ];
+    }
+
+    /**
+     * Define Rule For Subject.
+     *
+     * @return array
+     */
+    public function subjectRule($class_id, $default = 'required')
+    {
+        return [
+            $default,
+            new SubjectRule($class_id)
         ];
     }
 
@@ -113,10 +127,10 @@ trait CustomValidationTrait
      *
      * @return array
      */
-    public function examRule($session_id = null)
+    public function examRule($session_id = null, $default = 'required')
     {
         return [
-            'required',
+            $default,
             new ExamRule($session_id)
         ];
     }

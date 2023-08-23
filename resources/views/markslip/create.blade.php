@@ -97,7 +97,7 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12 text-right">
-                          <button id="btn-search-markslip" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+                          <button id="btn-get-markslip" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
                         </div>
                       </div>
                     </form>

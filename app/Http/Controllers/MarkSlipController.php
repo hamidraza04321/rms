@@ -22,12 +22,39 @@ class MarkSlipController extends Controller
      */
     public function index()
     {
+        $sessions = Session::get();
+        $exams = Exam::where('session_id', $this->current_session_id)->get();
+        $markslips = MarkSlip::with([
+            'examClass' => [ 
+                'exam' => [ 'session' ], 
+                'class', 
+                'group' 
+            ], 
+            'subject', 
+            'section' 
+        ])->get();
+
         $data = [
+            'sessions' => $sessions,
+            'exams' => $exams,
+            'markslips' => $markslips,
             'page_title' => 'Manage Mark Slip',
             'menu' => 'Mark Slip'
         ];
 
         return view('markslip.index', compact('data'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param \App\Http\Requests\MarkSlipRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(MarkSlipRequest $request)
+    {
+        $markslips = MarkSlip::get();
+        return response()->json($markslips);
     }
 
     /**

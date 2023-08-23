@@ -52,12 +52,14 @@ class ExamClass extends Model
 
     public function class()
     {
-        return $this->belongsTo(Classes::class, 'class_id');
+        return $this->belongsTo(Classes::class, 'class_id')
+            ->select([ 'id', 'name' ]);
     }
 
     public function group()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Group::class)
+            ->select([ 'id', 'name' ]);
     }
 
     public function examSchedule()

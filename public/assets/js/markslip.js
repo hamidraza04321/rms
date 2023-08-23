@@ -115,8 +115,8 @@ $(document).ready(function() {
         }
     });
 
-    //---------- ON CLICK SEARCH BUTTON ----------//
-    $(document).on('click', '#btn-search-markslip', function(e) {
+    //---------- ON CLICK SEARCH MARKSLIP IN CREATE BUTTON ----------//
+    $(document).on('click', '#btn-get-markslip', function(e) {
         e.preventDefault();
         removeErrorMessages();
 
@@ -202,6 +202,66 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    //---------- ON CLICK SEARCH MARKSLIP BUTTON ----------//
+    $(document).on('click', '#btn-search-markslip', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            form = $('#search-markslip-form');
+            url = form.attr('action');
+            session_id = $('#session-id').val();
+            exam_id = $('#exam-id').val();
+            class_id = $('#class-id').val();
+            section_id = $('#section-id').val();
+            group_id = $('#group-id').val();
+            subject_id = $('#subject-id').val();
+
+        // Button Loading
+        self.addClass('disabled').html('<div class="spinner-border"></div>');
+
+        $('#markslip-table').DataTable({
+            destroy: true,
+            ajax: {
+                url: url,
+                type: 'GET',
+                data: {
+                    session_id: session_id,
+                    exam_id: exam_id,
+                    class_id: class_id,
+                    section_id: section_id,
+                    group_id: group_id,
+                    subject_id: subject_id
+                }
+            },
+            initComplete: function(settings, response){
+                if (response.status == false) showErrorMessages(response.errors);
+                self.removeClass('disabled').html(self_html);
+            },
+            columnDefs: [
+                {
+                    "targets": 6,
+                    "render": function (data) {
+                        var btn_edit = ($('#edit-permission').val() == 'true') ? `<a href="${base_url}/markslip/${data.id}/edit" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> ` : ``;
+                            btn_delete = ($('#delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-destroy-markslip" data-url="${base_url}/markslip/${data.id}"><i class="fa fa-trash"> Delete</i></button>` : ``;
+
+                        return btn_edit + btn_delete;
+                    }
+                }
+            ],
+            columns: [
+                { data: 'session' },
+                { data: 'exam' },
+                { data: 'class' },
+                { data: 'section' },
+                { data: 'group' },
+                { data: 'subject' },
+                { data: null }
+            ],
+        });
     });
 
     //---------- ON CHANGE INPUT NUMBER ----------//
