@@ -53,7 +53,39 @@ class MarkSlipController extends Controller
      */
     public function search(MarkSlipRequest $request)
     {
-        $markslips = MarkSlip::get();
+        $markslips = MarkSlip::with([
+                'examClass' => [ 
+                    'exam' => [ 'session' ], 
+                    'class', 
+                    'group' 
+                ], 
+                'subject', 
+                'section' 
+            ])->when($request->session_id, function($query) use($request) {
+                if ($request->exam_id) {
+                    $query->whereHas('examClass', function($query) use($request){
+                        $query->where('exam_id', $request->exam_id)
+                            ->whereHas('exam', fn($query) => $query->where('session_id', $request->session_id))
+                            ->when($request->class_id, fn($query) => $query->where('class_id', $request->class_id));
+                    });
+                } else {
+                    $query->whereHas('examClass', function($query) use($request){
+                        $query->whereHas('exam', fn($query) => $query->where('session_id', $request->session_id));
+                    });
+                }
+            })
+            ->when($request->section_id, fn($query) => $query->where('section_id', $request->section_id))
+            ->when($request->subject_id, fn($query) => $query->where('subject_id', $request->subject_id))
+            ->get()
+            ->map(function($markslip){
+                $markslip->session = $markslip->examClass->exam->session->name;
+                $markslip->exam = $markslip->examClass->exam->name;
+                $markslip->class = $markslip->examClass->class->name;
+                $markslip->group = $markslip->examClass->group?->name ?? '-';
+
+                return $markslip;
+            });
+
         return response()->json($markslips);
     }
 
@@ -136,7 +168,26 @@ class MarkSlipController extends Controller
      */
     public function edit($id)
     {
-        //
+        $markslip = MarkSlip::with('examClass.exam')->findOrFail($id);
+        
+        $ids = new \stdClass;
+        $ids->session_id = $markslip->examClass->exam->session_id;
+        $ids->exam_id = $markslip->examClass->exam_id;
+        $ids->class_id = $markslip->examClass->class_id;
+        $ids->group_id = $markslip->examClass->group_id;
+        $ids->section_id = [ $markslip->section_id ];
+        $ids->subject_id = [ $markslip->subject_id ];
+
+        $markslips = (new MarkSlipService)->getMarkSlips($ids);
+        $markslip = view('markslip.get-markslip', compact('markslips'))->render();
+
+        $data = [
+            'markslip' => $markslip,
+            'page_title' => 'Edit Mark Slip',
+            'menu' => 'Mark Slip'
+        ];
+
+        return view('markslip.edit', compact('data'));
     }
 
     /**
@@ -159,6 +210,17 @@ class MarkSlipController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $markslip = MarkSlip::find($id);
+
+        if ($markslip) {
+            // Delete Marks
+            $markslip->examRemarks()->delete();
+            $markslip->examGradeRemarks()->delete();
+            $markslip->delete();
+
+            return response()->successMessage('Markslip Deleted Successfully !');
+        }
+
+        return response()->errorMessage('Markslip Not Found !');
     }
 }

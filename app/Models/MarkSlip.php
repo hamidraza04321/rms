@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Scopes\HasSubject;
 use App\Models\Scopes\HasSection;
 use App\Models\Scopes\HasExamClass;
 
 class MarkSlip extends Model
 {
-    use HasFactory,
-    	SoftDeletes;
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -61,6 +59,16 @@ class MarkSlip extends Model
     {
         return $this->belongsTo(ExamClass::class, 'exam_class_id')
             ->select([ 'id', 'exam_id', 'class_id' ]);
+    }
+
+    public function examRemarks()
+    {
+        return $this->hasMany(ExamRemarks::class, 'mark_slip_id');
+    }
+
+    public function examGradeRemarks()
+    {
+        return $this->hasMany(ExamGradeRemarks::class, 'mark_slip_id');
     }
 
     /**

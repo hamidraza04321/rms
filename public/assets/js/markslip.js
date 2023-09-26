@@ -228,6 +228,7 @@ $(document).ready(function() {
             ajax: {
                 url: url,
                 type: 'GET',
+                dataSrc: '',
                 data: {
                     session_id: session_id,
                     exam_id: exam_id,
@@ -243,6 +244,18 @@ $(document).ready(function() {
             },
             columnDefs: [
                 {
+                    "targets": 3,
+                    "render": function (data) {
+                        return data.section.name;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "render": function (data) {
+                        return data.subject.name;
+                    }
+                },
+                {
                     "targets": 6,
                     "render": function (data) {
                         var btn_edit = ($('#edit-permission').val() == 'true') ? `<a href="${base_url}/markslip/${data.id}/edit" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> ` : ``;
@@ -256,11 +269,11 @@ $(document).ready(function() {
                 { data: 'session' },
                 { data: 'exam' },
                 { data: 'class' },
-                { data: 'section' },
+                { data: null },
                 { data: 'group' },
-                { data: 'subject' },
+                { data: null },
                 { data: null }
-            ],
+            ]
         });
     });
 
@@ -349,5 +362,54 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    //---------- ON CLICK DESTROY MARKSLIP ----------//
+    $(document).on('click', '.btn-destroy-markslip', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+            self_html = self.html();
+            url = self.attr('data-url');
+            message = '';
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // BUTTON LOADING
+                self.addClass('disabled').html('<div class="spinner-border-sm"></div>');
+
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    success: function(response) {
+                        if (response.status == true) {
+                            var table = $('#markslip-table').DataTable();
+                            table.row(self.parents('tr')).remove().draw();
+                            toastr.success(response.message);
+                        } else {
+                            message = errorMessage(response.message);
+                        }
+                    },
+                    error: function() {
+                        message = errorMessage();
+                    },
+                    complete: function() {
+                        if (message != '') {
+                            showAlertInTop(message);
+                            self.removeClass('disabled').html(self_html);
+                        }
+                    }
+                });
+            }
+        });
     });
 });
