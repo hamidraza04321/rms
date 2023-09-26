@@ -89,7 +89,7 @@ class MarkSlipService
 	}
 
 	/**
-     * Get Students by session, class, section.
+     * Get students by session, class, section.
      *
      * @return \Illuminate\Http\Response
      */ 
@@ -125,7 +125,7 @@ class MarkSlipService
 	}
 
     /**
-     * Get Exam Schedules of class subjects.
+     * Get exam schedules of class subjects.
      *
      * @return \Illuminate\Http\Response
      */ 
@@ -167,7 +167,7 @@ class MarkSlipService
     }
 
     /**
-     * Get Exam Schedules of class subjects.
+     * Get exam schedules of class subjects.
      *
      * @return \Illuminate\Http\Response
      */
@@ -264,5 +264,16 @@ class MarkSlipService
         // Upsert Remarks
         ExamGradeRemarks::upsert($exam_grade_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['grade_id', 'updated_by']);
         ExamRemarks::upsert($exam_remarks, ['remarkable_type', 'remarkable_id', 'student_session_id'], ['remarks', 'updated_by']);
+    }
+
+    /**
+     * Get markslip tabulation sheet
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getTabulationSheetView($request)
+    {
+        $view = view('markslip.get-tabulation-sheet')->render();
+        return $view;
     }
 }

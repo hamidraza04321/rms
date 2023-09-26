@@ -150,17 +150,6 @@ class MarkSlipController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \App\Http\Requests\MarkSlipRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(MarkSlipRequest $request)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -191,18 +180,6 @@ class MarkSlipController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -222,5 +199,37 @@ class MarkSlipController extends Controller
         }
 
         return response()->errorMessage('Markslip Not Found !');
+    }
+
+    /**
+     * Markslip tabulation sheet
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function tabulation()
+    {
+        $sessions = Session::get();
+        $exams = Exam::where('session_id', $this->current_session_id)->get();
+
+        $data = [
+            'sessions' => $sessions,
+            'exams' => $exams,
+            'page_title' => 'Tabulation Sheet',
+            'menu' => 'Mark Slip'
+        ];
+
+        return view('markslip.tabulation', compact('data'));
+    }
+
+    /**
+     * Get markslip tabulation sheet
+     *
+     * @param \App\Http\Requests\MarkSlipRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getTabulationSheet(MarkSlipRequest $request)
+    {
+        $view = (new MarkSlipService)->getTabulationSheetView($request);
+        return response()->success([ 'view' => $view ]);
     }
 }

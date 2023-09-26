@@ -131,11 +131,13 @@ Route::middleware('auth')->group(function () {
 	});
 
 	//---------- MAKR SLIP ROUTES ----------//
-	Route::resource('/markslip', MarkSlipController::class, ['except' => ['show']]);
+	Route::resource('/markslip', MarkSlipController::class, ['except' => ['show', 'store', 'update']]);
 	Route::controller(MarkSlipController::class)->group(function(){
 		Route::get('/markslip/search', 'search')->name('search.markslip');
 		Route::get('/markslip/get-markslip', 'getMarkSlip')->name('get.markslip');
 		Route::post('/markslip/save', 'save')->name('save.markslip');
+		Route::get('/markslip/tabulation', 'tabulation')->name('markslip.tabulation');
+		Route::post('/markslip/get-tabulation-sheet', 'getTabulationSheet')->name('get.tabulation.sheet');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//

@@ -31,7 +31,7 @@
 </style>
 <div class="login-box">
   <div class="login-logo">
-    <img src="{{ url($settings->school_logo) }}" class="rounded-circle">
+    <img src="{{ url($settings->school_logo) }}" width="120" class="rounded-circle">
   </div>
   <div class="login-logo">
     <a href="#">{{ $settings->school_name }}</a>

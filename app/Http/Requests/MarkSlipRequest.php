@@ -33,7 +33,8 @@ class MarkSlipRequest extends FormRequest
         return match(Route::currentRouteName()) {
             'search.markslip' => $this->search(),
             'get.markslip' => $this->getMarkSlip(),
-            'save.markslip' => $this->save()
+            'save.markslip' => $this->save(),
+            'get.tabulation.sheet' => $this->getTabulationSheet()
         };
     }
 
@@ -75,6 +76,20 @@ class MarkSlipRequest extends FormRequest
         return [
             'exam_class_id' => 'required|exists:exam_classes,id',
             'student_remarks' => 'required|array'
+        ];
+    }
+
+    /**
+     * Validate rules for get tabulation sheet
+     */
+    public function getTabulationSheet()
+    {
+        return [
+            'session_id' => $this->sessionRule(),
+            'exam_id' => $this->examRule($this->session_id),
+            'class_id' => $this->classRule(),
+            'group_id' => $this->groupRule($this->class_id),
+            'section_id' => $this->sectionRule($this->class_id)
         ];
     }
 }

@@ -1,0 +1,55 @@
+
+.logo img {
+	width: 160px;
+    height: 160px;
+    margin-left: auto;
+    position: relative;
+    border-radius: 100%;
+    border: 6px solid #f8f8f8;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+    margin-right: auto;
+}
+
+.school-name {
+	text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: 600;
+    font-size: 35px;
+}
+
+.exam-name {
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.tabulation-details {
+	width: 100%;
+}
+
+.tabulation-details tr td {
+	vertical-align: baseline;
+}
+
+.tabulation-details tr td.text-bold {
+	width: 70px;
+}
+
+.tabulation-details tr td:not(.text-bold) {
+    text-align: center;
+    border-bottom: 1px solid;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.overflow-scroll {
+	overflow-x: scroll;
+}
+
+.rotate {
+	writing-mode: vertical-lr;
+    rotate: 180deg;
+}
+}

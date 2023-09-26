@@ -226,8 +226,8 @@
             </ul>
           </li>
         @endcanany
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create', 'markslip.edit' ]))) active @endif">
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create', 'markslip.tabulation' ]))) menu-open @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'markslip.index', 'markslip.create', 'markslip.edit', 'markslip.tabulation' ]))) active @endif">
             <i class="nav-icon fas fa-paste"></i>
             <p>
               Mark Slip
@@ -248,7 +248,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('markslip.create') }}" class="nav-link @if(Route::currentRouteName() == 'markslip.tabulation') active @endif">
+              <a href="{{ route('markslip.tabulation') }}" class="nav-link @if(Route::currentRouteName() == 'markslip.tabulation') active @endif">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tabulation Sheet</p>
               </a>
