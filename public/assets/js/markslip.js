@@ -424,6 +424,7 @@ $(document).ready(function() {
             exam_id = $('#exam-id').val();
             class_id = $('#class-id').val();
             section_id = $('#section-id').val();
+            group_id = $('#group-id').val();
             message = '';
             flag = true;
 
@@ -476,6 +477,7 @@ $(document).ready(function() {
                         }
                     } else {
                         $('#tabulation-sheet').html(response.view);
+                        $('[data-toggle="tooltip"]').tooltip();
                     }
                 },
                 error: function() {

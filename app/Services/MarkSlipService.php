@@ -273,7 +273,104 @@ class MarkSlipService
      */
     public function getTabulationSheetView($request)
     {
-        $view = view('markslip.get-tabulation-sheet')->render();
+        $students = $this->getStudentsForTabulation($request);
+        $examSchedules = $this->getExamSchedulesForTabulation($request);
+        $exam = Exam::with('session')->find($request->exam_id);
+        $class = Classes::with('grades')->find($request->class_id);
+        $section = Section::find($request->section_id);
+        $group = ($request->group_id) ? Group::find($request->group_id, [ 'name' ]) : null;
+        $gradings = $class->grades;
+
+        if (!count($class->grades)) {
+            $gradings = Grade::withoutGlobalScopes()->where('is_default', 1)->get();
+        }
+
+        $data = [
+            'students' => $students,
+            'examSchedules' => $examSchedules,
+            'exam' => $exam,
+            'class' => $class,
+            'section' => $section,
+            'group' => $group,
+            'gradings' => $gradings
+        ];
+
+        $view = view('markslip.get-tabulation-sheet', compact('data'))->render();
         return $view;
+    }
+
+    /**
+     * Get students for tabulation
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getStudentsForTabulation($request)
+    {
+        $where = [
+            'class_id' => $request->class_id,
+            'session_id' => $request->session_id,
+            'section_id' => $request->section_id
+        ];
+
+        $students = StudentSession::where($where)
+            ->with([
+                'student' => function($query) {
+                    $query->select('id', 'roll_no', 'first_name', 'last_name');
+                }
+            ])
+            ->get([
+                'id',
+                'student_id',
+                'section_id'
+            ])
+            ->map(function($student_session){
+                $student_session->student->section_id = $student_session->section_id;
+                $student_session->student->student_session_id = $student_session->id;
+                return $student_session;
+            })
+            ->pluck('student');
+
+        return $students;
+    }
+
+    /**
+     * Get exam schedules for tabulation sheet
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getExamSchedulesForTabulation($request)
+    {
+        $where = [
+            'exam_id' => $request->exam_id,
+            'class_id' => $request->class_id
+        ];
+
+        // Add Group when exists
+        if ($request->group_id) $where['group_id'] = $request->group_id;
+
+        // Get Exam schedules
+        $exam_schedules = ExamClass::where($where)
+            ->with([
+                'examSchedule' => function($query) {
+                    $query->select(
+                            'id',
+                            'exam_class_id',
+                            'subject_id',
+                            'group_id', 
+                            'date',
+                            'type',
+                            'marks'
+                        )
+                        ->with([
+                            'categories' => [ 'remarks', 'gradeRemarks' ],
+                            'remarks', 
+                            'gradeRemarks'
+                        ]);
+                }
+            ])
+            ->first()
+            ->examSchedule;
+
+        return $exam_schedules;
     }
 }

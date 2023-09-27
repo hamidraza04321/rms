@@ -13,18 +13,18 @@
           </div>
           <div class="col-md-8">
             <h2 class="school-name text-center">{{ $settings->school_name }}</h2>
-            <h3 class="exam-name text-center">First Mid Term ( 2022-2023 )</h3>
+            <h3 class="exam-name text-center">{{ $data['exam']->name }} ( {{ $data['exam']->session->name }} )</h3>
             <table class="tabulation-details">
               <tbody>
                 <tr>
                   <td class="text-bold">Class :</td>
-                  <td style="width: 40%;">Class I</td>
+                  <td style="width: 40%;">{{ $data['class']->name }}</td>
                   <td class="text-bold">Section :</td>
-                  <td style="width: 40%;">A</td>
+                  <td style="width: 40%;">{{ $data['section']->name }}</td>
                 </tr>
                 <tr>
                   <td class="text-bold pt-3">Group :</td>
-                  <td colspan="3">---</td>
+                  <td colspan="3">{{ $data['group']?->name ?? '---' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -37,12 +37,9 @@
               <tbody>
                 <tr>
                   <td class="text-center">
-                    <button class="btn btn-sm btn-info mb-1">A+</button>
-                    <button class="btn btn-sm btn-info mb-1">A</button>
-                    <button class="btn btn-sm btn-info mb-1">A</button>
-                    <button class="btn btn-sm btn-info mb-1">A</button>
-                    <button class="btn btn-sm btn-info mb-1">A</button>
-                    <button class="btn btn-sm btn-danger mb-1">F</button>
+                    @foreach($data['gradings'] as $grade)
+                      <button class="btn btn-sm mb-1" style="background: {{ $grade->color }}; width: 35px;" data-toggle="tooltip" data-placement="top" title="{{ $grade->percentage_from }}% to {{ $grade->percentage_to }}%">{{ $grade->grade }}</button>
+                    @endforeach
                   </td>
                 </tr>
               </tbody>
@@ -55,47 +52,25 @@
             <thead>
               <tr>
                 <th>S No.</th>
-                <th colspan="5">English</th>
-                <th colspan="5">Urdu</th>
-                <th colspan="5">Maths</th>
-                <th colspan="5">Islamiat</th>
-                <th colspan="5">Islamiat</th>
-                <th colspan="5">Islamiat</th>
+                <th>Roll No.</th>
+                <th>Student Name</th>
               </tr>
               <tr>
                 <th></th>
-                <th class="rotate">Reading</th>
-                <th class="rotate">Writing</th>
-                <th class="rotate">Listning</th>
-                <th class="rotate">Written</th>
-                <th class="rotate">Presentation</th>
-                <th class="rotate">Reading</th>
-                <th class="rotate">Writing</th>
-                <th class="rotate">Listning</th>
-                <th class="rotate">Written</th>
-                <th class="rotate">Presentation</th>
-                <th class="rotate">Reading</th>
-                <th class="rotate">Writing</th>
-                <th class="rotate">Listning</th>
-                <th class="rotate">Written</th>
-                <th class="rotate">Presentation</th>
-                <th class="rotate">Reading</th>
-                <th class="rotate">Writing</th>
-                <th class="rotate">Listning</th>
-                <th class="rotate">Written</th>
-                <th class="rotate">Presentation</th>
-                <th class="rotate">Reading</th>
-                <th class="rotate">Writing</th>
-                <th class="rotate">Listning</th>
-                <th class="rotate">Written</th>
-                <th class="rotate">Presentation</th>
-                <th class="rotate">Reading</th>
-                <th class="rotate">Writing</th>
-                <th class="rotate">Listning</th>
-                <th class="rotate">Written</th>
-                <th class="rotate">Presentation</th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
+            <tbody>
+              @forelse($data['students'] as $student)
+                <tr>
+                  <td>{{ $loop->iteration }}</td>
+                  <td>{{ $student->roll_no }}</td>
+                  <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                </tr>
+              @empty
+              @endforelse
+            </tbody>
           </table>
         </div>
       </div>
