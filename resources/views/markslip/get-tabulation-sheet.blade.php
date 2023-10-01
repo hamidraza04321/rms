@@ -95,14 +95,14 @@
                             <th></th>
                           @break
                           @case('marks')
-                            <th>{{ $examSchedule->marks }}</th>
-                            <th>{{ $examSchedule->marks }}</th>
+                            <th class="text-center">{{ $examSchedule->marks }}</th>
+                            <th class="text-center">{{ $examSchedule->marks }}</th>
                           @break
                           @case('categories')
                             @foreach($examSchedule->categories as $category)
-                              <th>{{ ($category->is_grade) ? '' : $category->marks }}</th>
+                              <th class="text-center">{{ ($category->is_grade) ? '' : $category->marks }}</th>
                               @if($loop->last && !$examSchedule->has_all_category_gradings)
-                                <th>{{ $category->sum('marks') }}</th>
+                                <th class="text-center">{{ $category->sum('marks') }}</th>
                               @endif
                             @endforeach
                           @break
@@ -118,6 +118,47 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $student->roll_no }}</td>
                     <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                    @foreach($data['examSchedules'] as $examSchedule)
+                      @switch($examSchedule->type)
+                        @case('grade')
+                          <td>
+                            <select name="" class="grade-wrap">
+                              <option value="">Grade</option>
+                              @foreach($data['gradings'] as $grade)
+                                <option @selected($examSchedule->gradeRemarks->firstWhere('student_session_id', $student->student_session_id)?->grade_id == $grade->id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
+                              @endforeach
+                            </select>
+                          </td>
+                        @break
+                        @case('marks')
+                          <td>
+                            <input type="number" name="" min="0" max="{{ $examSchedule->marks }}" class="marks-wrap" placeholder="Enter Marks" value="{{ $examSchedule->remarks->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
+                          </td>
+                          <td class="text-center total-marks">
+                            <span>{{ $examSchedule->remarks->firstWhere('student_session_id', $student->student_session_id)->remarks ?? '0' }}</span>
+                          </td>
+                        @break
+                        @case('categories')
+                          @foreach($examSchedule->categories as $category)
+                            <td>
+                              @if($category->is_grade)
+                                <select name="" id="" class="grade-wrap">
+                                  <option value="">Grade</option>
+                                  @foreach($data['gradings'] as $grade)
+                                    <option @selected($category->gradeRemarks->firstWhere('student_session_id', $student->student_session_id)?->grade_id == $grade->id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
+                                  @endforeach
+                                </select>
+                              @else
+                                <input type="number" class="marks-wrap" max="{{ $category->marks }}" min="0" placeholder="Enter Marks" value="{{ $category->remarks->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
+                              @endif
+                            </td>
+                            @if($loop->last && !$examSchedule->has_all_category_gradings)
+                              <td class="text-center total-marks">{{ $examSchedule->categories->pluck('remarks')->collapse()->where('student_session_id', $student->student_session_id)->sum('remarks') ?? '0' }}</td>
+                            @endif
+                          @endforeach
+                        @break
+                      @endswitch
+                    @endforeach
                   </tr>
                 @empty
                   <tr>
