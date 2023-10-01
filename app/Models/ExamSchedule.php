@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Scopes\HasSubject;
 
 class ExamSchedule extends Model
 {
@@ -59,5 +60,21 @@ class ExamSchedule extends Model
     public function gradeRemarks()
     {
         return $this->morphMany(ExamGradeRemarks::class, 'remarkable');
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class)
+            ->select([ 'id', 'name' ]);
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        static::addGlobalScope(new HasSubject);
     }
 }

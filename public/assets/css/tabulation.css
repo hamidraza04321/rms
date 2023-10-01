@@ -45,11 +45,10 @@
 }
 
 .overflow-scroll {
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 .rotate {
 	writing-mode: vertical-lr;
     rotate: 180deg;
-}
 }

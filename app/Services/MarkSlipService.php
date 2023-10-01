@@ -274,13 +274,32 @@ class MarkSlipService
     public function getTabulationSheetView($request)
     {
         $students = $this->getStudentsForTabulation($request);
-        $examSchedules = $this->getExamSchedulesForTabulation($request);
+        $examSchedules = $this->getExamSchedulesForTabulation($request) ?? [];
+
+        // Check the all exam schedules is gradings
+        $gradeExamSchedules = collect($examSchedules)->where('type', 'grade');
+        $hasAllGradings = count($examSchedules) == count($gradeExamSchedules) ? true : false;
+
+        // Check if all categories is grading and marks type is not exists
+        $hasAllCategoryGradings = false;
+        $marksExamSchedules = collect($examSchedules)->where('type', 'marks');
+        $marksCategory = collect($examSchedules)
+            ->where('type', 'categories')
+            ->filter(function($examSchedule){
+                return count($examSchedule->categories->where('is_grade', 0));
+            });
+
+        if (!count($marksExamSchedules) && !count($marksCategory)) {
+            $hasAllCategoryGradings = true;
+        }
+
         $exam = Exam::with('session')->find($request->exam_id);
         $class = Classes::with('grades')->find($request->class_id);
         $section = Section::find($request->section_id);
         $group = ($request->group_id) ? Group::find($request->group_id, [ 'name' ]) : null;
         $gradings = $class->grades;
 
+        // If gradings are empty run default gradings
         if (!count($class->grades)) {
             $gradings = Grade::withoutGlobalScopes()->where('is_default', 1)->get();
         }
@@ -288,6 +307,8 @@ class MarkSlipService
         $data = [
             'students' => $students,
             'examSchedules' => $examSchedules,
+            'hasAllGradings' => $hasAllGradings,
+            'hasAllCategoryGradings' => $hasAllCategoryGradings,
             'exam' => $exam,
             'class' => $class,
             'section' => $section,
@@ -364,12 +385,34 @@ class MarkSlipService
                         ->with([
                             'categories' => [ 'remarks', 'gradeRemarks' ],
                             'remarks', 
-                            'gradeRemarks'
+                            'gradeRemarks',
+                            'subject'
                         ]);
                 }
             ])
             ->first()
-            ->examSchedule;
+            ?->examSchedule
+            ->map(function($examSchedule){
+                $examSchedule->has_colspan = $examSchedule->type == 'grade' ? false : true;
+                $examSchedule->colspan = match($examSchedule->type) {
+                    'grade' => 0,
+                    'marks' => 2,
+                    'categories' => count($examSchedule->categories)
+                };
+
+                // Check if all catgories is grading
+                if (count($examSchedule->categories)) {
+                    $gradingCategories = $examSchedule->categories->where('is_grade', 1) ?? [];
+                    $examSchedule->has_all_category_gradings = count($gradingCategories) == count($examSchedule->categories) ? true : false;
+
+                    // Plus one for add total column in table
+                    if (!$examSchedule->has_all_category_gradings) {
+                        $examSchedule->colspan += 1;
+                    }
+                }
+
+                return $examSchedule;
+            });
 
         return $exam_schedules;
     }

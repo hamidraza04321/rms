@@ -20,7 +20,7 @@ class GradeTableSeeder extends Seeder
         		'grade' => 'A+',
         		'percentage_from' => '90',
         		'percentage_to' => '100',
-        		'color' => '#1c7430',
+        		'color' => '#0a7aff',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -28,7 +28,7 @@ class GradeTableSeeder extends Seeder
         		'grade' => 'A',
         		'percentage_from' => '80',
         		'percentage_to' => '89.99',
-        		'color' => '#00ff79',
+        		'color' => '#00c05b',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -44,7 +44,7 @@ class GradeTableSeeder extends Seeder
         		'grade' => 'C',
         		'percentage_from' => '60',
         		'percentage_to' => '69.99',
-        		'color' => '#fffe00',
+        		'color' => '#ff9c0c',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
