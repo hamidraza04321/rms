@@ -93,7 +93,7 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.total-marks {
+.total-marks, .text-adjust {
     font-size: 14px;
     vertical-align: middle !important;
 }

@@ -172,21 +172,21 @@
                           </td>
                         @break
                         @case('category_total')
-                          <td class="text-center total-marks text-white" style="background: {{ $remarks->grade?->color }};">
+                          <td class="text-center text-adjust text-white" style="background: {{ $remarks->grade?->color }};">
                             <span>{{ $remarks->obtain_marks }}</span>
                           </td>
                         @break
                         @case('grand_total')
-                          <td class="text-center total-marks text-white" style="background: {{ $remarks->grade?->color }};">
+                          <td class="text-center text-adjust">
                             <span>{{ $remarks->grand_obtain }}</span>
                           </td>
-                          <td class="text-center total-marks text-white" style="background: {{ $remarks->result == 'Pass' ? 'green' : 'red'; }};">
+                          <td class="text-center text-adjust">
                             <span>{{ $remarks->result }}</span>
                           </td>
-                          <td class="text-center total-marks text-white" style="background: {{ $remarks->grade?->color }};">
+                          <td class="text-center text-adjust text-white" style="background: {{ $remarks->grade?->color }};">
                             <span>{{ $remarks->grade?->grade }}</span>
                           </td>
-                          <td class="text-center">
+                          <td class="text-center text-adjust">
                             <span>{{ $remarks->percentage }} %</span>
                           </td>
                           <td></td>

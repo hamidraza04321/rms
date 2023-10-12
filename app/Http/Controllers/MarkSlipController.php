@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MarkSlipRequest;
 use App\Services\MarkSlipService;
+use App\Services\TabulationService;
 use App\Models\ExamSchedule;
 use App\Models\ExamScheduleCategory;
 use App\Models\Session;
@@ -229,7 +230,7 @@ class MarkSlipController extends Controller
      */
     public function getTabulationSheet(MarkSlipRequest $request)
     {
-        $view = (new MarkSlipService)->getTabulationSheetView($request);
+        $view = (new TabulationService)->getTabulationSheetView($request);
         return response()->success([ 'view' => $view ]);
     }
 }
