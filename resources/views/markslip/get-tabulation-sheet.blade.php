@@ -140,7 +140,7 @@
                       @switch($remarks->type)
                         @case('grade')
                           <td>
-                            <select name="" class="grade-wrap">
+                            <select name="" class="grade-wrap {{ ($remarks->grade?->is_fail) ? 'border-red' : '' }}">
                               <option value="">Grade</option>
                               @foreach($data['gradings'] as $grade)
                                 <option @selected($remarks->grade?->id == $grade->id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
@@ -177,65 +177,28 @@
                           </td>
                         @break
                         @case('grand_total')
+                          @if(!$data['hasAllGradings'] && !$data['hasAllCategoryGradings'])
+                            <td class="text-center text-adjust">
+                              <span>{{ $remarks->grand_obtain }}</span>
+                            </td>
+                          @endif
                           <td class="text-center text-adjust">
-                            <span>{{ $remarks->grand_obtain }}</span>
+                            <span style="color: {{ ($remarks->result == 'Pass') ? 'green' : 'red';  }}">{{ $remarks->result }}</span>
                           </td>
-                          <td class="text-center text-adjust">
-                            <span>{{ $remarks->result }}</span>
-                          </td>
-                          <td class="text-center text-adjust text-white" style="background: {{ $remarks->grade?->color }};">
-                            <span>{{ $remarks->grade?->grade }}</span>
-                          </td>
-                          <td class="text-center text-adjust">
-                            <span>{{ $remarks->percentage }} %</span>
-                          </td>
-                          <td></td>
-                          {{-- @if(!$data['hasAllGradings'] && !$data['hasAllCategoryGradings']) --}}
-                          {{-- @endif --}}
+                          @if(!$data['hasAllGradings'] && !$data['hasAllCategoryGradings'])
+                            <td class="text-center text-adjust text-white" style="background: {{ $remarks->grade?->color }};">
+                              <span>{{ $remarks->grade?->grade }}</span>
+                            </td>
+                            <td class="text-center text-adjust">
+                              <span>{{ $remarks->percentage }} %</span>
+                            </td>
+                            <td class="text-center text-adjust">
+                              <span>{{ ($remarks->result != 'Fail') ? $student->rank : '--' }}</span>
+                            </td>
+                          @endif
                         @break
                       @endswitch
                     @endforeach
-                    {{-- @foreach($data['examSchedules'] as $examSchedule)
-                      @switch($examSchedule->type)
-                        @case('grade')
-                          <td>
-                            <select name="" class="grade-wrap">
-                              <option value="">Grade</option>
-                              @foreach($data['gradings'] as $grade)
-                                <option @selected($examSchedule->gradeRemarks->firstWhere('student_session_id', $student->student_session_id)?->grade_id == $grade->id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
-                              @endforeach
-                            </select>
-                          </td>
-                        @break
-                        @case('marks')
-                          <td>
-                            <input type="number" name="" min="0" max="{{ $examSchedule->marks }}" class="marks-wrap" value="{{ $examSchedule->remarks->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
-                          </td>
-                          <td class="text-center total-marks text-white" style="background: red;">
-                            <span>{{ $examSchedule->remarks->firstWhere('student_session_id', $student->student_session_id)->remarks ?? '0' }}</span>
-                          </td>
-                        @break
-                        @case('categories')
-                          @foreach($examSchedule->categories as $category)
-                            <td>
-                              @if($category->is_grade)
-                                <select name="" id="" class="grade-wrap">
-                                  <option value="">Grade</option>
-                                  @foreach($data['gradings'] as $grade)
-                                    <option @selected($category->gradeRemarks->firstWhere('student_session_id', $student->student_session_id)?->grade_id == $grade->id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
-                                  @endforeach
-                                </select>
-                              @else
-                                <input type="number" class="marks-wrap" max="{{ $category->marks }}" min="0" value="{{ $category->remarks->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
-                              @endif
-                            </td>
-                            @if($loop->last && !$examSchedule->has_all_category_gradings)
-                              <td class="text-center total-marks text-white">{{ $examSchedule->categories->pluck('remarks')->collapse()->where('student_session_id', $student->student_session_id)->sum('remarks') ?? '0' }}</td>
-                            @endif
-                          @endforeach
-                        @break
-                      @endswitch
-                    @endforeach --}}
                   </tr>
                 @empty
                   <tr>

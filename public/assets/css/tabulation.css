@@ -97,3 +97,7 @@
     font-size: 14px;
     vertical-align: middle !important;
 }
+
+.border-red {
+    border: 1px solid red !important;
+}

@@ -99,7 +99,7 @@ class TabulationService
      *
      * @return \Illuminate\Http\Response
      */    
-    public function getStudentRemarks($student, $examSchedules, $gradings, $hasAllGradings, $hasAllCategoryGradings)
+    public function getStudentRemarks(&$student, $examSchedules, $gradings, $hasAllGradings, $hasAllCategoryGradings)
     {
         $remarks = [];
         $student_session_id = $student->student_session_id;
@@ -113,6 +113,7 @@ class TabulationService
             if ($examSchedule->type == 'grade') {
                 $remark = $examSchedule->gradeRemarks->firstWhere('student_session_id', $student_session_id);
                 $grade = $gradings->firstWhere('id', $remark?->grade_id);
+                $student_is_fail = ($student_is_fail || !isset($grade->is_fail) || $grade->is_fail) ? true : false;
 
                 $remarks[] = (Object)[
                     'exam_schedule_id' => $examSchedule->id,
@@ -130,6 +131,7 @@ class TabulationService
                 $grand_obtain += $subject_obtain_marks;
                 $percentage = $this->getPercentage($total_marks, $subject_obtain_marks);
                 $grade = $this->getGradingByPercentage($percentage, $gradings);
+                $student_is_fail = ($student_is_fail || !isset($grade->is_fail) || $grade->is_fail) ? true : false;
 
                 $remarks[] = (Object)[
                     'exam_schedule_id' => $examSchedule->id,
@@ -180,6 +182,7 @@ class TabulationService
                 if (!$examSchedule->has_all_category_gradings) {
                     $percentage = $this->getPercentage($total_marks, $subject_obtain_marks);
                     $grade = $this->getGradingByPercentage($percentage, $gradings);
+                    $student_is_fail = ($student_is_fail || !isset($grade->is_fail) || $grade->is_fail) ? true : false;
 
                     $remarks[] = (Object)[
                         'type' => 'category_total',
@@ -195,7 +198,9 @@ class TabulationService
 
         $grand_remarks = [];
         $grand_remarks['type'] = 'grand_total';
+        $grand_remarks['student_session_id'] = $student_session_id;
         $grand_remarks['result'] = ($student_is_fail) ? 'Fail' : 'Pass';
+        $student->student_is_fail = $student_is_fail;
 
         // If the all exam schdules is not grading categories
         if (!$hasAllGradings && !$hasAllCategoryGradings) {
@@ -205,6 +210,7 @@ class TabulationService
             $grand_remarks['grand_obtain'] = $grand_obtain;
             $grand_remarks['grade'] = $grade;
             $grand_remarks['percentage'] = $percentage;
+            $student->grand_obtain = $grand_obtain;
         }
 
         $remarks[] = (Object)$grand_remarks;
@@ -217,14 +223,21 @@ class TabulationService
      */
     public function setRanking(&$students)
     {
-    	$grand_obtain = $students
-    		->pluck('remarks')
-    		->collapse()
-    		->where('type', 'grand_total')
-    		->pluck('grand_obtain')
-    		->toArray();
+        $rank = 1;
+        $previous_obtain = null;
+    	$students
+            ->where('student_is_fail', false) // Apply ranking on students whoose not fail
+            ->sortByDesc('grand_obtain')
+            ->map(function($student) use(&$rank, &$previous_obtain) {
+                if ($student->grand_obtain !== $previous_obtain) {
+                    $student->rank = $this->suffix($rank++);
+                    $previous_obtain = $student->grand_obtain;
+                } else {
+                    $student->rank = $this->suffix($rank - 1);
+                }
 
-		dd($rankings);
+                return $student;
+            });
     }
 
     /**
@@ -360,5 +373,40 @@ class TabulationService
                 return $grade;
             }    
         }
+    }
+
+    /**
+     * Number suffix
+     */
+    public function suffix($number)
+    {
+        if (!is_numeric($number)) {
+            return $number; // Return as is if it's not a number
+        }
+
+        $lastTwoDigits = $number % 100;
+
+        if ($lastTwoDigits >= 11 && $lastTwoDigits <= 13) {
+            $suffix = 'th';
+        } else {
+            $lastDigit = $number % 10;
+
+            switch ($lastDigit) {
+                case 1:
+                    $suffix = 'st';
+                    break;
+                case 2:
+                    $suffix = 'nd';
+                    break;
+                case 3:
+                    $suffix = 'rd';
+                    break;
+                default:
+                    $suffix = 'th';
+                    break;
+            }
+        }
+
+        return $number . $suffix;
     }
 }

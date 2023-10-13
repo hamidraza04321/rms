@@ -68,7 +68,7 @@ class GradeTableSeeder extends Seeder
         		'grade' => 'F',
         		'percentage_from' => '0',
         		'percentage_to' => '39.99',
-        		'color' => '#b21f2d',
+        		'color' => '#ff0018e3',
         		'is_default' => 1,
         		'is_fail' => 1
         	]
