@@ -76,6 +76,8 @@
                     @foreach($markslip->students as $student)
                       @php
                         $key = "{$student->section_id}-{$markslip->exam_schedule->subject_id}";
+                        $exam_date = date('Y-m-d', strtotime($markslip->exam_schedule->date));
+                        $attendance = $student->attendances?->firstWhere('attendance_date', $exam_date);
                       @endphp
                       <tr>
                         <td>{{ ++$loop->index }}</td>
@@ -84,17 +86,25 @@
                         @switch($markslip->exam_schedule->type)
                           @case('grade')
                             <td>
-                              <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grades][{{ $markslip->exam_schedule->id }}]" class="form-control grade">
-                                <option value="">Grade</option>
-                                @foreach($markslip->grades as $grade)
-                                  <option @selected($grade->id == $markslip->exam_schedule?->gradeRemarks?->firstWhere('student_session_id', $student->student_session_id)?->grade_id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
-                                @endforeach
-                              </select>
+                              @if(!$attendance?->is_absent)
+                                <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grades][{{ $markslip->exam_schedule->id }}]" class="form-control grade">
+                                  <option value="">Grade</option>
+                                  @foreach($markslip->grades as $grade)
+                                    <option @selected($grade->id == $markslip->exam_schedule?->gradeRemarks?->firstWhere('student_session_id', $student->student_session_id)?->grade_id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
+                                  @endforeach
+                                </select>
+                              @else
+                                <span style="color: {{ $attendance->color }};">{{ $attendance->name }}</span>
+                              @endif
                             </td>
                           @break
                           @case('marks')
                             <td>
-                              <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks" value="{{ $markslip->exam_schedule?->remarks?->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
+                              @if(!$attendance?->is_absent)
+                                <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][marks][{{ $markslip->exam_schedule->id }}]" min="0" max="{{ $markslip->exam_schedule->marks }}" class="form-control obtain-marks" placeholder="Enter Obtain Marks" value="{{ $markslip->exam_schedule?->remarks?->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
+                              @else
+                                <span style="color: {{ $attendance->color }};">{{ $attendance->name }}</span>
+                              @endif
                             </td>
                             <td>
                               <span class="total-obtain-marks">
@@ -106,15 +116,19 @@
                           @case('categories')
                             @foreach($markslip->exam_schedule->categories as $category)
                               <td>
-                                @if($category->is_grade)
-                                  <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grading_categories][{{ $category->id }}]" class="form-control grade">
-                                    <option value="">Grade</option>
-                                    @foreach($markslip->grades as $grade)
-                                      <option @selected($grade->id == $category->gradeRemarks?->firstWhere('student_session_id', $student->student_session_id)?->grade_id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
-                                    @endforeach
-                                  </select>
+                                @if(!$attendance?->is_absent)
+                                  @if($category->is_grade)
+                                    <select name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][grading_categories][{{ $category->id }}]" class="form-control grade">
+                                      <option value="">Grade</option>
+                                      @foreach($markslip->grades as $grade)
+                                        <option @selected($grade->id == $category->gradeRemarks?->firstWhere('student_session_id', $student->student_session_id)?->grade_id) value="{{ $grade->id }}">{{ $grade->grade }}</option>
+                                      @endforeach
+                                    </select>
+                                  @else
+                                    <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks" value="{{ $category->remarks?->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
+                                  @endif
                                 @else
-                                  <input type="number" name="student_remarks[{{ $key }}][{{ $student->student_session_id }}][categories][{{ $category->id }}]" min="0" max="{{ $category->marks }}" class="form-control obtain-marks" placeholder="Enter Marks" value="{{ $category->remarks?->firstWhere('student_session_id', $student->student_session_id)?->remarks }}">
+                                  <span style="color: {{ $attendance->color }};">{{ $attendance->name }}</span>
                                 @endif
                               </td>
                               @if($loop->last && $markslip->exam_schedule->categories->firstWhere('is_grade', 0))

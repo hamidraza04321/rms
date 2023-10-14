@@ -48,7 +48,7 @@
                             class="form-check-input attendance"
                             value="{{ $attendance_status->id }}"
                             data-id="{{ $attendance_status->id }}"
-                            style="accent-color: {{ $attendance_status->color; }};"
+                            style="accent-color: {{ $attendance_status->color }};"
                             @checked($student_session->attendance_status_id == $attendance_status->id)
                           >
                           <label class="form-check-label mr-3 cursor-pointer" for="attendance-{{ "{$student_session->id}-{$attendance_status->id}" }}">{{ $attendance_status->name }}</label>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('short_code');
             $table->string('color');
-            $table->boolean('show_in_result_card')->default('0');
+            $table->boolean('is_absent')->default('0');
             $table->boolean('is_active')->default('1');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

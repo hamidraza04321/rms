@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\Grade;
 use App\Models\StudentSession;
 use App\Models\ExamClass;
+use App\Models\Group;
 
 class TabulationService 
 {
@@ -62,6 +63,7 @@ class TabulationService
                 'session_id' => $request->session_id,
                 'section_id' => $request->section_id
             ])
+            ->when($request->group_id, fn($query) => $query->where('group_id', $request->group_id))
             ->with('student', fn($query) =>  $query->select('id', 'roll_no', 'first_name', 'last_name'))
             ->get([
                 'id',

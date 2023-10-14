@@ -29,7 +29,7 @@ class AttendanceStatus extends Model
         'name',
         'short_code',
         'color',
-        'show_in_result_card',
+        'is_absent',
         'is_active',
     	'created_by',
     	'updated_by'

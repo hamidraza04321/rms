@@ -20,25 +20,25 @@ class AttendanceStatusTableSeeder extends Seeder
         		'name' => 'Present',
                 'short_code'=> 'P',
         		'color'=> '#28a745',
-        		'show_in_result_card' => 0
+        		'is_absent' => 0
         	],
         	[
         		'name' => 'Absent',
         		'short_code'=> 'A',
                 'color'=> '#dc3545',
-        		'show_in_result_card' => 1
+        		'is_absent' => 1
         	],
         	[
         		'name' => 'Leave',
         		'short_code'=> 'L',
                 'color'=> '#b48700',
-        		'show_in_result_card' => 0
+        		'is_absent' => 0
         	],
         	[
         		'name' => 'Holiday',
         		'short_code'=> 'H',
                 'color'=> '#007bff',
-        		'show_in_result_card' => 0
+        		'is_absent' => 0
         	]
         ];
 

@@ -97,7 +97,7 @@ class AttendanceStatusController extends Controller
 
         if ($attendance_status) {
             $data = $request->validated();
-            $data['show_in_result_card'] = $request->show_in_result_card;
+            $data['is_absent'] = $request->is_absent;
             $attendance_status->update($data);
             return response()->successMessage('Attendance Status Updated Successfully!');
         }

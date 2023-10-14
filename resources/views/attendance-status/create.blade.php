@@ -43,10 +43,9 @@
                     <input type="color" name="color" id="color" class="form-control" value="#2ea4ff">
                   </div>
                   <div class="form-group">
-                    <p><strong>Note :</strong> The attendance mark in exam days status of the attendance will be show in result card.</p>
                     <div class="form-check">
-                      <input class="form-check-input" name="show_in_result_card" id="show-in-result-card" type="checkbox" value="1">
-                      <label class="form-check-label" for="show-in-result-card">Show in result card</label>
+                      <input class="form-check-input" name="is_absent" id="is-absent" type="checkbox" value="1">
+                      <label class="form-check-label" for="is-absent">Absent Status</label>
                     </div>
                   </div>
                   <button class="btn btn-success" id="btn-save-attendance-status">Save</button>

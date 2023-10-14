@@ -59,12 +59,12 @@ class MarkAttendanceController extends Controller
     		->with([
     			'student',
     			'attendances' => function($query) use($request) {
-    				$query->where('attendance_date', $request->attendance_date);
+    				$query->where('attendance_date', date('Y-m-d', strtotime($request->attendance_date)));
     			}
     		])
     		->get()
             ->map(function($student_session){
-                $student_session['attendance_status_id'] = $student_session->attendances[0]->attendance_status_id ?? null;
+                $student_session->attendance_status_id = $student_session->attendances[0]->attendance_status_id ?? null;
                 return $student_session;
             });
 

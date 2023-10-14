@@ -10,6 +10,7 @@ use App\Models\ExamClass;
 use App\Models\Session;
 use App\Models\ClassSubject;
 use App\Models\Subject;
+use DB;
 
 class ExamScheduleController extends Controller
 {
@@ -82,63 +83,67 @@ class ExamScheduleController extends Controller
 
         // Store Creatings Exam Schedule Categories
         $creating_categories = [];
-        foreach ($request->exam_schedule as $subject_id => $exam_schedule) {
 
-            // If subject not exists
-            $subject = $subjects->where('id', $subject_id);
-            if ($subject->isEmpty()) {
-                continue;
-            }
+        DB::transaction(function() use($request, $subjects, $exam_class_id, &$creating_categories) {
 
-            $schedule = ExamSchedule::updateOrCreate(
-                [
-                    'exam_class_id' => $exam_class_id,
-                    'subject_id' => $subject_id
-                ], [
-                    'date' => date('Y-m-d', strtotime($exam_schedule['date'])),
-                    'type' => $exam_schedule['type'],
-                    'marks' => ($exam_schedule['type'] == 'marks') ? $exam_schedule['marks'] : null
-                ]);
+            foreach ($request->exam_schedule as $subject_id => $exam_schedule) {
 
-            if ($exam_schedule['type'] == 'categories') {
-                $categories = $schedule->categories;
-                $undelete_category_ids = [];
-
-                foreach ($exam_schedule['categories'] as $categoryKey => $category) {
-                    $data = [
-                        'exam_schedule_id' => $schedule->id,
-                        'name' => $category['name'],
-                        'marks' => (isset($category['marks'])) ? $category['marks'] : null,
-                        'is_grade' => isset($category['is_grade']) ? 1 : 0
-                    ];
-
-                    // If Category Id exists update it
-                    if (isset($category['category_id'])) {
-                        $update_category = $categories->where('id', $category['category_id'])->first();
-                        $update_category->update($data);
-                        $undelete_category_ids[] = $update_category->id;
-                        continue;
-                    }
-                    
-                    // When category_id key not exists create category
-                    $create_category = ExamScheduleCategory::create($data);
-                    $undelete_category_ids[] = $create_category->id;
-                    $creating_categories[] = [
-                        'category_id' => $create_category->id,
-                        'key' => $categoryKey,
-                        'subject_id' => $subject_id 
-                    ];
+                // If subject not exists
+                $subject = $subjects->where('id', $subject_id);
+                if ($subject->isEmpty()) {
+                    continue;
                 }
 
-                $categories->whereNotIn('id', $undelete_category_ids)->each->delete();
-                continue;
-            }
+                $schedule = ExamSchedule::updateOrCreate(
+                    [
+                        'exam_class_id' => $exam_class_id,
+                        'subject_id' => $subject_id
+                    ], [
+                        'date' => date('Y-m-d', strtotime($exam_schedule['date'])),
+                        'type' => $exam_schedule['type'],
+                        'marks' => ($exam_schedule['type'] == 'marks') ? $exam_schedule['marks'] : null
+                    ]);
 
-            // Delete previous saved catgories
-            if ($schedule->categories()) {
-                $schedule->categories()->delete();
+                if ($exam_schedule['type'] == 'categories') {
+                    $categories = $schedule->categories;
+                    $undelete_category_ids = [];
+
+                    foreach ($exam_schedule['categories'] as $categoryKey => $category) {
+                        $data = [
+                            'exam_schedule_id' => $schedule->id,
+                            'name' => $category['name'],
+                            'marks' => (isset($category['marks'])) ? $category['marks'] : null,
+                            'is_grade' => isset($category['is_grade']) ? 1 : 0
+                        ];
+
+                        // If Category Id exists update it
+                        if (isset($category['category_id'])) {
+                            $update_category = $categories->where('id', $category['category_id'])->first();
+                            $update_category->update($data);
+                            $undelete_category_ids[] = $update_category->id;
+                            continue;
+                        }
+                        
+                        // When category_id key not exists create category
+                        $create_category = ExamScheduleCategory::create($data);
+                        $undelete_category_ids[] = $create_category->id;
+                        $creating_categories[] = [
+                            'category_id' => $create_category->id,
+                            'key' => $categoryKey,
+                            'subject_id' => $subject_id 
+                        ];
+                    }
+
+                    $categories->whereNotIn('id', $undelete_category_ids)->each->delete();
+                    continue;
+                }
+
+                // Delete previous saved catgories
+                if ($schedule->categories()) {
+                    $schedule->categories()->delete();
+                }
             }
-        }
+        });
 
         return response()->success([
             'creating_categories' => $creating_categories,

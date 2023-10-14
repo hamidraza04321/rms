@@ -43,10 +43,9 @@
                     <input type="color" name="color" id="color" class="form-control" value="{{ $data['attendance_status']->color }}">
                   </div>
                   <div class="form-group">
-                    <p>The attendance mark in exam days status of the attendance will be show in result card.</p>
                     <div class="form-check">
-                      <input name="show_in_result_card" @checked($data['attendance_status']->show_in_result_card) class="form-check-input" id="show-in-result-card" type="checkbox" value="1">
-                      <label class="form-check-label" for="show-in-result-card">Show in result card</label>
+                      <input name="is_absent" @checked($data['attendance_status']->is_absent) class="form-check-input" id="is-absent" type="checkbox" value="1">
+                      <label class="form-check-label" for="is-absent">Absent Status</label>
                     </div>
                   </div>
                   <button class="btn btn-success" id="btn-update-attendance-status">Update</button>

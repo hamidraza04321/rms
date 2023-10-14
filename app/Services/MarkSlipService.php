@@ -37,51 +37,54 @@ class MarkSlipService
             $class->grades = Grade::withoutGlobalScopes()->where('is_default', 1)->get();
         }
 
-        // Get Student according to group by section key
-		$students = $this->getStudents($request);
-
         // Get exam schedules of class
         $exam_schedules = $this->getExamSchedules($request);
 
-        // Check if exam schedule exists
+        if (is_null($exam_schedules)) {
+            return $markslips;
+        }
 
-        if (count($exam_schedules)) {
-            // Loop in subject
-            foreach ($subjects as $subject) {
-                // Loop in sections
-                foreach ($sections as $section) {
-                    // Check if the student exists in section by thier key in group by
-                    if (!isset($students[$section->id])) {
-                        continue;
-                    }
+        // Pluck exam dates for attendance
+        $exam_dates = $exam_schedules->pluck('date')->toArray();
 
-                    // Get new stdClass
-                    $markslip = new \stdClass;
-                    
-                    // Filter from collection
-                    $section = $sections->firstWhere('id', $section->id);
-                    $subject = $subjects->firstWhere('id', $subject->id);
+        // Get Student according to group by section key
+        $students = $this->getStudents($request, $exam_dates);
 
-                    // Store Names
-                    $markslip->session = $exam->session->name;
-                    $markslip->exam = $exam->name;
-                    $markslip->class = $class->name;
-                    $markslip->section = $section->name;
-                    $markslip->subject = $subject->name;
-                    $markslip->group = $group->name ?? '---';
-
-                    // Class Gradeings
-                    $markslip->grades = $class->grades;
-
-                    // Get student by section key from collecion
-                    $markslip->students = $students[$section->id];
-
-                    // Exam Schedule by subject filter from exam schedules
-                    $markslip->exam_schedule = $exam_schedules->firstWhere('subject_id', $subject->id);
-
-                    // Push in to collection
-                    $markslips[] = $markslip;
+        // Loop in subject
+        foreach ($subjects as $subject) {
+            // Loop in sections
+            foreach ($sections as $section) {
+                // Check if the student exists in section by thier key in group by
+                if (!isset($students[$section->id])) {
+                    continue;
                 }
+
+                // Get new stdClass
+                $markslip = new \stdClass;
+                
+                // Filter from collection
+                $section = $sections->firstWhere('id', $section->id);
+                $subject = $subjects->firstWhere('id', $subject->id);
+
+                // Store Names
+                $markslip->session = $exam->session->name;
+                $markslip->exam = $exam->name;
+                $markslip->class = $class->name;
+                $markslip->section = $section->name;
+                $markslip->subject = $subject->name;
+                $markslip->group = $group->name ?? '---';
+
+                // Class Gradeings
+                $markslip->grades = $class->grades;
+
+                // Get student by section key from collecion
+                $markslip->students = $students[$section->id];
+
+                // Exam Schedule by subject filter from exam schedules
+                $markslip->exam_schedule = $exam_schedules->firstWhere('subject_id', $subject->id);
+
+                // Push in to collection
+                $markslips[] = $markslip;
             }
         }
 
@@ -93,12 +96,14 @@ class MarkSlipService
      *
      * @return \Illuminate\Http\Response
      */ 
-	public function getStudents($request)
+	public function getStudents($request, $exam_dates)
 	{
 		$where = [
 			'class_id' => $request->class_id,
             'session_id' => $request->session_id
 		];
+
+        if ($request->group_id) $where['group_id'] = $request->group_id;
 
 		// Get students by group by section
 		$students = StudentSession::where($where)
@@ -106,6 +111,12 @@ class MarkSlipService
             ->with([
                 'student' => function($query) {
                     $query->select('id', 'roll_no', 'first_name', 'last_name');
+                },
+                'attendances' => function($query) use($exam_dates) {
+                    $query
+                        ->select('id', 'student_session_id', 'attendance_status_id', 'attendance_date')
+                        ->with('attendanceStatus')
+                        ->whereIn('attendance_date', $exam_dates);
                 }
             ])
             ->get([
@@ -113,9 +124,10 @@ class MarkSlipService
                 'student_id',
                 'section_id'
             ])
-            ->map(function($student_session){
+            ->map(function($student_session) {
                 $student_session->student->section_id = $student_session->section_id;
-            	$student_session->student->student_session_id = $student_session->id;
+                $student_session->student->student_session_id = $student_session->id;
+            	$student_session->student->attendances = $this->arrangeAttendance($student_session);
             	return $student_session;
             })
             ->pluck('student')
@@ -123,6 +135,22 @@ class MarkSlipService
 
         return $students;
 	}
+
+    /**
+     * Arrange Attendance.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
+    public function arrangeAttendance($student_session)
+    {
+        return $student_session->attendances
+            ->map(function($attendance) {
+                $attendance->is_absent = $attendance->attendanceStatus->is_absent;
+                $attendance->color = $attendance->attendanceStatus->color;
+                $attendance->name = $attendance->attendanceStatus->name;
+                return $attendance;
+            });
+    }
 
     /**
      * Get exam schedules of class subjects.
@@ -161,7 +189,7 @@ class MarkSlipService
                 }
             ])
             ->first()
-            ->examSchedule;
+            ?->examSchedule;
 
         return $exam_schedules;
     }
