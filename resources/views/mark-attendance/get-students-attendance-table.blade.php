@@ -4,7 +4,9 @@
       <div class="card-header">
         <div class="card-title"><i class="fa fa-users"></i> Students List</div>
         <div class="card-tools">
-          <button class="btn btn-success btn-save-attendance">Save Attendance</button>
+          @if($data['student_session']->isNotEmpty())
+            <button class="btn btn-success btn-save-attendance">Save Attendance</button>
+          @endif
         </div>
       </div>
       <div class="card-body">
@@ -58,7 +60,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td class="text-center" colspan="{{ count($data['attendance_statuses']) + 2 }}">No Record Found!</td>
+                    <td class="text-center" colspan="{{ count($data['attendance_statuses']) + 2 }}">No Students Found!</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -66,9 +68,11 @@
           </div>
         </form>
       </div>
-      <div class="card-footer text-right">
-        <button class="btn btn-success btn-save-attendance">Save Attendance</button>
-      </div>
+      @if($data['student_session']->isNotEmpty())
+        <div class="card-footer text-right">
+          <button class="btn btn-success btn-save-attendance">Save Attendance</button>
+        </div>
+      @endif
       <!-- /.card-body -->
     </div>
     <!-- /.card -->

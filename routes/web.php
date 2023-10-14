@@ -133,6 +133,7 @@ Route::middleware('auth')->group(function () {
 	//---------- MAKR SLIP ROUTES ----------//
 	Route::resource('/markslip', MarkSlipController::class, ['except' => ['show', 'store', 'update']]);
 	Route::controller(MarkSlipController::class)->group(function(){
+		Route::get('/markslip/{id}/print', 'print')->name('markslip.print');
 		Route::get('/markslip/search', 'search')->name('search.markslip');
 		Route::get('/markslip/get-markslip', 'getMarkSlip')->name('get.markslip');
 		Route::post('/markslip/save', 'save')->name('save.markslip');

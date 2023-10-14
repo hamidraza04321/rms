@@ -37,7 +37,18 @@
                   <div class="card-body">
                     <form action="{{ route('get.students.attendance.table') }}" id="get-students-attendane-form">
                       <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Session <span class="error">*</span></label>
+                            <select name="session_id" id="session-id" class="select2 form-control">
+                              <option value="">Select</option>
+                              @foreach($data['sessions'] as $session)
+                                <option @selected($settings->current_session_id == $session->id) value="{{ $session->id }}">{{ $session->name }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Class <span class="error">*</span></label>
                             <select name="class_id" id="class-id" class="select2 form-control">
@@ -48,7 +59,7 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Section <span class="error">*</span></label>
                             <select name="section_id" id="section-id" disabled class="select2 form-control">
@@ -56,7 +67,9 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Group </label>
                             <select name="group_id" id="group-id" disabled class="select2 form-control">
@@ -64,7 +77,7 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                         	<label>Date <span class="error">*</span></label>
                           <input type="text" name="attendance_date" id="attendance-date" class="form-control date-picker" placeholder="Enter Date">
                         </div>

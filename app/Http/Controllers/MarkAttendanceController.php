@@ -7,6 +7,7 @@ use App\Models\StudentAttendance;
 use App\Models\AttendanceStatus;
 use App\Models\StudentSession;
 use App\Models\Classes;
+use App\Models\Session;
 
 class MarkAttendanceController extends Controller
 {
@@ -29,9 +30,11 @@ class MarkAttendanceController extends Controller
      */
     public function index()
     {
+        $sessions = Session::get();
     	$classes = Classes::get();
 
     	$data = [
+            'sessions' => $sessions,
     		'classes' => $classes,
     		'page_title' => 'Mark Attendance',
             'menu' => 'Attendance'
@@ -52,7 +55,6 @@ class MarkAttendanceController extends Controller
 
     	// Get Students According to request parameters
         $where = $request->safe()->except('attendance_date');
-        $where['session_id'] = $this->current_session_id;
 
         // Get students from Student Session
     	$student_session = StudentSession::where($where)

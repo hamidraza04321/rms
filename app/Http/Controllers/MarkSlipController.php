@@ -118,17 +118,8 @@ class MarkSlipController extends Controller
      */    
     public function getMarkSlip(MarkSlipRequest $request)
     {
-        $markslips = (new MarkSlipService)->getMarkSlips($request);
-
-        if (!count($markslips)) {
-            $class = Classes::find($request->class_id);
-            return response()->errorMessage("The exam schedule for class ( $class->name ) is not prepared !");
-        }
-
-        $view = view('markslip.get-markslip', compact('markslips'))->render();
-        return response()->success([
-            'view' => $view
-        ]);
+        $view = (new MarkSlipService)->getMarkSlipView($request);
+        return response()->success([ 'view' => $view ]);
     }
 
     /**
@@ -167,9 +158,7 @@ class MarkSlipController extends Controller
         $ids->group_id = $markslip->examClass->group_id;
         $ids->section_id = [ $markslip->section_id ];
         $ids->subject_id = [ $markslip->subject_id ];
-
-        $markslips = (new MarkSlipService)->getMarkSlips($ids);
-        $markslip = view('markslip.get-markslip', compact('markslips'))->render();
+        $markslip = (new MarkSlipService)->getMarkSlipView($ids);
 
         $data = [
             'markslip' => $markslip,
@@ -178,6 +167,34 @@ class MarkSlipController extends Controller
         ];
 
         return view('markslip.edit', compact('data'));
+    }
+
+    /**
+     * Print markslip
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function print($id)
+    {
+        $markslip = MarkSlip::with('examClass.exam')->findOrFail($id);
+
+        $ids = new \stdClass;
+        $ids->session_id = $markslip->examClass->exam->session_id;
+        $ids->exam_id = $markslip->examClass->exam_id;
+        $ids->class_id = $markslip->examClass->class_id;
+        $ids->group_id = $markslip->examClass->group_id;
+        $ids->section_id = [ $markslip->section_id ];
+        $ids->subject_id = [ $markslip->subject_id ];
+        $markslip = (new MarkSlipService)->getMarkSlipView($ids);
+
+        $data = [
+            'markslip' => $markslip,
+            'page_title' => 'Edit Mark Slip',
+            'menu' => 'Mark Slip'
+        ];
+
+        return view('markslip.print', compact('data'));
     }
 
     /**

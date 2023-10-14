@@ -17,11 +17,11 @@ use App\Models\ExamRemarks;
 class MarkSlipService
 {
 	/**
-     * Get markslips.
+     * Get markslips view
      *
      * @return \Illuminate\Http\Response
      */
-	public function getMarkSlips($request)
+	public function getMarkSlipView($request)
 	{
         // Store marslips
         $markslips = [];
@@ -40,12 +40,8 @@ class MarkSlipService
         // Get exam schedules of class
         $exam_schedules = $this->getExamSchedules($request);
 
-        if (is_null($exam_schedules)) {
-            return $markslips;
-        }
-
         // Pluck exam dates for attendance
-        $exam_dates = $exam_schedules->pluck('date')->toArray();
+        $exam_dates = $exam_schedules?->pluck('date')->toArray() ?? [];
 
         // Get Student according to group by section key
         $students = $this->getStudents($request, $exam_dates);
@@ -88,7 +84,13 @@ class MarkSlipService
             }
         }
 
-        return $markslips;
+        $data = [
+            'markslips' => $markslips,
+            'class' => $class,
+            'has_all_students_absent' => $this->checkHasAllStudentsAbsent($markslips)
+        ];
+
+        return view('markslip.get-markslip', compact('data'))->render();
 	}
 
 	/**
@@ -150,6 +152,35 @@ class MarkSlipService
                 $attendance->name = $attendance->attendanceStatus->name;
                 return $attendance;
             });
+    }
+
+    /**
+     * Check has all students are absent in markslips
+     *
+     * @return bool
+     */
+    public function checkHasAllStudentsAbsent($markslips)
+    {
+        if (!count($markslips)) {
+            return false;
+        }
+
+        $absenties_markslips = [];
+        
+        foreach ($markslips as $markslip) {
+            $students_count = $markslip->students->count();
+            $exam_date = date('Y-m-d', strtotime($markslip->exam_schedule->date));
+            
+            $absent_students_count = $markslip->students
+                ->filter(function($student) use($exam_date) {
+                    return $student->attendances?->firstWhere('attendance_date', $exam_date)?->is_absent;
+                })
+                ->count();
+
+            $absenties_markslips[] = ($students_count == $absent_students_count) ? true : false;
+        }
+
+        return in_array(true, $absenties_markslips) && !in_array(false, $absenties_markslips);
     }
 
     /**

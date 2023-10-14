@@ -42,6 +42,7 @@ class MarkAttendanceRequest extends FormRequest
     public function getStudentsAttendanceTable()
     {
         return [
+            'session_id' => $this->sessionRule(),
             'class_id' => $this->classRule(),
             'section_id' => $this->sectionRule($this->class_id),
             'group_id' => $this->groupRule($this->class_id),

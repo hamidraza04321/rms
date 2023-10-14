@@ -143,6 +143,9 @@
                             @can('edit-markslip')
                               <a href="{{ route('markslip.edit', $markslip->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                             @endcan
+                            @can('print-markslip')
+                              <a target="_blank" href="{{ route('markslip.print', $markslip->id) }}" class="btn btn-sm btn-warning text-white"><i class="fa fa-print"></i> Print</a>
+                            @endcan
                             @can('delete-markslip')
                               <button class="btn btn-sm btn-danger btn-destroy-markslip" data-url="{{ route('markslip.destroy', $markslip->id) }}"><i class="fa fa-trash"> Delete</i></button>
                             @endcan
