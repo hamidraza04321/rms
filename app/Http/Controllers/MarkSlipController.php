@@ -16,6 +16,17 @@ use DB;
 
 class MarkSlipController extends Controller
 {
+    function __construct()
+    {
+        parent::__construct();
+        $this->middleware('permission:view-mark-slip', [ 'only' => [ 'index', 'search' ] ]);
+        $this->middleware('permission:create-mark-slip', [ 'only' => [ 'create', 'getMarkSlip', 'save' ]]);
+        $this->middleware('permission:edit-mark-slip', [ 'only' => [ 'edit', 'save' ]]);
+        $this->middleware('permission:print-mark-slip', [ 'only' => [ 'print' ]]);
+        $this->middleware('permission:delete-mark-slip', [ 'only' => [ 'destroy' ]]);
+        $this->middleware('permission:tabulation-sheet', [ 'only' => [ 'tabulation', 'getTabulationSheet' ]]);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -265,6 +265,10 @@ $(document).ready(function() {
             section_id = $('#section-id').val();
             group_id = $('#group-id').val();
             subject_id = $('#subject-id').val();
+            can_edit = $('#edit-permission').val() == 'true' ? true : false;
+            can_print = $('#print-permission').val() == 'true' ? true : false;
+            can_delete = $('#delete-permission').val() == 'true' ? true : false;
+            visible_action = (can_edit || can_print || can_delete) ? true : false;
 
         // Button Loading
         self.addClass('disabled').html('<div class="spinner-border"></div>');
@@ -302,12 +306,14 @@ $(document).ready(function() {
                     }
                 },
                 {
+                    "visible": visible_action,
                     "targets": 6,
                     "render": function (data) {
-                        var btn_edit = ($('#edit-permission').val() == 'true') ? `<a href="${base_url}/markslip/${data.id}/edit" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> ` : ``;
-                            btn_delete = ($('#delete-permission').val() == 'true') ? ` <button class="btn btn-sm btn-danger btn-destroy-markslip" data-url="${base_url}/markslip/${data.id}"><i class="fa fa-trash"> Delete</i></button>` : ``;
+                        var btn_edit = can_edit ? `<a href="${base_url}/markslip/${data.id}/edit" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> ` : ``;
+                            btn_print = can_print ? ` <a target="_blank" href="${base_url}/markslip/${data.id}/print" class="btn btn-sm btn-warning text-white"><i class="fa fa-print"></i> Print</a> ` : ``;
+                            btn_delete = can_delete ? ` <button class="btn btn-sm btn-danger btn-destroy-markslip" data-url="${base_url}/markslip/${data.id}"><i class="fa fa-trash"> Delete</i></button>` : ``;
 
-                        return btn_edit + btn_delete;
+                        return btn_edit + btn_print + btn_delete;
                     }
                 }
             ],

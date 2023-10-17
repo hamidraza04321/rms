@@ -117,7 +117,15 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'view-exam-schedule' ],
             [ 'name' => 'create-exam-schedule' ],
             [ 'name' => 'edit-exam-schedule' ],
-            [ 'name' => 'delete-exam-schedule' ]
+            [ 'name' => 'delete-exam-schedule' ],
+
+            // MARK SLIP
+            [ 'name' => 'view-mark-slip' ],
+            [ 'name' => 'create-mark-slip' ],
+            [ 'name' => 'edit-mark-slip' ],
+            [ 'name' => 'delete-mark-slip' ],
+            [ 'name' => 'print-mark-slip' ],
+            [ 'name' => 'tabulation-sheet' ]
         ];
 
         // TIMESTAMPS

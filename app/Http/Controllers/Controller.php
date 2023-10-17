@@ -10,10 +10,10 @@ use App\Settings\GeneralSettings;
 
 class Controller extends BaseController
 {
+	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
 	public function __construct()
 	{
 		$this->current_session_id = (new GeneralSettings)->current_session_id;
 	}
-
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

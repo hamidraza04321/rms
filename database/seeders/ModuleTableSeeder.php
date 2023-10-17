@@ -59,6 +59,10 @@ class ModuleTableSeeder extends Seeder
             [
                 'name' => 'Exam Schedule',
                 'order_level' => 10
+            ],
+            [
+                'name' => 'Mark Slip',
+                'order_level' => 12
             ]
         ];
 

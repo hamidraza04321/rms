@@ -111,7 +111,7 @@
               <div class="card-header">
                 <div class="card-title"><i class="fas fa-paste"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  @can('create-markslip')
+                  @can('create-mark-slip')
                     <a href="{{ route('markslip.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Markslip</a>
                   @endcan
                 </div>
@@ -127,7 +127,11 @@
                         <th>Section</th>
                         <th>Group</th>
                         <th>Subject</th>
-                        <th>Action</th>
+                        @canany([ 'edit-mark-slip', 'print-mark-slip', 'delete-mark-slip' ])
+                          <th>Action</th>
+                        @else
+                          <th data-visible="false">Action</th>
+                        @endcanany
                       </tr>
                     </thead>
                     <tbody>
@@ -140,13 +144,13 @@
                           <td>{{ $markslip->examClass->group->name ?? '-' }}</td>
                           <td>{{ $markslip->subject->name }}</td>
                           <td>
-                            @can('edit-markslip')
+                            @can('edit-mark-slip')
                               <a href="{{ route('markslip.edit', $markslip->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                             @endcan
-                            @can('print-markslip')
+                            @can('print-mark-slip')
                               <a target="_blank" href="{{ route('markslip.print', $markslip->id) }}" class="btn btn-sm btn-warning text-white"><i class="fa fa-print"></i> Print</a>
                             @endcan
-                            @can('delete-markslip')
+                            @can('delete-mark-slip')
                               <button class="btn btn-sm btn-danger btn-destroy-markslip" data-url="{{ route('markslip.destroy', $markslip->id) }}"><i class="fa fa-trash"> Delete</i></button>
                             @endcan
                           </td>
@@ -169,8 +173,9 @@
     <!-- /.content-header -->
    </div>
   <!-- Permissions -->
-  <input type="hidden" id="edit-permission" @can('edit-markslip') value="true" @endcan>
-  <input type="hidden" id="delete-permission" @can('delete-markslip') value="true" @endcan>
+  <input type="hidden" id="edit-permission" @can('edit-mark-slip') value="true" @endcan>
+  <input type="hidden" id="delete-permission" @can('delete-mark-slip') value="true" @endcan>
+  <input type="hidden" id="print-permission" @can('delete-mark-slip') value="true" @endcan>
 @endsection
 @section('scripts')
 <script src="{{ url('/assets/js/markslip.js') }}"></script>

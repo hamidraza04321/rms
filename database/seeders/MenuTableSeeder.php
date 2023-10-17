@@ -368,6 +368,33 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 11,
 	        	'name' => 'Delete',
 	        	'permission' => 'delete-exam-schedule'
+	        ],
+
+	        // MARK SLIP MODULE
+	        [
+	        	'module_id' => 12,
+	        	'name' => 'View',
+	        	'permission' => 'view-mark-slip'
+	        ], [
+	        	'module_id' => 12,
+	        	'name' => 'Create',
+	        	'permission' => 'create-mark-slip'
+	        ], [
+	        	'module_id' => 12,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-mark-slip'
+	        ], [
+	        	'module_id' => 12,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-mark-slip'
+	        ], [
+	        	'module_id' => 12,
+	        	'name' => 'Print',
+	        	'permission' => 'print-mark-slip'
+	        ], [
+	        	'module_id' => 12,
+	        	'name' => 'Tabulation Sheet',
+	        	'permission' => 'tabulation-sheet'
 	        ]
     	];
 
