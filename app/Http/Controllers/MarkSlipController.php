@@ -186,12 +186,11 @@ class MarkSlipController extends Controller
         $ids->group_id = $markslip->examClass->group_id;
         $ids->section_id = [ $markslip->section_id ];
         $ids->subject_id = [ $markslip->subject_id ];
-        $markslip = (new MarkSlipService)->getMarkSlipView($ids);
+        $markslip = (new MarkSlipService)->getMarkSlipView($ids, false)[0];
 
         $data = [
             'markslip' => $markslip,
-            'page_title' => 'Edit Mark Slip',
-            'menu' => 'Mark Slip'
+            'page_title' => 'Print Mark Slip'
         ];
 
         return view('markslip.print', compact('data'));

@@ -43,3 +43,11 @@
 .bg-light-blue {
     background: lightblue;
 }
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.text-bottom {
+    vertical-align: bottom !important;
+}

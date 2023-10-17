@@ -19,9 +19,11 @@ class MarkSlipService
 	/**
      * Get markslips view
      *
+     * @param $request
+     * @param $render  bool
      * @return \Illuminate\Http\Response
      */
-	public function getMarkSlipView($request)
+	public function getMarkSlipView($request, $render = true)
 	{
         // Store marslips
         $markslips = [];
@@ -82,6 +84,10 @@ class MarkSlipService
                 // Push in to collection
                 $markslips[] = $markslip;
             }
+        }
+
+        if (!$render) {
+            return $markslips;
         }
 
         $data = [
