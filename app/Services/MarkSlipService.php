@@ -19,9 +19,8 @@ class MarkSlipService
 	/**
      * Get markslips view
      *
-     * @param $request
-     * @param $render  bool
-     * @return \Illuminate\Http\Response
+     * @param $request  array
+     * @param $render   bool
      */
 	public function getMarkSlipView($request, $render = true)
 	{
@@ -102,7 +101,8 @@ class MarkSlipService
 	/**
      * Get students by session, class, section.
      *
-     * @return \Illuminate\Http\Response
+     * @param $request     array
+     * @param $exam_dates  array
      */ 
 	public function getStudents($request, $exam_dates)
 	{
@@ -147,7 +147,7 @@ class MarkSlipService
     /**
      * Arrange Attendance.
      *
-     * @return \Illuminate\Http\Response
+     * @param $student_session  Object
      */ 
     public function arrangeAttendance($student_session)
     {
@@ -163,6 +163,7 @@ class MarkSlipService
     /**
      * Check has all students are absent in markslips
      *
+     * @param $markslips  array
      * @return bool
      */
     public function checkHasAllStudentsAbsent($markslips)
@@ -192,7 +193,7 @@ class MarkSlipService
     /**
      * Get exam schedules of class subjects.
      *
-     * @return \Illuminate\Http\Response
+     * @param $request  array
      */ 
     public function getExamSchedules($request)
     {
@@ -232,9 +233,9 @@ class MarkSlipService
     }
 
     /**
-     * Get exam schedules of class subjects.
+     * Save markslip remarks
      *
-     * @return \Illuminate\Http\Response
+     * @param $request  array
      */
     public function saveMarkSlip($request)
     {

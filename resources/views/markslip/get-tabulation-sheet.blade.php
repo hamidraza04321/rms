@@ -1,4 +1,4 @@
-@if($data['examSchedules'])
+@if($data['exam_schedules'])
   <div class="row">
     <div class="col-md-12">
       <div class="card card-primary card-outline">
@@ -55,10 +55,10 @@
                   <th>S No.</th>
                   <th>Roll No.</th>
                   <th>Student Name</th>
-                  @foreach($data['examSchedules'] as $examSchedule)
-                    <th class="text-center" @if($examSchedule->has_colspan) colspan="{{ $examSchedule->colspan }}" @endif>{{ $examSchedule->subject->name }}</th>
+                  @foreach($data['exam_schedules'] as $exam_schedule)
+                    <th class="text-center" @if($exam_schedule->has_colspan) colspan="{{ $exam_schedule->colspan }}" @endif>{{ $exam_schedule->subject->name }}</th>
                   @endforeach
-                  @if(!$data['hasAllGradings'])
+                  @if(!$data['has_all_gradings'])
                     <th></th>
                     <th></th>
                     <th></th>
@@ -67,13 +67,13 @@
                     <th>Result</th>
                   @endif
                 </tr>
-                @if(!$data['hasAllGradings'])
+                @if(!$data['has_all_gradings'])
                   <tr>
                     <th></th>
                     <th></th>
                     <th></th>
-                    @foreach($data['examSchedules'] as $examSchedule)
-                      @switch($examSchedule->type)
+                    @foreach($data['exam_schedules'] as $exam_schedule)
+                      @switch($exam_schedule->type)
                         @case('grade')
                           <th class="rotate text-center">Grade</th>
                         @break
@@ -82,9 +82,9 @@
                          <th class="rotate text-center">Total</th>
                         @break
                         @case('categories')
-                          @foreach($examSchedule->categories as $category)
+                          @foreach($exam_schedule->categories as $category)
                             <th class="rotate text-center">{{ $category->name }}</th>
-                            @if($loop->last && !$examSchedule->has_all_category_gradings)
+                            @if($loop->last && !$exam_schedule->has_all_category_gradings)
                               <th class="rotate text-center">Total</th>
                             @endif
                           @endforeach
@@ -97,31 +97,31 @@
                     <th class="rotate text-center">Percentage %</th>
                     <th class="rotate text-center">Rank</th>
                   </tr>
-                  @if(!$data['hasAllCategoryGradings'])
+                  @if(!$data['has_all_category_gradings'])
                     <tr>
                       <th></th>
                       <th></th>
                       <th></th>
-                      @foreach($data['examSchedules'] as $examSchedule)
-                        @switch($examSchedule->type)
+                      @foreach($data['exam_schedules'] as $exam_schedule)
+                        @switch($exam_schedule->type)
                           @case('grade')
                             <th></th>
                           @break
                           @case('marks')
-                            <th class="text-center">{{ $examSchedule->marks }}</th>
-                            <th class="text-center">{{ $examSchedule->marks }}</th>
+                            <th class="text-center">{{ $exam_schedule->marks }}</th>
+                            <th class="text-center">{{ $exam_schedule->marks }}</th>
                           @break
                           @case('categories')
-                            @foreach($examSchedule->categories as $category)
+                            @foreach($exam_schedule->categories as $category)
                               <th class="text-center">{{ ($category->is_grade) ? '' : $category->marks }}</th>
-                              @if($loop->last && !$examSchedule->has_all_category_gradings)
+                              @if($loop->last && !$exam_schedule->has_all_category_gradings)
                                 <th class="text-center">{{ $category->sum('marks') }}</th>
                               @endif
                             @endforeach
                           @break
                         @endswitch
                       @endforeach
-                      <th>{{ $data['examSchedules']->sum('total_marks') }}</th>
+                      <th>{{ $data['exam_schedules']->sum('total_marks') }}</th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -177,7 +177,7 @@
                           </td>
                         @break
                         @case('grand_total')
-                          @if(!$data['hasAllGradings'] && !$data['hasAllCategoryGradings'])
+                          @if(!$data['has_all_gradings'] && !$data['has_all_category_gradings'])
                             <td class="text-center text-adjust">
                               <span>{{ $remarks->grand_obtain }}</span>
                             </td>
@@ -185,7 +185,7 @@
                           <td class="text-center text-adjust">
                             <span style="color: {{ ($remarks->result == 'Pass') ? 'green' : 'red';  }}">{{ $remarks->result }}</span>
                           </td>
-                          @if(!$data['hasAllGradings'] && !$data['hasAllCategoryGradings'])
+                          @if(!$data['has_all_gradings'] && !$data['has_all_category_gradings'])
                             <td class="text-center text-adjust text-white" style="background: {{ $remarks->grade?->color }};">
                               <span>{{ $remarks->grade?->grade }}</span>
                             </td>
