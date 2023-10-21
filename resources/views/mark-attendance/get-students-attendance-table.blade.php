@@ -60,7 +60,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td class="text-center" colspan="{{ count($data['attendance_statuses']) + 2 }}">No Students Found!</td>
+                    <td class="text-center" colspan="100%">No Students Found!</td>
                   </tr>
                 @endforelse
               </tbody>

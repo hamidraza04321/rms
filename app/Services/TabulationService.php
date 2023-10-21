@@ -30,8 +30,9 @@ class TabulationService
             $gradings = Grade::withoutGlobalScopes()->where('is_default', 1)->get();
         }
 
-        $exam_schedules = $this->getExamSchedules($request) ?? [];
-        $exam_dates = (count($exam_schedules)) ? $exam_schedules->pluck('date')->toArray() : [];
+        $exam_class = $this->getExamClass($request);
+        $exam_schedules = $exam_class->examSchedule ?? [];
+        $exam_dates = $this->getExamDates($exam_schedules);
         $has_all_gradings = count($exam_schedules) == count(collect($exam_schedules)->where('type', 'grade')) ? true : false; // Check the all exam schedules is gradings
         $has_all_category_gradings = $this->checkAllExamScheduleCategoryIsGradings($exam_schedules); // Check if all categories is grading and marks type is not exists
         $students = $this->getStudents($request, $exam_schedules, $exam_dates, $gradings, $has_all_gradings, $has_all_category_gradings);
@@ -43,12 +44,65 @@ class TabulationService
             'has_all_category_gradings' => $has_all_category_gradings,
             'exam' => $exam,
             'class' => $class,
+            'exam_class' => $exam_class,
             'section' => $section,
             'group' => $group,
             'gradings' => $gradings
         ];
 
         return view('markslip.get-tabulation-sheet', compact('data'))->render();
+    }
+
+    /**
+     * Get exam class
+     * 
+     * @param $request  array
+     */
+    public function getExamClass($request)
+    {
+        $exam_class = ExamClass::where(
+            [
+                'exam_id' => $request->exam_id,
+                'class_id' => $request->class_id
+            ])
+            ->when($request->group_id, fn($query) => $query->where('group_id', $request->group_id))
+            ->with([
+                'examSchedule' => function($query) {
+                    $query->select(
+                            'id',
+                            'exam_class_id',
+                            'subject_id',
+                            'group_id', 
+                            'date',
+                            'type',
+                            'marks'
+                        )
+                        ->with([
+                            'categories' => [ 'remarks', 'gradeRemarks' ],
+                            'remarks', 
+                            'gradeRemarks',
+                            'subject'
+                        ]);
+                }
+            ])
+            ->first();
+
+        // Exam Schedules
+        $exam_class?->examSchedule
+            ->map(function($exam_schedule) {
+                $this->setTableConsumeColspan($exam_schedule);
+
+                // Exam Schedule total marks
+                $exam_schedule->total_marks = match($exam_schedule->type) {
+                    'grade' => 0,
+                    'marks' => $exam_schedule->marks,
+                    'categories' => $exam_schedule->categories->sum('marks')
+                };
+
+                return $exam_schedule;
+            });
+
+        return $exam_class;
     }
 
     /**
@@ -88,14 +142,15 @@ class TabulationService
             ->map(function($student_session){
                 $student_session->student->section_id = $student_session->section_id;
                 $student_session->student->student_session_id = $student_session->id;
+                $student_session->student->attendances = $student_session->attendances;
                 return $student_session;
             })
             ->pluck('student')
             ->map(function($student) use($exam_schedules, $gradings, $has_all_gradings, $has_all_category_gradings) {
                 $student->remarks = $this->getStudentRemarks(
-                    $student, 
-                    $exam_schedules, 
-                    $gradings, 
+                    $student,
+                    $exam_schedules,
+                    $gradings,
                     $has_all_gradings,
                     $has_all_category_gradings
                 );
@@ -126,13 +181,15 @@ class TabulationService
         $grand_obtain = 0;
         $student_is_fail = false; // Check student is pass / fail
         $student_session_id = $student->student_session_id;
-        $grand_total = $exam_schedules->sum('total_marks');
+        $grand_total = collect($exam_schedules)->sum('total_marks');
 
         foreach ($exam_schedules as $exam_schedule) {
+            $attendance = $student->attendances->firstWhere('attendance_date', $exam_schedule->date->format('Y-m-d'));
+
             match($exam_schedule->type) {
-                'grade' => $this->setGradeRemarks($remarks, $exam_schedule, $student_is_fail, $gradings, $student_session_id),
-                'marks' => $this->setRemarks($remarks, $exam_schedule, $student_is_fail, $gradings, $student_session_id, $grand_obtain),
-                'categories' => $this->setCategoryRemarks($remarks, $exam_schedule, $student_is_fail, $gradings, $student_session_id, $grand_obtain)
+                'grade' => $this->setGradeRemarks($remarks, $exam_schedule, $student_is_fail, $gradings, $student_session_id, $attendance),
+                'marks' => $this->setRemarks($remarks, $exam_schedule, $student_is_fail, $gradings, $student_session_id, $grand_obtain, $attendance),
+                'categories' => $this->setCategoryRemarks($remarks, $exam_schedule, $student_is_fail, $gradings, $student_session_id, $grand_obtain, $attendance)
             };
         }
 
@@ -166,19 +223,35 @@ class TabulationService
      * @param $student_is_fail      bool
      * @param $gradings             array
      * @param $student_session_id   int
+     * @param $attendance           Object
      */ 
-    public function setGradeRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id)
+    public function setGradeRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id, $attendance)
     {
-        $remark = $exam_schedule->gradeRemarks->firstWhere('student_session_id', $student_session_id);
-        $grade = $gradings->firstWhere('id', $remark?->grade_id);
-        $student_is_fail = ($student_is_fail || !isset($grade->is_fail) || $grade->is_fail) ? true : false;
+        // Check student is absent
+        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
 
-        $remarks[] = (Object)[
+        $data = (Object)[
             'exam_schedule_id' => $exam_schedule->id,
             'subject_id' => $exam_schedule->subject_id,
             'type' => 'grade',
-            'grade' => $grade
+            'grade' => null,
+            'is_absent' => $is_absent,
+            'attendance_status' => $attendance?->attendanceStatus
         ];
+
+        // If student is absent then student is fail and no any remarks
+        if ($is_absent) {
+            $remarks[] = $data;
+            $student_is_fail = true;
+            return;
+        }
+
+        $remark = $exam_schedule->gradeRemarks->firstWhere('student_session_id', $student_session_id);
+        $grade = $gradings->firstWhere('id', $remark?->grade_id);
+        $student_is_fail = ($student_is_fail || empty($grade) || $grade->is_fail) ? true : false;
+
+        $data->grade = $grade;
+        $remarks[] = $data;
     }
 
     /**
@@ -190,25 +263,43 @@ class TabulationService
      * @param $gradings             array
      * @param $student_session_id   int
      * @param $grand_obtain         int
+     * @param $attendance           Object
      */
-    public function setRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id, &$grand_obtain)
+    public function setRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id, &$grand_obtain, $attendance)
     {
-        $remark = $exam_schedule->remarks->firstWhere('student_session_id', $student_session_id);
+        // Check student is absent
+        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
         $total_marks = $exam_schedule->total_marks;
-        $subject_obtain_marks = $remark?->remarks ?? 0;
-        $grand_obtain += $subject_obtain_marks;
-        $percentage = $this->getPercentage($total_marks, $subject_obtain_marks);
-        $grade = $this->getGradingByPercentage($percentage, $gradings);
-        $student_is_fail = ($student_is_fail || !isset($grade->is_fail) || $grade->is_fail) ? true : false;
 
-        $remarks[] = (Object)[
+        $data = (Object)[
             'exam_schedule_id' => $exam_schedule->id,
             'subject_id' => $exam_schedule->subject_id,
             'type' => 'marks',
-            'obtain_marks' => $subject_obtain_marks ?? null,
+            'obtain_marks' => 0,
             'total_marks' => $total_marks,
-            'grade' => $grade
+            'grade' => null,
+            'is_absent' => $is_absent,
+            'attendance_status' => $attendance?->attendanceStatus
         ];
+
+        // If student is absent then student is fail and no any remarks
+        if ($is_absent) {
+            $data->grade = $this->getGradingByPercentage(0, $gradings);
+            $remarks[] = $data;
+            $student_is_fail = true;
+            return;
+        }
+
+        $remark = $exam_schedule->remarks->firstWhere('student_session_id', $student_session_id);
+        $obtain_marks = $remark?->remarks ?? 0;
+        $grand_obtain += $obtain_marks;
+        $percentage = $this->getPercentage($total_marks, $obtain_marks);
+        $grade = $this->getGradingByPercentage($percentage, $gradings);
+        $student_is_fail = ($student_is_fail || empty($grade) || $grade->is_fail) ? true : false;
+
+        $data->obtain_marks = $obtain_marks;
+        $data->grade = $grade;
+        $remarks[] = $data;
     }
 
     /**
@@ -220,47 +311,27 @@ class TabulationService
      * @param $gradings             array
      * @param $student_session_id   int
      * @param $grand_obtain         int
+     * @param $attendance           Object
      */
-    public function setCategoryRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id, &$grand_obtain)
+    public function setCategoryRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id, &$grand_obtain, $attendance)
     {
         $total_marks = $exam_schedule->total_marks;
         $subject_obtain_marks = 0;
 
         foreach ($exam_schedule->categories as $category) {
-            
-            // If category is grading
             if ($category->is_grade) {
-                $remark = $category->gradeRemarks->firstWhere('student_session_id', $student_session_id);
-                $grade = $gradings->firstWhere('id', $remark?->grade_id);
-
-                $remarks[] = (Object)[
-                    'exam_schedule_id' => $exam_schedule->id,
-                    'subject_id' => $exam_schedule->subject_id,
-                    'type' => 'category_grade',
-                    'grade' => $grade
-                ];
-
+                $this->setCategoryGradeRemarks($remarks, $category, $exam_schedule, $gradings, $student_session_id, $attendance);
                 continue;
             }
 
-            $remark = $category->remarks->firstWhere('student_session_id', $student_session_id);
-            $obtain_marks = $remark?->remarks ?? 0;
-            $subject_obtain_marks += $obtain_marks;
-
-            $remarks[] = (Object)[
-                'exam_schedule_id' => $exam_schedule->id,
-                'subject_id' => $exam_schedule->subject_id,
-                'type' => 'category_marks',
-                'total_marks' => $category->marks,
-                'obtain_marks' => $obtain_marks
-            ];
+            $this->setCategoryMarks($remarks, $category, $exam_schedule, $subject_obtain_marks, $student_session_id, $attendance);
         }
 
         // Check if all category is not grading
         if (!$exam_schedule->has_all_category_gradings) {
             $percentage = $this->getPercentage($total_marks, $subject_obtain_marks);
             $grade = $this->getGradingByPercentage($percentage, $gradings);
-            $student_is_fail = ($student_is_fail || !isset($grade->is_fail) || $grade->is_fail) ? true : false;
+            $student_is_fail = ($student_is_fail || empty($grade) || $grade->is_fail) ? true : false;
 
             $remarks[] = (Object)[
                 'type' => 'category_total',
@@ -270,6 +341,78 @@ class TabulationService
         }
 
         $grand_obtain += $subject_obtain_marks;
+    }
+
+    /**
+     * Set category grade remarks of student
+     *
+     * @param $remarks              array
+     * @param $category             Object
+     * @param $exam_schedule        Object
+     * @param $gradings             array
+     * @param $student_session_id   int
+     * @param $attendance           Object
+     */
+    public function setCategoryGradeRemarks(&$remarks, $category, $exam_schedule, $gradings, $student_session_id, $attendance)
+    {
+        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
+
+        $data = (Object)[
+            'exam_schedule_id' => $exam_schedule->id,
+            'subject_id' => $exam_schedule->subject_id,
+            'category_id' => $category->id,
+            'type' => 'category_grade',
+            'grade' => null,
+            'is_absent' => $is_absent,
+            'attendance_status' => $attendance?->attendanceStatus
+        ];
+
+        if ($is_absent) {
+            $remarks[] = $data;
+            return;
+        }
+
+        $remark = $category->gradeRemarks->firstWhere('student_session_id', $student_session_id);
+        $data->grade = $gradings->firstWhere('id', $remark?->grade_id);
+        $remarks[] = $data;
+    }
+
+    /**
+     * Set exam schedule category marks of student
+     *
+     * @param $remarks              array
+     * @param $category             Object
+     * @param $exam_schedule        Object
+     * @param $subject_obtain_marks int
+     * @param $student_session_id   int
+     * @param $attendance           Object
+     */
+    public function setCategoryMarks(&$remarks, $category, $exam_schedule, &$subject_obtain_marks, $student_session_id, $attendance)
+    {
+        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
+
+        $data = (Object)[
+            'exam_schedule_id' => $exam_schedule->id,
+            'subject_id' => $exam_schedule->subject_id,
+            'category_id' => $category->id,
+            'type' => 'category_marks',
+            'total_marks' => $category->marks,
+            'obtain_marks' => 0,
+            'is_absent' => $is_absent,
+            'attendance_status' => $attendance?->attendanceStatus
+        ];
+
+        if ($is_absent) {
+            $remarks[] = $data;
+            return;            
+        }
+
+        $remark = $category->remarks->firstWhere('student_session_id', $student_session_id);
+        $obtain_marks = $remark?->remarks ?? 0;
+        $subject_obtain_marks += $obtain_marks;
+
+        $data->obtain_marks = $obtain_marks;
+        $remarks[] = $data;
     }
 
     /**
@@ -297,57 +440,22 @@ class TabulationService
     }
 
     /**
-     * Get exam schedules for tabulation sheet
+     * Get exam schedule dates
      *
-     * @param $request  array
-     */
-    public function getExamSchedules($request)
+     * @param $exam_schedules  array
+     * @return array
+     */    
+    public function getExamDates($exam_schedules)
     {
-        $where = [
-            'exam_id' => $request->exam_id,
-            'class_id' => $request->class_id
-        ];
+        if (!count($exam_schedules))
+            return [];
 
-        // Add Group when exists
-        if ($request->group_id) $where['group_id'] = $request->group_id;
+        $dates = [];
+        foreach ($exam_schedules as $exam_schedule) {
+            $dates[] = $exam_schedule->date->format('Y-m-d');
+        }
 
-        // Get Exam schedules
-        $exam_schedules = ExamClass::where($where)
-            ->with([
-                'examSchedule' => function($query) {
-                    $query->select(
-                            'id',
-                            'exam_class_id',
-                            'subject_id',
-                            'group_id', 
-                            'date',
-                            'type',
-                            'marks'
-                        )
-                        ->with([
-                            'categories' => [ 'remarks', 'gradeRemarks' ],
-                            'remarks', 
-                            'gradeRemarks',
-                            'subject'
-                        ]);
-                }
-            ])
-            ->first()
-            ?->examSchedule
-            ->map(function($exam_schedule) {
-                $this->setTableConsumeColspan($exam_schedule);
-
-                // Exam Schedule total marks
-                $exam_schedule->total_marks = match($exam_schedule->type) {
-                    'grade' => 0,
-                    'marks' => $exam_schedule->marks,
-                    'categories' => $exam_schedule->categories->sum('marks')
-                };
-
-                return $exam_schedule;
-            });
-
-        return $exam_schedules;
+        return $dates;
     }
 
     /**

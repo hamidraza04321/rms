@@ -47,9 +47,9 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr class="bg-light-blue">
-                        <th>S No.</th>
-                        <th>Roll No.</th>
-                        <th>Student Name</th>
+                        <th nowrap>S No.</th>
+                        <th nowrap>Roll No.</th>
+                        <th nowrap>Student Name</th>
                         @switch($markslip->exam_schedule->type)
                           @case('grade')
                             <th>Grade</th>
@@ -68,7 +68,7 @@
                                 @endif
                               </th>
                               @if($loop->last && $markslip->exam_schedule->categories->firstWhere('is_grade', 0))
-                                <th>Total Marks</th>
+                                <th nowrap>Total Marks</th>
                               @endif
                             @endforeach
                           @break
