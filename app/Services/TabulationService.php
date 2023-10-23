@@ -336,6 +336,7 @@ class TabulationService
             $remarks[] = (Object)[
                 'type' => 'category_total',
                 'obtain_marks' => $subject_obtain_marks,
+                'exam_schedule_id' => $exam_schedule->id,
                 'grade' => $grade
             ];
         }
@@ -522,7 +523,7 @@ class TabulationService
             return 0;
         }
 
-        return round(($obtain_marks * 100) / $total_marks);
+        return round(($obtain_marks * 100) / $total_marks, 2);
     }
 
     /**

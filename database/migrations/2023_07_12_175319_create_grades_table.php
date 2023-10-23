@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('cascade');
             $table->string('grade');
-            $table->integer('percentage_from');
-            $table->integer('percentage_to');
+            $table->float('percentage_from');
+            $table->float('percentage_to');
             $table->string('color');
             $table->boolean('is_fail')->default('0');
             $table->boolean('is_default')->default('0');

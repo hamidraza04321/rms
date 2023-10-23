@@ -542,4 +542,114 @@ $(document).ready(function() {
             });
         }
     });
+
+    //---------- ON CHANGE MARKS IN TABULATION ----------//
+    $(document).on('keyup change', '.marks-wrap', function(e) {
+        e.preventDefault();
+
+        var student_id = $(this).attr('student-id');
+            exam_schedule_id = $(this).attr('exam-schedule-id');
+            grand_total = parseFloat($('.grand-total').text());
+            total_marks = parseFloat($('th[exam-schedule-id="'+exam_schedule_id+'"]').text());
+            obtain_marks = 0;
+            grand_obtain = 0;
+
+        if ($(this).val() == '') {
+            $(this).val(0);
+        }
+
+        // Obtain marks
+        $('.marks-wrap[student-id="'+student_id+'"][exam-schedule-id="'+exam_schedule_id+'"]')
+            .each(function(){
+                obtain_marks += parseFloat($(this).val());
+            });
+
+        var percentage = ((obtain_marks * 100) / total_marks).toFixed(2);
+            grade = getGradeByPercentage(percentage);
+            student_is_fail = (grade.is_fail == 1) ? true : false;
+
+        // Total marks
+        $('.total-marks[student-id="'+student_id+'"][exam-schedule-id="'+exam_schedule_id+'"]').text(obtain_marks).attr('is-fail', student_is_fail).parents('td').css('background', grade.color);
+
+        // Grand Obtain Marks
+        $('.total-marks[student-id="'+student_id+'"]')
+            .each(function(){
+                grand_obtain += parseFloat($(this).text());
+            });
+
+        var grand_percentage = ((grand_obtain * 100) / grand_total).toFixed(2);
+            grand_grade = getGradeByPercentage(grand_percentage);
+            result = student_is_fail ? 'Fail' : 'Pass';
+            color = student_is_fail ? 'red' : 'green';
+
+        $('.grand-obtain[student-id="'+student_id+'"]').text(grand_obtain);
+        $('.grand-grade[student-id="'+student_id+'"]').text(grand_grade.grade).parents('td').css('background', grand_grade.color);
+        $('.grand-percentage[student-id="'+student_id+'"]').text(grand_percentage + ' %');
+
+        setStudentPassOrFail(student_id);
+    });
+
+    //------------- ON CHANGE GRADE IN TABULATION -------------//
+    $(document).on('change', '.grade-wrap', function(e) {
+        e.preventDefault();
+
+        if ($(this).attr('failure-check') == 'true') {
+            var option = $(this).find('option:selected');
+                student_id = $(this).attr('student-id');
+                is_fail = option.attr('is-fail') == 'true' ? true : false;
+
+            $(this).attr('is-fail', is_fail);
+
+            if (is_fail) {
+                $(this).addClass('border-red');
+            } else {
+                $(this).removeClass('border-red');
+            }
+
+            setStudentPassOrFail(student_id);
+        }
+    });
+
+    //------------- GET GRADE BY PERCENTAGE ------------//
+    function getGradeByPercentage(percentage)
+    {
+        var grade;
+
+        $.each(gradings, function(key, value) {
+            if (percentage >= value.percentage_from && percentage <= value.percentage_to) {
+                grade = value;
+            }
+        });
+
+        return grade;
+    }
+
+    //------------- SET STUDENT PASS OR FAIL ------------//
+    function setStudentPassOrFail(student_id)
+    {
+        var student_is_fail = false;
+            result = $('.result[student-id="'+student_id+'"]');
+
+        // Check in total marks
+        $('.total-marks[student-id="'+student_id+'"]').each(function(){
+            if ($(this).attr('is-fail') == 'true') {
+                student_is_fail = true;
+                return;
+            }
+        });
+
+        // Check in grade
+        $('.grade-wrap[student-id="'+student_id+'"][failure-check="true"]').each(function(){
+            if ($(this).attr('is-fail') == 'true') {
+                student_is_fail = true;
+                return;
+            }
+        });
+
+        if (student_is_fail) {
+            result.css('color', 'red').text('Fail');
+        } else {
+            result.css('color', 'green').text('Pass');
+        }
+    }
 });
