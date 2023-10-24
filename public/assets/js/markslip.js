@@ -544,49 +544,34 @@ $(document).ready(function() {
     });
 
     //---------- ON CHANGE MARKS IN TABULATION ----------//
-    $(document).on('keyup change', '.marks-wrap', function(e) {
+    $(document).on('change', '.marks-wrap', function(e) {
         e.preventDefault();
 
         var student_id = $(this).attr('student-id');
             exam_schedule_id = $(this).attr('exam-schedule-id');
-            grand_total = parseFloat($('.grand-total').text());
             total_marks = parseFloat($('th[exam-schedule-id="'+exam_schedule_id+'"]').text());
             obtain_marks = 0;
-            grand_obtain = 0;
 
         if ($(this).val() == '') {
             $(this).val(0);
         }
 
-        // Obtain marks
+        // Get sum of obtain marks according to exam schedule id
         $('.marks-wrap[student-id="'+student_id+'"][exam-schedule-id="'+exam_schedule_id+'"]')
             .each(function(){
                 obtain_marks += parseFloat($(this).val());
             });
 
+        // Get grade & percentage by obtain & total marks
         var percentage = ((obtain_marks * 100) / total_marks).toFixed(2);
             grade = getGradeByPercentage(percentage);
-            student_is_fail = (grade.is_fail == 1) ? true : false;
+            student_is_fail = (grade.is_fail) ? true : false;
 
-        // Total marks
-        $('.total-marks[student-id="'+student_id+'"][exam-schedule-id="'+exam_schedule_id+'"]').text(obtain_marks).attr('is-fail', student_is_fail).parents('td').css('background', grade.color);
+        // Update total marks
+        $('.total-marks[student-id="'+student_id+'"][exam-schedule-id="'+exam_schedule_id+'"]').text(obtain_marks.toFixed(2).replace(/(\.0*$|0*$)/, '')).attr('is-fail', student_is_fail).parents('td').css('background', grade.color);
 
-        // Grand Obtain Marks
-        $('.total-marks[student-id="'+student_id+'"]')
-            .each(function(){
-                grand_obtain += parseFloat($(this).text());
-            });
-
-        var grand_percentage = ((grand_obtain * 100) / grand_total).toFixed(2);
-            grand_grade = getGradeByPercentage(grand_percentage);
-            result = student_is_fail ? 'Fail' : 'Pass';
-            color = student_is_fail ? 'red' : 'green';
-
-        $('.grand-obtain[student-id="'+student_id+'"]').text(grand_obtain);
-        $('.grand-grade[student-id="'+student_id+'"]').text(grand_grade.grade).parents('td').css('background', grand_grade.color);
-        $('.grand-percentage[student-id="'+student_id+'"]').text(grand_percentage + ' %');
-
-        setStudentPassOrFail(student_id);
+        // Update grand result
+        setStudentGrandResult(student_id);
     });
 
     //------------- ON CHANGE GRADE IN TABULATION -------------//
@@ -606,9 +591,49 @@ $(document).ready(function() {
                 $(this).removeClass('border-red');
             }
 
-            setStudentPassOrFail(student_id);
+            setStudentGrandResult(student_id);
         }
     });
+
+    //------------- SET STUDENT GRAND RESULT VALUES -------------//
+    function setStudentGrandResult(student_id)
+    {
+        var grand_total = parseFloat($('.grand-total').text());
+            grand_obtain = 0;
+            student_is_fail = false;
+
+        // Grand Obtain Marks
+        $('.total-marks[student-id="'+student_id+'"]')
+            .each(function(){
+                grand_obtain += parseFloat($(this).text());
+
+                if (!student_is_fail) {
+                    student_is_fail = ($(this).attr('is-fail') == 'true') ? true : false;
+                }
+            });
+
+        // Check student is fail in grade
+        $('.grade-wrap[failure-check="true"][student-id="'+student_id+'"]')
+            .each(function(){
+                if ($(this).attr('is-fail') == 'true') {
+                    student_is_fail = true;
+                    return;
+                }
+            });
+
+        var grand_percentage = ((grand_obtain * 100) / grand_total).toFixed(2);
+            grand_grade = (student_is_fail) ? getFailureGrade() : getGradeByPercentage(grand_percentage);
+            result = student_is_fail ? 'Fail' : 'Pass';
+            color = student_is_fail ? 'red' : 'green';
+
+        $('.grand-obtain[student-id="'+student_id+'"]').text(grand_obtain.toFixed(2).replace(/(\.0*$|0*$)/, ''));
+        $('.result[student-id="'+student_id+'"]').css('color', color).text(result);
+        $('.grand-grade[student-id="'+student_id+'"]').text(grand_grade?.grade).parents('td').css('background', grand_grade?.color);
+        $('.grand-percentage[student-id="'+student_id+'"]').text(grand_percentage.replace(/(\.0*$|0*$)/, '') + ' %');
+
+        // Set ranking
+        setStudentsRanking();
+    }
 
     //------------- GET GRADE BY PERCENTAGE ------------//
     function getGradeByPercentage(percentage)
@@ -624,32 +649,80 @@ $(document).ready(function() {
         return grade;
     }
 
-    //------------- SET STUDENT PASS OR FAIL ------------//
-    function setStudentPassOrFail(student_id)
+    //------------- GET FAILURE GRADE ------------//
+    function getFailureGrade()
     {
-        var student_is_fail = false;
-            result = $('.result[student-id="'+student_id+'"]');
+        return gradings.reduce((min, current) => {
+            if (current.is_fail && current.percentage_from < min.percentage_from) {
+                return current;
+            }
 
-        // Check in total marks
-        $('.total-marks[student-id="'+student_id+'"]').each(function(){
-            if ($(this).attr('is-fail') == 'true') {
-                student_is_fail = true;
-                return;
+            return min;
+        }, { percentage_from: Infinity });
+    }
+
+    //------------- SET STUDENT RANKING ------------//
+    function setStudentsRanking()
+    {
+        var grand_obtain_marks = [];
+
+        $('#tabulation-sheet-table tbody tr').each(function(){
+            var student_id = $(this).find('.result').attr('student-id');
+            
+            if ($(this).find('.result').text() == 'Pass') {
+                var obtain_marks = parseFloat($(this).find('.grand-obtain').text());
+
+                grand_obtain_marks.push({
+                    student_id: student_id,
+                    obtain_marks: obtain_marks
+                });
+            } else {
+                $('.rank[student-id="'+student_id+'"]').text('--');
             }
         });
 
-        // Check in grade
-        $('.grade-wrap[student-id="'+student_id+'"][failure-check="true"]').each(function(){
-            if ($(this).attr('is-fail') == 'true') {
-                student_is_fail = true;
-                return;
-            }
-        });
-
-        if (student_is_fail) {
-            result.css('color', 'red').text('Fail');
-        } else {
-            result.css('color', 'green').text('Pass');
+        if (!grand_obtain_marks.length) {
+            return;
         }
+
+        // Sort the array by "obtain_marks" in descending order
+        grand_obtain_marks.sort((a, b) => b.obtain_marks - a.obtain_marks);
+
+        let rank = 1;
+
+        grand_obtain_marks[0].rank = addSuffix(1); // The first student has rank 1
+
+        for (let i = 1; i < grand_obtain_marks.length; i++) {
+            if (grand_obtain_marks[i].obtain_marks < grand_obtain_marks[i - 1].obtain_marks) {
+                rank++;
+            }
+
+            grand_obtain_marks[i].rank = addSuffix(rank);
+        }
+
+        $.each(grand_obtain_marks, function(key, value) {
+            $('.rank[student-id="'+value.student_id+'"]').text(value.rank);
+        });
+    }
+
+    //------------- ADD SUFFIX IN RANK ------------//
+    function addSuffix(rank)
+    {
+        var lastDigit = rank % 10;
+            lastTwoDigits = rank % 100;
+
+        if (lastDigit === 1 && lastTwoDigits !== 11) {
+            return rank + "st";
+        }
+
+        if (lastDigit === 2 && lastTwoDigits !== 12) {
+            return rank + "nd";
+        }
+
+        if (lastDigit === 3 && lastTwoDigits !== 13) {
+            return rank + "rd";
+        }
+        
+        return rank + "th";
     }
 });

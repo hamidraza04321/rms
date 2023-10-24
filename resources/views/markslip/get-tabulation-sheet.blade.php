@@ -283,7 +283,7 @@
                                 <span class="grand-percentage" student-id="{{ $student->id }}">{{ $remarks->percentage }} %</span>
                               </td>
                               <td class="text-center text-adjust">
-                                <span>{{ ($remarks->result != 'Fail') ? $student->rank : '--' }}</span>
+                                <span class="rank" student-id="{{ $student->id }}">{{ ($remarks->result != 'Fail') ? $student->rank : '--' }}</span>
                               </td>
                             @endif
                           @break

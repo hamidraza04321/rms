@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('mark_slip_id')->constrained('mark_slips')->onDelete('cascade');
             $table->foreignId('student_session_id')->constrained('student_sessions')->onDelete('cascade');
             $table->unique([ 'remarkable_type', 'remarkable_id', 'student_session_id' ])->index('unique_exam_remarks');
-            $table->integer('remarks')->nullable();
+            $table->string('remarks', 11)->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();

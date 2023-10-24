@@ -204,6 +204,11 @@ class TabulationService
             $percentage = $this->getPercentage($grand_total, $grand_obtain);
             $grade = $this->getGradingByPercentage($percentage, $gradings);
 
+            // Fail student grade replace with fail grade
+            if ($student_is_fail) {
+                $grade = $gradings->where('is_fail', 1)->sortBy('percentage_from')->first();
+            }
+
             $grand_remarks['grand_obtain'] = $grand_obtain;
             $grand_remarks['grade'] = $grade;
             $grand_remarks['percentage'] = $percentage;
@@ -248,7 +253,7 @@ class TabulationService
 
         $remark = $exam_schedule->gradeRemarks->firstWhere('student_session_id', $student_session_id);
         $grade = $gradings->firstWhere('id', $remark?->grade_id);
-        $student_is_fail = ($student_is_fail || empty($grade) || $grade->is_fail) ? true : false;
+        $student_is_fail = ($student_is_fail || $grade?->is_fail) ? true : false;
 
         $data->grade = $grade;
         $remarks[] = $data;
