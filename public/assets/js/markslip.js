@@ -585,10 +585,12 @@ $(document).ready(function() {
 
             $(this).attr('is-fail', is_fail);
 
-            if (is_fail) {
-                $(this).addClass('border-red');
-            } else {
-                $(this).removeClass('border-red');
+            if ($(this).val() != '') {
+                if (is_fail) {
+                    $(this).addClass('border-red');
+                } else {
+                    $(this).removeClass('border-red');
+                }
             }
 
             setStudentGrandResult(student_id);

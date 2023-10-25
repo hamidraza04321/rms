@@ -253,7 +253,7 @@ class TabulationService
 
         $remark = $exam_schedule->gradeRemarks->firstWhere('student_session_id', $student_session_id);
         $grade = $gradings->firstWhere('id', $remark?->grade_id);
-        $student_is_fail = ($student_is_fail || $grade?->is_fail) ? true : false;
+        $student_is_fail = ($student_is_fail || empty($grade) || $grade->is_fail) ? true : false;
 
         $data->grade = $grade;
         $remarks[] = $data;

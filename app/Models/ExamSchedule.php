@@ -28,6 +28,8 @@ class ExamSchedule extends Model
         'exam_class_id',
         'subject_id',
         'date',
+        'from_time',
+        'to_time',
         'type',
         'marks',
     	'created_by',

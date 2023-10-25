@@ -317,10 +317,22 @@ $(document).ready(function() {
         $('#exam-schedule-table tbody tr').each(function() {
             var row = $(this);
                 date = row.find('.exam-date').val();
+                from_time = row.find('.from-time').val();
+                to_time = row.find('.to-time').val();
                 type = row.find('.subject-type').val();
 
             if (date == '') {
                 row.find('.exam-date').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+                flag = false;
+            }
+
+            if (from_time == '') {
+                row.find('.from-time').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+                flag = false;
+            }
+
+            if (to_time == '') {
+                row.find('.to-time').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
                 flag = false;
             }
 

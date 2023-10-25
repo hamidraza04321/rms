@@ -155,8 +155,8 @@
                                   class="grade-wrap {{ ($remarks->grade?->is_fail) ? 'border-red' : '' }}"
                                   failure-check="true"
                                   student-id="{{ $student->id }}"
-                                  is-fail="{{ ($remarks->grade?->is_fail) ? 'true' : 'false' }}">
-                                  <option value="">Grade</option>
+                                  is-fail="{{ (empty($remarks->grade) || $remarks->grade->is_fail) ? 'true' : 'false' }}">
+                                  <option is-fail="true" value="">Grade</option>
                                   @foreach($data['gradings'] as $grade)
                                     <option 
                                       @selected($remarks->grade?->id == $grade->id)
