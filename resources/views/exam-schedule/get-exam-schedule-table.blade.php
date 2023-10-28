@@ -19,8 +19,8 @@
                 <tr>
                   <th>Subjects</th>
                   <th>Date</th>
-                  <th>From Time</th>
-                  <th>To Time</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
                   <th>Type</th>
                   <th>Marks</th>
                   <th class="mw-40">Categories</th>
@@ -34,10 +34,10 @@
                       <input type="text" name="exam_schedule[{{ $subject->id }}][date]" class="form-control exam-date date-picker" value="{{ $subject->exam_schedule?->date ? $subject->exam_schedule->date->format($settings->date_format) : '' }}" placeholder="Enter Date">
                     </td>
                     <td>
-                      <input type="time" name="exam_schedule[{{ $subject->id }}][from_time]" class="form-control from-time" value="{{ $subject->exam_schedule?->from_time }}">
+                      <input type="time" name="exam_schedule[{{ $subject->id }}][start_time]" class="form-control start-time" value="{{ $subject->exam_schedule?->start_time }}">
                     </td>
                     <td>
-                      <input type="time" name="exam_schedule[{{ $subject->id }}][to_time]" class="form-control to-time" value="{{ $subject->exam_schedule?->to_time }}">
+                      <input type="time" name="exam_schedule[{{ $subject->id }}][end_time]" class="form-control end-time" value="{{ $subject->exam_schedule?->end_time }}">
                     </td>
                     <td>
                       <select name="exam_schedule[{{ $subject->id }}][type]" class="form-control subject-type mw-120">

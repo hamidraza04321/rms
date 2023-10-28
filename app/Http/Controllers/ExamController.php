@@ -9,6 +9,7 @@ use App\Models\Classes;
 use App\Models\Session;
 use App\Models\ExamClass;
 use App\Models\ClassGroup;
+use App\Services\ExamDatesheetService;
 
 class ExamController extends Controller
 {
@@ -340,16 +341,16 @@ class ExamController extends Controller
     /**
      * Print the datesheet of exam.
      *
-     * @param  int  $id
+     * @param  $exam_id  int
      * @return \Illuminate\Http\Response
      */
-    public function datesheet($id)
+    public function datesheet($exam_id)
     {
-        $exam = Exam::with('classes.examSchedule')->findOrFail($id);
+        $datesheet = (new ExamDatesheetService)->getDatesheet($exam_id);
 
         $data = [
             'page_title' => 'Print Datesheet',
-            'exam' => $exam
+            'datesheet' => $datesheet
         ];
 
         return view('exam.datesheet', compact('data'));

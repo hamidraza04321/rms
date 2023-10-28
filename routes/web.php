@@ -111,7 +111,7 @@ Route::middleware('auth')->group(function () {
 		Route::put('/exam/restore/{id}', 'restore')->name('exam.restore');
 		Route::put('/exam/update-status/{id}', 'updateExamStatus')->name('exam.update.status');
 		Route::delete('/exam/delete/{id}', 'delete')->name('exam.delete');
-		Route::get('/exam/datesheet/{id}', 'datesheet')->name('exam.datesheet');
+		Route::get('/exam/datesheet/{exam_id}', 'datesheet')->name('exam.datesheet');
 	});
 
 	//---------- EXAM SCHEDULE ROUTES ----------//

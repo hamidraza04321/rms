@@ -30,8 +30,8 @@ class ExamScheduleTableSeeder extends Seeder
         			'subject_id' => $subject->id,
         			'type' => 'grade',
                     'date' => $date,
-                    'from_time' => '09:00',
-                    'to_time' => '12:00',
+                    'start_time' => '09:00',
+                    'end_time' => '12:00',
         			'created_at' => now(),
         			'updated_at' => now()
         		];

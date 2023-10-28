@@ -101,8 +101,8 @@ class ExamScheduleController extends Controller
                     ], [
                         'date' => date('Y-m-d', strtotime($exam_schedule['date'])),
                         'type' => $exam_schedule['type'],
-                        'from_time' => $exam_schedule['from_time'],
-                        'to_time' => $exam_schedule['to_time'],
+                        'start_time' => $exam_schedule['start_time'],
+                        'end_time' => $exam_schedule['end_time'],
                         'marks' => ($exam_schedule['type'] == 'marks') ? $exam_schedule['marks'] : null
                     ]);
 
