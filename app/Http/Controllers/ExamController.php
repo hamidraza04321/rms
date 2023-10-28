@@ -24,6 +24,7 @@ class ExamController extends Controller
         $this->middleware('permission:view-exam-trash', [ 'only' => 'trash' ]);
         $this->middleware('permission:restore-exam', [ 'only' => 'restore' ]);
         $this->middleware('permission:permanent-delete-exam', [ 'only' => 'delete' ]);
+        $this->middleware('permission:print-datesheet', [ 'only' => 'datesheet' ]);
     }
 
     /**
@@ -33,7 +34,9 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::withoutGlobalScope(ActiveScope::class)->with('session')->get();
+        $exams = Exam::withoutGlobalScope(ActiveScope::class)
+            ->with('session')
+            ->get();
 
         $data = [
             'exams' => $exams,

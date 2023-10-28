@@ -47,6 +47,7 @@ class ExamRequest extends FormRequest
             'session_id' => $this->sessionRule(),
             'name' => $this->examNameRule($this->session_id),
             'class_id.*' => 'required|exists:classes,id',
+            'datesheet_note' => 'nullable|string',
             'description' => 'nullable'
         ];
     }
@@ -60,6 +61,7 @@ class ExamRequest extends FormRequest
             'session_id' => $this->sessionRule(),
             'name' => $this->examNameRule($this->session_id, $this->exam),
             'class_id.*' => 'required|exists:classes,id',
+            'datesheet_note' => 'nullable|string',
             'description' => 'nullable'
         ];
     }

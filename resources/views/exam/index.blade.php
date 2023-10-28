@@ -47,7 +47,7 @@
                         @can('update-exam-status')
                           <th>Status</th>
                         @endcan
-                        @canany(['edit-exam', 'delete-exam'])
+                        @canany(['print-datesheet', 'edit-exam', 'delete-exam'])
                           <th>Action</th>
                         @endcanany
                       </tr>
@@ -67,9 +67,11 @@
                               @endif
                             </td>
                           @endcan
-                          @canany(['edit-exam', 'delete-exam'])
+                          @canany(['print-datesheet', 'edit-exam', 'delete-exam'])
                             <td>
-                              <a href="{{ route('exam.datesheet', $exam->id) }}" class="btn btn-sm btn-warning text-white" target="_blank"><i class="fa fa-print"></i> Print Datesheet</a>
+                              @can('print-datesheet')
+                                <a href="{{ route('exam.datesheet', $exam->id) }}" class="btn btn-sm btn-warning text-white" target="_blank"><i class="fa fa-print"></i> Print Datesheet</a>
+                              @endcan
                               @can('edit-exam')
                                 <a href="{{ route('exam.edit', $exam->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                               @endcan

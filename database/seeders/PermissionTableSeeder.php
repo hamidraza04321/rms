@@ -93,7 +93,7 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'mark-attendance' ],
             [ 'name' => 'attendance-report' ],
 
-            // EXAM STATUS
+            // EXAM
             [ 'name' => 'view-exam' ],
             [ 'name' => 'create-exam' ],
             [ 'name' => 'edit-exam' ],
@@ -102,6 +102,7 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'view-exam-trash' ],
             [ 'name' => 'restore-exam' ],
             [ 'name' => 'permanent-delete-exam' ],
+            [ 'name' => 'print-datesheet' ],
 
             // GRADE
             [ 'name' => 'view-grade' ],

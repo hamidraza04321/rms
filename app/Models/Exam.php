@@ -31,6 +31,7 @@ class Exam extends Model
     protected $fillable = [
         'session_id',
         'name',
+        'datesheet_note',
         'description',
         'is_active',
     	'created_by',

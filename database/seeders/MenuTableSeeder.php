@@ -314,6 +314,10 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 9,
 	        	'name' => 'Permanent Delete',
 	        	'permission' => 'permanent-delete-exam'
+	        ], [
+	        	'module_id' => 9,
+	        	'name' => 'Print Datesheet',
+	        	'permission' => 'print-datesheet'
 	        ],
 
 	        // GRADE MODULE

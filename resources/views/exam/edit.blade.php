@@ -1,5 +1,8 @@
 @extends('layout.app')
 @section('page-title', $data['page_title'])
+@section('styles')
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+@endsection
 @section('main-content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -52,6 +55,10 @@
                     </select>
                   </div>
                   <div class="form-group">
+                    <label>Datesheet Note</label>
+                    <textarea name="datesheet_note" id="datesheet-note" class="form-control">{!! $data['exam']->datesheet_note !!}</textarea>
+                  </div>
+                  <div class="form-group">
                     <label>Description</label>
                     <textarea name="description" id="description" class="form-control" placeholder="Enter Description">{{ $data['exam']->description }}</textarea>
                   </div>
@@ -72,5 +79,12 @@
   </div>
 @endsection
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="{{ url('/assets/js/exam.js') }}"></script>
+<script>
+  $('#datesheet-note').summernote({
+    placeholder: 'Enter exam datesheet note',
+    height: 150
+  });
+</script>
 @endsection

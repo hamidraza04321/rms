@@ -12,7 +12,7 @@
 
   <style type="text/css">
     body {
-      font-family: sans-serif;
+      font-family: serif;
     }
     .logo {
       width: 175px;
@@ -21,7 +21,7 @@
       border-radius: 100%;
       border: 6px solid #f8f8f8;
       box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
-      margin-right: 5%;
+      margin-right: 2%;
     }
     .m-15 {
       margin: 15px 0px;
@@ -31,15 +31,25 @@
       text-transform: uppercase;
       letter-spacing: 5px;
     }
+    .exam-name {
+      font-size: 20px;
+    }
     table {
-      font-size: 14px;
+      font-size: 16px;
+      margin: 0px 10px;
+    }
+    .table-bordered td, .table-bordered th {
+      border: 1px solid #000 !important;
     }
     table thead tr th, table tbody tr td {
-      padding: 7px !important;
+      padding: 10px !important;
       vertical-align: middle !important;
     }
     table tbody tr td {
       line-height: 25px;
+    }
+    th {
+      background: #cacdd4;
     }
     .no-wrap {
       white-space: nowrap;
@@ -56,8 +66,9 @@
     <div class="row m-15 justify-content-center">
       <img src="{{ url($settings->school_logo) }}" class="logo" width="150px">
       <div class="text-center">
-        <h2 class="school-name">{{ $settings->school_name }}</h2>
-        <h4>{{ $data['datesheet']->exam->name }} ( {{ $data['datesheet']->exam->session->name }} )</h4>
+        <h2 class="school-name"><strong>{{ $settings->school_name }}</strong></h2>
+        <h4 class="exam-name">{{ $data['datesheet']->exam->name }} ( {{ $data['datesheet']->exam->session->name }} )</h4>
+        <h4>{{ $data['datesheet']->from_to_class }}</h4>
       </div>
     </div>
     <div class="row">
@@ -92,12 +103,14 @@
         </tbody>
       </table>
     </div>
+    {!! $data['datesheet']->exam->datesheet_note !!}
     <p style="page-break-after: always;"></p>
     <div class="row m-15 justify-content-center">
       <img src="{{ url($settings->school_logo) }}" class="logo" width="150px">
       <div class="text-center">
-        <h2 class="school-name">{{ $settings->school_name }}</h2>
-        <h4>{{ $data['datesheet']->exam->name }} ( {{ $data['datesheet']->exam->session->name }} )</h4>
+        <h2 class="school-name"><strong>{{ $settings->school_name }}</strong></h2>
+        <h4 class="exam-name">{{ $data['datesheet']->exam->name }} ( {{ $data['datesheet']->exam->session->name }} )</h4>
+        <h4>{{ $data['datesheet']->from_to_class_group }}</h4>
       </div>
     </div>
     <div class="row">
@@ -144,6 +157,7 @@
         </tbody>
       </table>
     </div>
+    {!! $data['datesheet']->exam->datesheet_note !!}
   </div>
 </body>
 </html>

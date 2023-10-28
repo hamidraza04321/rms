@@ -44,6 +44,7 @@ $(document).ready(function() {
 				success: function(response) {
 					if (response.status == true) {
 				      	form[0].reset();
+				      	$('#datesheet-note').summernote('code', '');
 				      	$('.select2').val('').change();
 						toastr.success(response.message);
 					} else {

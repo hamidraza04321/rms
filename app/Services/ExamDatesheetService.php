@@ -27,12 +27,30 @@ class ExamDatesheetService
 
 		$datesheet->exam = $exam;
 		$datesheet->classes = $exam_classes->pluck('class');
+		$datesheet->from_to_class = $this->getTextDatesheetFromToClass($datesheet->classes);
 		$datesheet->exam_schedules = $this->arrangeExamSchedule($exam_classes);
 		$datesheet->group_classes = $exam_classes_group->groupBy('class.name');
+		$datesheet->from_to_class_group = $this->getTextDatesheetFromToClass($exam_classes_group->pluck('class'));
 		$datesheet->exam_schedules_group = $this->arrangeExamScheduleGroup($exam_classes_group);
 
-		// dd($this->arrangeExamScheduleGroup($exam_classes_group));
 		return $datesheet;
+	}
+
+	/**
+	 * Get text datesheet form to class
+	 *
+	 * @param $classes  array
+	 */
+	public function getTextDatesheetFromToClass($classes)
+	{
+		if (count($classes) == 1) {
+			return 'Datesheet for ' . $classes->first()->name;
+		}
+
+		$from_class = $classes->first()->name;
+		$to_class = $classes->last()->name;
+
+		return 'Datesheet from '. $from_class .' to '. $to_class;
 	}
 
 	/**
