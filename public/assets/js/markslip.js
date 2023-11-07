@@ -643,7 +643,8 @@ $(document).ready(function() {
         var grade;
 
         $.each(gradings, function(key, value) {
-            if (percentage >= value.percentage_from && percentage <= value.percentage_to) {
+            if (percentage >= parseFloat(value.percentage_from) 
+                && percentage <= parseFloat(value.percentage_to)) {
                 grade = value;
             }
         });
