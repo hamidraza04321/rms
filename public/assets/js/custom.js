@@ -8,6 +8,15 @@ $.ajaxSetup({
 
 //---------- DATATABLE ----------//
 if ($.isFunction($.fn.DataTable)) {
+    // $(".datatable").DataTable({
+    //  	dom: 'Bfrtip',
+    //  	responsive: true,
+    //   	lengthChange: false,
+    //   	buttons: [
+    //   		"copy", "csv", "excel", "pdf", "print", "colvis"
+    //   	]
+    // });
+
     $('.datatable').DataTable({
     	responsive: true
     });

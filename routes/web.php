@@ -141,6 +141,13 @@ Route::middleware('auth')->group(function () {
 		Route::post('/markslip/get-tabulation-sheet', 'getTabulationSheet')->name('get.tabulation.sheet');
 	});
 
+	//---------- RESULT CARD ROUTES ----------//
+	Route::controller(ResultCardController::class)->group(function(){
+		Route::get('/result-card/print', 'print')->name('result.card.print');
+		Route::post('/result-card/search-student', 'searchStudent')->name('result.card.search.student');
+		Route::get('/result-card/preset', 'preset')->name('result.card.preset');
+	});
+
 	//---------- SUPER ADMIN ROUTES ----------//
 	Route::middleware('is.super.admin')->group(function () {
 		//---------- USER ROLES ROUTES ----------//
