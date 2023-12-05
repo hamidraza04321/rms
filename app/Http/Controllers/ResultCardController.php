@@ -32,48 +32,14 @@ class ResultCardController extends Controller
     }
 
     /**
-     * Get search student table
+     * Get result cards
      *
      * @param  \App\Http\Requests\ResultCardRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function searchStudent(ResultCardRequest $request)
+    public function getResultCards(ResultCardRequest $request)
     {
-        $session = Session::find($request->session_id, [ 'id', 'name' ]);
-        $class = Classes::find($request->class_id, [ 'id', 'name' ]);
-        $section = Section::find($request->section_id, [ 'id', 'name' ]);
-        $group = ($request->group_id) ? Group::find($request->group_id, [ 'id', 'name' ]) : null;
-
-        $students = StudentSession::where($request->validated())
-            ->with([
-                'student' => function($query) {
-                    $query->select(
-                        'id',
-                        'admission_no',
-                        'roll_no',
-                        'first_name',
-                        'last_name',
-                        'father_name'
-                    );
-                }
-            ])
-            ->get()
-            ->map(function($student_session){
-                $student_session->student->student_session_id = $student_session->id;
-                return $student_session;
-            })
-            ->pluck('student');
-
-        $data = [
-            'session' => $session,
-            'class' => $class,
-            'section' => $section,
-            'group' => $group,
-            'students' => $students
-        ];
-
-        $view = view('result-card.get-search-students-table', compact('data'))->render();
-        return response()->success([ 'view' => $view ]);
+        return response()->json([ 'view' => $view ]);
     }
 
     /**

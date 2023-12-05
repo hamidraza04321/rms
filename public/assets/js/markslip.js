@@ -357,7 +357,7 @@ $(document).ready(function() {
         row.find('.obtain-marks').each(function(){
             var val = $(this).val();
             if (val != '') {
-                total_obtain_marks += parseInt($(this).val());
+                total_obtain_marks += parseFloat($(this).val());
             }
         });
 

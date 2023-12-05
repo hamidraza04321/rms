@@ -31,14 +31,14 @@ class ResultCardRequest extends FormRequest
     public function rules()
     {
         return match(Route::currentRouteName()) {
-            'result.card.search.student' => $this->searchStudent()
+            'get.result.cards' => $this->getResultCards()
         };
     }
 
     /**
-     * Validate Rules for search student Request
+     * Validate Rules for get result card Request
      */
-    public function searchStudent()
+    public function getResultCards()
     {
         return [
             'session_id' => $this->sessionRule(),

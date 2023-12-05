@@ -42,7 +42,7 @@
                   <tr>
                     <td class="text-center">
                       @foreach($data['gradings'] as $grade)
-                        <button class="btn btn-sm mb-1" style="background: {{ $grade->color }}; width: 35px; color: #fff;" data-toggle="tooltip" data-placement="top" title="{{ $grade->percentage_from }}% to {{ $grade->percentage_to }}%">{{ $grade->grade }}</button>
+                        <button class="btn btn-sm mb-1" style="background: {{ $grade->color }}; width: 40px; color: #fff;" data-toggle="tooltip" data-placement="top" title="{{ $grade->percentage_from }}% to {{ $grade->percentage_to }}%">{{ $grade->grade }}</button>
                       @endforeach
                     </td>
                   </tr>

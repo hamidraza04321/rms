@@ -1,0 +1,136 @@
+
+.m-auto {
+	margin: 0 auto;
+}
+
+.result-card {
+	width: 8.7in;
+	background: url('/assets/dist/img/result-card-background.jpg');
+}
+
+.result-card .header {
+	width: 100%;
+    height: 250px;
+    background: #fff;
+    margin: 35px 50px;
+    border-top-left-radius: 120px;
+    border-bottom-left-radius: 120px;
+}
+
+.header-bg {
+    height: 95.5%;
+    border: 1px solid #128dc3;
+    margin: 5px;
+    border-top-left-radius: 120px;
+    border-bottom-left-radius: 120px;
+    margin-left: 5px;
+    background-color: lightgrey;
+    background-image: linear-gradient(180deg, lightgrey, white);
+}
+
+.header img {
+	width: 238px;
+	height: 238px;
+    border-radius: 100%;
+    border: 1px solid #128dc3;
+    margin-left: -7px;
+    padding: 10px;
+}
+
+.school-name {
+	color: #395487;
+    text-shadow: 1px 1px 2px black;
+    text-transform: uppercase;
+    margin-left: 45px;
+    font-family: 'times new roman';
+    font-weight: bold;
+    font-size: 34px;
+    margin-top: 10px;
+}
+
+.result-card-text {
+    margin-left: 45px;
+    font-weight: bold;
+    font-family: 'times new roman';
+    color: #000;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.exam-name {
+	color: #000;
+    font-family: 'times new roman';
+    font-weight: bold;
+    margin-left: 45px;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.student-details {
+	font-family: 'times new roman';
+    line-height: 30px;
+    color: #000;
+    margin-left: 45px;
+}
+
+.student-details .underline {
+	font-weight: bold;
+    border-bottom: 1px solid #000;
+}
+
+.student-details .definition {
+	margin-right: 5px;
+}
+
+.mr-15 {
+	margin-right: 15px;
+}
+
+.result-card-content {
+    width: 100%;
+    margin: 0px 50px;
+}
+
+.result-card-table {
+    background: #fff;
+    color: #000 !important;
+}
+
+.result-card-table thead tr th,
+.result-card-table tbody tr td {
+	vertical-align: middle;
+    white-space: nowrap;
+}
+
+.result-card-table thead tr th {
+	background: #424a55 !important;
+	color: #fff !important;
+	padding: 6px;
+    text-align: center;
+}
+
+.result-card-table tbody tr td {
+	padding: 3px;
+}
+
+.subject-name {
+    font-weight: bold;
+    padding-left: 10px !important;
+    font-size: 16px;
+}
+
+.max-marks {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.obt-marks {
+    font-size: 13px;
+}
+
+th.rotate {
+    vertical-align: middle !important;
+    writing-mode: vertical-lr;
+    rotate: 180deg;
+    padding: 15px 10px;
+}

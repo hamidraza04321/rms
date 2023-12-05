@@ -1,14 +1,7 @@
 @extends('layout.app')
 @section('page-title', $data['page_title'])
 @section('styles')
-<style>
-  .bg-selected {
-    background: #d2d2d2 !important;
-  }
-  .dark-mode .bg-selected {
-    background: #707070 !important;
-  }
-</style>
+<link rel="stylesheet" href="{{ url('/assets/css/result-card.css') }}">
 @endsection
 @section('main-content')
 	<div class="content-wrapper">
@@ -44,7 +37,7 @@
                 </div>
                 <div id="student-filters-table" class="collapse show" aria-labelledby="student-filter-heading" data-parent="#student-filters">
                   <div class="card-body">
-                    <form action="{{ route('result.card.search.student') }}" id="search-student-form">
+                    <form action="{{ route('get.result.cards') }}" id="get-result-cards-form">
                       <div class="row">
                         <div class="col-md-3">
                           <div class="form-group">
@@ -87,7 +80,7 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12 text-right">
-                          <button id="btn-search-student" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+                          <button id="btn-search-result-cards" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
                         </div>
                       </div>
                     </form>
@@ -97,7 +90,173 @@
             </div>
           </div>
         </div>
-        <div id="search-students">
+        <div id="result-cards">
+          <div class="row">
+            <div class="col-12">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <div class="card-title"><i class="fa fa-file"></i> Result Cards</div>
+                  <div class="card-tools">
+                    <button class="btn btn-success" id="btn-print-result-card"><i class="fa fa-print"></i> Print Result Cards</button>
+                  </div>
+                </div>
+                <div class="card-body m-auto">
+                  <div class="row result-card">
+                    <div class="header">
+                      <div class="header-bg d-flex">
+                        <div class="col-3">
+                          <img src="{{ url('/assets/dist/img/logo.png') }}">
+                        </div>
+                        <div class="col-9 text-center">
+                          <h1 class="school-name">{{ $settings->school_name }}</h1>
+                          <p class="result-card-text">Student Result Card</p>
+                          <p class="exam-name">First Mid Term Examination ( 2022-2023 )</p>
+                          <p class="student-details">
+                            <span class="definition">Name:</span>
+                            <span class="underline">Hamid Raza Muhammad Altaf</span><br>
+                            <span class="definition">Gr No: </span> 
+                            <span class="underline mr-15">11234</span>
+                            <span class="definition">Class:</span> 
+                            <span class="underline mr-15">I</span>
+                            <span class="definition">Section:</span> 
+                            <span class="underline">A</span><br>
+                            <span class="definition">Attendance:</span> 
+                            <span class="underline">100 Days Out Of 100 Days</span> 
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="result-card-content">
+                      <table class="table table-bordered result-card-table">
+                        <thead>
+                          <tr>
+                            <th width="100%" colspan="2">Subjects</th>
+                            <th class="rotate">Dictation</th>
+                            <th class="rotate">Oral</th>
+                            <th class="rotate">Writing</th>
+                            <th class="rotate">Listning</th>
+                            <th class="rotate">Reading</th>
+                            <th class="rotate">Grade</th>
+                            <th class="rotate">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td width="100%" rowspan="2" class="subject-name">English</td>
+                            <td class="max-marks">Max Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td class="obt-marks">Obt. Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td width="100%" rowspan="2" class="subject-name">Urdu</td>
+                            <td class="max-marks">Max Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td class="obt-marks">Obt. Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td width="100%" rowspan="2" class="subject-name">Mathematics</td>
+                            <td class="max-marks">Max Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td class="obt-marks">Obt. Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td width="100%" rowspan="2" class="subject-name">Islamiat</td>
+                            <td class="max-marks"><strong>Max Marks</strong></td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td class="obt-marks">Obt. Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td width="100%" rowspan="2" class="subject-name">Social Studies</td>
+                            <td class="max-marks">Max Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                          <tr>
+                            <td class="obt-marks">Obt. Marks</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
         </div>
       </div>
     </section>

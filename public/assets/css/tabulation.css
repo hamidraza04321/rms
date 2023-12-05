@@ -107,3 +107,8 @@
 .border-red {
     border: 1px solid red !important;
 }
+
+.dark-mode .marks-wrap {
+    background: #343a40 !important;
+    color: #fff !important;
+}

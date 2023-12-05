@@ -58,8 +58,8 @@ $(document).ready(function() {
         }
     });
 
-    //---------- ON CLICK SEARCH STUDENT ----------//
-    $(document).on('click', '#btn-search-student', function(e) {
+    //---------- ON CLICK SEARCH RESULT CARDS ----------//
+    $(document).on('click', '#btn-search-result-cards', function(e) {
         e.preventDefault();
         removeErrorMessages();
 
@@ -98,7 +98,7 @@ $(document).ready(function() {
             // Button Loading
             self.addClass('disabled').html('<div class="spinner-border"></div>');
 
-            var form = $('#search-student-form');
+            var form = $('#get-result-cards-form');
                 url = form.attr('action');
                 formData = form.serialize();
 
@@ -108,7 +108,7 @@ $(document).ready(function() {
                 data: formData,
                 success: function(response) {
                     if (response.status == true) {
-                        $('#search-students').html(response.view);
+                        $('#result-cards').html(response.view);
                     } else {
                         showErrorMessages(response.errors);
                     }
@@ -122,44 +122,5 @@ $(document).ready(function() {
                 }
             });
         }
-    });
-
-    //---------- ON CHANGE SELECT ALL STUDENT ----------//
-    $(document).on('change', '#select-all-students', function(e) {
-        e.preventDefault();
-        
-        if ($(this).is(':checked')) {
-            $('.select-student').prop('checked', true).parents('tr').addClass('bg-selected');
-        } else {
-            $('.select-student').prop('checked', false).parents('tr').removeClass('bg-selected');
-        }
-    });
-
-    //---------- ON CHANGE SELECT STUDENT ----------//
-    $(document).on('change', '.select-student', function(e) {
-        e.preventDefault();
-        
-        var total_checkboxes = $('.select-student').length;
-            checked_checkboxes = $('.select-student:checked').length;
-
-        if ($(this).is(':checked')) {
-            $(this).parents('tr').addClass('bg-selected');
-        } else {
-            $(this).parents('tr').removeClass('bg-selected');
-        }
-
-        if (total_checkboxes == checked_checkboxes) {
-            $('#select-all-students').prop('checked', true);
-        } else {
-            $('#select-all-students').prop('checked', false);
-        }
-    });
-
-    //---------- ON CLICK PRINT RESULT CARD ----------//
-    $(document).on('click', '#btn-print-result-card', function(e) {
-        e.preventDefault();
-        
-        var self = $(this);
-            self_html = self.html();
     });
 });

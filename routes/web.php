@@ -144,7 +144,7 @@ Route::middleware('auth')->group(function () {
 	//---------- RESULT CARD ROUTES ----------//
 	Route::controller(ResultCardController::class)->group(function(){
 		Route::get('/result-card/print', 'print')->name('result.card.print');
-		Route::post('/result-card/search-student', 'searchStudent')->name('result.card.search.student');
+		Route::post('/result-card/get-result-cards', 'getResultCards')->name('get.result.cards');
 		Route::get('/result-card/preset', 'preset')->name('result.card.preset');
 	});
 
