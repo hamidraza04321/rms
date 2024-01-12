@@ -1,11 +1,12 @@
 
 .m-auto {
-	margin: 0 auto;
+	margin: 0 auto !important;
 }
 
 .result-card {
 	width: 8.7in;
 	background: url('/assets/dist/img/result-card-background.jpg');
+    background-size: 115%;
 }
 
 .result-card .header {
@@ -93,7 +94,9 @@
 
 .result-card-table {
     background: #fff;
+    margin-bottom: 0px;
     color: #000 !important;
+    border-bottom: 3px solid;
 }
 
 .result-card-table thead tr th,
@@ -102,15 +105,59 @@
     white-space: nowrap;
 }
 
-.result-card-table thead tr th {
+.grand-total-table {
+    border-top: 0 !important;
+}
+
+.grand-total-table thead {
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+}
+
+.grand-total-table thead tr th {
+    padding: 3px 7px 3px 7px !important;
+    text-align: center !important;
+    border-top: 0 !important;
+}
+
+.result-card-table thead tr th,
+.result-info-table thead tr th,
+.grades-table thead tr th,
+.grand-total-table thead tr th:first-child,
+.th-bold {
 	background: #424a55 !important;
 	color: #fff !important;
-	padding: 6px;
+	padding: 8px;
     text-align: center;
 }
 
-.result-card-table tbody tr td {
+.result-info-table thead tr th,
+.grades-table thead tr th {
+    padding: 3px 7px 3px 7px !important;
+}
+
+.result-info-table thead tr:first-child,
+.grades-table thead tr:first-child {
+    border-bottom: 3px solid;
+}
+
+.result-card-table thead tr:first-child {
+    border-bottom: 3px solid #000;
+    border-top: 2px solid #fff !important;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+}
+
+.result-card-table tbody tr td,
+.result-info-table tbody tr td,
+.grades-table tbody tr td,
+.remarks-table tbody tr td {
 	padding: 3px;
+    text-align: center;
+}
+
+.result-card-table tbody tr td:first-child {
+    text-align: start !important;
 }
 
 .subject-name {
@@ -122,10 +169,12 @@
 .max-marks {
     font-size: 13px;
     font-weight: bold;
+    padding: 3px 7px 3px 7px !important;
 }
 
 .obt-marks {
     font-size: 13px;
+    padding: 3px 7px 3px 7px !important;
 }
 
 th.rotate {

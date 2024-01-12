@@ -31,7 +31,7 @@
                 <div class="card-header" id="student-filter-heading">
                   <div class="d-flex">
                     <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#student-filters-table" aria-expanded="true" aria-controls="student-filters-table">
-                      <i class="fa fa-filter"></i> Search Students
+                      <i class="fa fa-filter"></i> Search Results
                     </button>
                   </div>
                 </div>
@@ -100,8 +100,8 @@
                     <button class="btn btn-success" id="btn-print-result-card"><i class="fa fa-print"></i> Print Result Cards</button>
                   </div>
                 </div>
-                <div class="card-body m-auto">
-                  <div class="row result-card">
+                <div class="card-body" style="width: 100%; overflow: auto;">
+                  <div class="row result-card m-auto">
                     <div class="header">
                       <div class="header-bg d-flex">
                         <div class="col-3">
@@ -144,13 +144,13 @@
                           <tr>
                             <td width="100%" rowspan="2" class="subject-name">English</td>
                             <td class="max-marks">Max Marks</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
                           </tr>
                           <tr>
                             <td class="obt-marks">Obt. Marks</td>
@@ -165,13 +165,13 @@
                           <tr>
                             <td width="100%" rowspan="2" class="subject-name">Urdu</td>
                             <td class="max-marks">Max Marks</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
                           </tr>
                           <tr>
                             <td class="obt-marks">Obt. Marks</td>
@@ -186,13 +186,13 @@
                           <tr>
                             <td width="100%" rowspan="2" class="subject-name">Mathematics</td>
                             <td class="max-marks">Max Marks</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
                           </tr>
                           <tr>
                             <td class="obt-marks">Obt. Marks</td>
@@ -228,6 +228,16 @@
                           <tr>
                             <td width="100%" rowspan="2" class="subject-name">Social Studies</td>
                             <td class="max-marks">Max Marks</td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                          </tr>
+                          <tr>
+                            <td class="obt-marks">Obt. Marks</td>
                             <td>--</td>
                             <td>--</td>
                             <td>--</td>
@@ -235,6 +245,17 @@
                             <td>--</td>
                             <td>--</td>
                             <td>--</td>
+                          </tr>
+                          <tr>
+                            <td width="100%" rowspan="2" class="subject-name">General Science</td>
+                            <td class="max-marks">Max Marks</td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
+                            <td><strong>--</strong></td>
                           </tr>
                           <tr>
                             <td class="obt-marks">Obt. Marks</td>
@@ -248,6 +269,67 @@
                           </tr>
                         </tbody>
                       </table>
+                      <table class="table table-bordered grand-total-table">
+                        <thead>
+                          <tr>
+                            <th>Grand Total</th>
+                            <th><strong>Maximum Marks</strong></th>
+                            <th><strong>370</strong></th>
+                            <th><strong>Marks Obtained</strong></th>
+                            <th><strong>0</strong></th>
+                          </tr>
+                        </thead>
+                      </table>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <table class="table table-bordered result-info-table">
+                            <thead>
+                              <tr>
+                                <th>Percentage</th>
+                                <th>Grade</th>
+                                <th>Overall Result</th>
+                                <th>Rank</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>0%</td>
+                                <td>--</td>
+                                <td>Failed</td>
+                                <td>--</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-md-4">
+                          <table class="table table-bordered grades-table">
+                            <thead>
+                              <tr>
+                                <th>Subject</th>
+                                <th>Grade</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Art</td>
+                                <td>--</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <table class="table table-bordered remarks-table">
+                            <tbody>
+                              <tr>
+                                <td class="th-bold"><strong>Remarks</strong></td>
+                                <td>Has shown unsatisfacotory progress</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
