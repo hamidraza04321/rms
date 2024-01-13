@@ -90,6 +90,8 @@
 .result-card-content {
     width: 100%;
     margin: 0px 50px;
+    min-height: 9.25in;
+    position: relative;
 }
 
 .result-card-table {
@@ -182,4 +184,21 @@ th.rotate {
     writing-mode: vertical-lr;
     rotate: 180deg;
     padding: 15px 10px;
+}
+
+.footer .col-md-4 {
+    text-align: center;
+}
+
+.footer .heading {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 15px;
 }
