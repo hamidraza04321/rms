@@ -123,4 +123,36 @@ $(document).ready(function() {
             });
         }
     });
+
+    //---------- ON CLICK PRINT RESULT CARDS ----------//
+    $(document).on('click', '#btn-print-result-card', function(e) {
+        e.preventDefault();
+        var result_body = '';
+            result_cards = $('.result-card').length;
+            i = 0;
+
+        $('.result-card').each(function(){
+            ++i;
+            var page_break = (i == result_cards) ? '' : `<div class="page-break"></div>`;
+            result_body += $(this)[0].outerHTML + page_break;
+        });
+
+        var newWin = window.open();
+        newWin.document.write(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>Print Result Card</title>
+              <link rel="stylesheet" href="${base_url}/assets/dist/css/adminlte.min.css">
+              <link rel="stylesheet" href="${base_url}/assets/css/result-card.css">
+            </head>
+            <body>
+                ${result_body}
+            </body>
+            </html>
+        `);
+        newWin.document.close();
+    });
 });

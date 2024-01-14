@@ -6,36 +6,50 @@
 .result-card {
 	width: 8.7in;
 	background: url('/assets/dist/img/result-card-background.jpg');
-    background-size: 115%;
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 
 .result-card .header {
 	width: 100%;
     height: 250px;
     background: #fff;
-    margin: 35px 50px;
-    border-top-left-radius: 120px;
-    border-bottom-left-radius: 120px;
+    margin: 30px 50px 20px 50px;
+    border-top-left-radius: 125px;
+    border-bottom-left-radius: 125px;
 }
 
 .header-bg {
     height: 95.5%;
-    border: 1px solid #128dc3;
     margin: 5px;
     border-top-left-radius: 120px;
     border-bottom-left-radius: 120px;
     margin-left: 5px;
+}
+
+.header-bg .col-9 {
+    border: 1px solid #128dc3;
+    border-left: 0;
+    position: static;
     background-color: lightgrey;
     background-image: linear-gradient(180deg, lightgrey, white);
 }
 
+.header .disk {
+    background: #fff;
+    width: 235px;
+    height: 250px;
+    border-radius: 100%;
+    position: absolute;
+    margin: -5px 0px 0px 12px;
+}
+
 .header img {
-	width: 238px;
-	height: 238px;
+    width: 240px;
+    height: 240px;
     border-radius: 100%;
     border: 1px solid #128dc3;
-    margin-left: -7px;
-    padding: 10px;
+    margin: 5px 0px 0px -15px;
 }
 
 .school-name {
@@ -76,7 +90,7 @@
 
 .student-details .underline {
 	font-weight: bold;
-    border-bottom: 1px solid #000;
+    border-bottom: 2px solid #000;
 }
 
 .student-details .definition {
@@ -126,7 +140,7 @@
 .result-info-table thead tr th,
 .grades-table thead tr th,
 .grand-total-table thead tr th:first-child,
-.th-bold {
+.remarks-table tbody tr td:first-child {
 	background: #424a55 !important;
 	color: #fff !important;
 	padding: 8px;
@@ -134,7 +148,8 @@
 }
 
 .result-info-table thead tr th,
-.grades-table thead tr th {
+.grades-table thead tr th,
+.remarks-table tbody tr td {
     padding: 3px 7px 3px 7px !important;
 }
 
@@ -201,4 +216,28 @@ th.rotate {
     bottom: 0;
     width: 100%;
     margin-bottom: 15px;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+@page {
+    size: a4;
+    margin: 10mm 0mm 0mm 0mm;
+}
+
+@media print{
+    .col-md-1, .col-1 {width:8%;  float:left;}
+    .col-md-2, .col-2 {width:16%; float:left;}
+    .col-md-3, .col-3 {width:25%; float:left;}
+    .col-md-4, .col-4 {width:33%; float:left;}
+    .col-md-5, .col-5 {width:42%; float:left;}
+    .col-md-6, .col-6 {width:50%; float:left;}
+    .col-md-7, .col-7 {width:58%; float:left;}
+    .col-md-8, .col-8 {width:66%; float:left;}
+    .col-md-9, .col-9 {width:75%; float:left;}
+    .col-md-10, .col-10{width:83%; float:left;}
+    .col-md-11, .col-11{width:92%; float:left;}
+    .col-md-12, .col-12{width:100%; float:left;}
 }

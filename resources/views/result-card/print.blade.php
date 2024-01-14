@@ -105,7 +105,9 @@
                     <div class="header">
                       <div class="header-bg d-flex">
                         <div class="col-3">
-                          <img src="{{ url('/assets/dist/img/logo.png') }}">
+                          <div class="disk">
+                            <img src="{{ url('/assets/dist/img/logo.png') }}">
+                          </div>
                         </div>
                         <div class="col-9 text-center">
                           <h1 class="school-name">{{ $settings->school_name }}</h1>
@@ -323,7 +325,7 @@
                           <table class="table table-bordered remarks-table">
                             <tbody>
                               <tr>
-                                <td class="th-bold"><strong>Remarks</strong></td>
+                                <td><strong>Remarks</strong></td>
                                 <td>Has shown unsatisfacotory progress</td>
                               </tr>
                             </tbody>
@@ -351,7 +353,9 @@
                     <div class="header">
                       <div class="header-bg d-flex">
                         <div class="col-3">
-                          <img src="{{ url('/assets/dist/img/logo.png') }}">
+                          <div class="disk">
+                            <img src="{{ url('/assets/dist/img/logo.png') }}">
+                          </div>
                         </div>
                         <div class="col-9 text-center">
                           <h1 class="school-name">{{ $settings->school_name }}</h1>
@@ -569,7 +573,7 @@
                           <table class="table table-bordered remarks-table">
                             <tbody>
                               <tr>
-                                <td class="th-bold"><strong>Remarks</strong></td>
+                                <td><strong>Remarks</strong></td>
                                 <td>Has shown unsatisfacotory progress</td>
                               </tr>
                             </tbody>
