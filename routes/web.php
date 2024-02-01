@@ -145,7 +145,6 @@ Route::middleware('auth')->group(function () {
 	Route::controller(ResultCardController::class)->group(function(){
 		Route::get('/result-card/print', 'print')->name('result.card.print');
 		Route::post('/result-card/get-result-cards', 'getResultCards')->name('get.result.cards');
-		Route::get('/result-card/preset', 'preset')->name('result.card.preset');
 	});
 
 	//---------- SUPER ADMIN ROUTES ----------//

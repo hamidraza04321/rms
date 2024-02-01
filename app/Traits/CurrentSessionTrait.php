@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Traits;
+
 use App\Models\Scopes\ActiveScope;
 use App\Settings\GeneralSettings;
 

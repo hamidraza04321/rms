@@ -42,6 +42,7 @@ class ResultCardRequest extends FormRequest
     {
         return [
             'session_id' => $this->sessionRule(),
+            'exam_id' => $this->examRule($this->session_id),
             'class_id' => $this->classRule(),
             'section_id' => $this->sectionRule($this->class_id),
             'group_id' => $this->groupRule($this->class_id)

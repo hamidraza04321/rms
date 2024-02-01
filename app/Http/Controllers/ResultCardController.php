@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ResultCardRequest;
+use App\Services\GenerateResultCardService;
+use App\Models\StudentSession;
 use App\Models\Session;
 use App\Models\Classes;
 use App\Models\Section;
 use App\Models\Group;
-use App\Models\StudentSession;
+use App\Models\Exam;
 
 class ResultCardController extends Controller
 {
@@ -19,11 +21,11 @@ class ResultCardController extends Controller
     public function print()
     {
     	$sessions = Session::get();
-    	$classes = Classes::get();
+    	$exams = Exam::where('session_id', $this->current_session_id)->get();
 
     	$data = [
     		'sessions' => $sessions,
-    		'classes' => $classes,
+            'exams' => $exams,
             'page_title' => 'Print Result Card',
             'menu' => 'Result Card'
         ];
@@ -39,21 +41,7 @@ class ResultCardController extends Controller
      */
     public function getResultCards(ResultCardRequest $request)
     {
-        return response()->json([ 'view' => $view ]);
-    }
-
-    /**
-	 * Result card preset
-	 * 
-	 * @return \Illuminate\Http\Response
-	 */
-    public function preset()
-    {
-    	$data = [
-            'page_title' => 'Preset Selection',
-            'menu' => 'Result Card'
-        ];
-
-    	return view('result-card.preset', compact('data'));
+        $view = (new GenerateResultCardService($request))->getResultCardsView();
+        return response()->success([ 'view' => $view ]);
     }
 }

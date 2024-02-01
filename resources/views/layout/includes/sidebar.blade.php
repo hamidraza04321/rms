@@ -263,8 +263,8 @@
             </ul>
           </li>
         @endcanany
-        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'result.card.print', 'result.card.preset' ]))) menu-open @endif">
-          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'result.card.print', 'result.card.preset' ]))) active @endif">
+        <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'result.card.print' ]))) menu-open @endif">
+          <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'result.card.print' ]))) active @endif">
             <i class="nav-icon fas fa-paste"></i>
             <p>
               Result Card
@@ -276,12 +276,6 @@
               <a href="{{ route('result.card.print') }}" class="nav-link @if(Route::currentRouteName() == 'result.card.print') active @endif">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Print Result Card</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('result.card.preset') }}" class="nav-link @if(Route::currentRouteName() == 'result.card.preset') active @endif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Preset Selection</p>
               </a>
             </li>
           </ul>

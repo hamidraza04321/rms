@@ -60,12 +60,15 @@ class TabulationService
      */
     public function getExamClass($request)
     {
-        $exam_class = ExamClass::where(
-            [
-                'exam_id' => $request->exam_id,
-                'class_id' => $request->class_id
-            ])
-            ->when($request->group_id, fn($query) => $query->where('group_id', $request->group_id))
+        $where = [
+            'exam_id' => $request->exam_id,
+            'class_id' => $request->class_id
+        ];
+
+        // Add Group when exists
+        if ($request->group_id) $where['group_id'] = $request->group_id;
+
+        $exam_class = ExamClass::where($where)
             ->with([
                 'examSchedule' => function($query) {
                     $query->select(
@@ -117,13 +120,16 @@ class TabulationService
      */
     public function getStudents($request, $exam_schedules, $exam_dates, $gradings, $has_all_gradings, $has_all_category_gradings)
     {
-        $students = StudentSession::where(
-            [
-                'class_id' => $request->class_id,
-                'session_id' => $request->session_id,
-                'section_id' => $request->section_id
-            ])
-            ->when($request->group_id, fn($query) => $query->where('group_id', $request->group_id))
+        $where = [
+            'class_id' => $request->class_id,
+            'session_id' => $request->session_id,
+            'section_id' => $request->section_id
+        ];
+
+        // Add Group when exists
+        if ($request->group_id) $where['group_id'] = $request->group_id;
+        
+        $students = StudentSession::where($where)
             ->with([
                 'student' => function($query) {
                     $query->select('id', 'roll_no', 'first_name', 'last_name');
@@ -461,7 +467,7 @@ class TabulationService
             $dates[] = $exam_schedule->date->format('Y-m-d');
         }
 
-        return $dates;
+        return array_unique($dates);
     }
 
     /**

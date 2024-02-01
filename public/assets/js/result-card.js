@@ -3,6 +3,98 @@ $(document).ready(function() {
     //---------- APPLICATION BASE URL ----------//
     const base_url = $('#base-url').val();
     
+    //---------- ON CHANGE SESSION ----------//
+    $(document).on('change', '#session-id', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        $('#exam-id, #class-id, #group-id').prop('disabled', true).html('');
+
+        var self = $(this);
+            session_id = self.val();
+            url = `${base_url}/exam/get-exams-by-session`;
+            message = '';
+
+        if (session_id != '') {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: { session_id: session_id },
+                success: function(response) {
+                    if (response.status == true) {
+                        var exams = `<option value="">Select</option>`;
+
+                        if (response.exams.length) {
+                            $.each(response.exams, function(key, value) {
+                                exams += `<option value="${value.id}">${value.name}</option>`;
+                            });
+                        }
+
+                        $('#exam-id').prop('disabled', false).html(exams);
+                    } else {
+                        if (response?.errors) {
+                            showErrorMessages(response.errors);
+                        } else {
+                            message = errorMessage(response.message);
+                        }
+                    }
+                },
+                error: function() {
+                    message = errorMessage();
+                },
+                complete: function() {
+                    if (message != '') showAlertInTop(message);
+                }
+            });
+        }
+    });
+
+    //---------- ON CHANGE EXAM ----------//
+    $(document).on('change', '#exam-id', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        $('#class-id, #group-id, #section-id, #subject-id').prop('disabled', true).html('');
+
+        var self = $(this);
+            exam_id = self.val();
+            url = `${base_url}/exam/get-exam-classes`;
+            message = '';
+
+        if (exam_id != '') {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: { exam_id: exam_id },
+                success: function(response) {
+                    if (response.status == true) {
+                        var classes = `<option value="">Select</option>`;
+
+                        if (response.classes.length) {
+                            $.each(response.classes, function(key, value) {
+                                classes += `<option value="${value.id}">${value.name}</option>`;
+                            });
+                        }
+
+                        $('#class-id').prop('disabled', false).html(classes);
+                    } else {
+                        if (response?.errors) {
+                            showErrorMessages(response.errors);
+                        } else {
+                            message = errorMessage(response.message);
+                        }
+                    }
+                },
+                error: function() {
+                    message = errorMessage();
+                },
+                complete: function() {
+                    if (message != '') showAlertInTop(message);
+                }
+            });
+        }
+    });
+
     //---------- ON CHANGE CLASS ----------//
     $(document).on('change', '#class-id', function(e) {
         e.preventDefault();
@@ -66,6 +158,7 @@ $(document).ready(function() {
         var self = $(this);
             self_html = self.html();
             session_id = $('#session-id').val();
+            exam_id = $('#exam-id').val();
             class_id = $('#class-id').val();
             section_id = $('#section-id').val();
             group_id = $('#group-id').val();
@@ -74,6 +167,11 @@ $(document).ready(function() {
 
         if (session_id == '') {
             $("#class-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
+
+        if (exam_id == '') {
+            $("#exam-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
         }
 
