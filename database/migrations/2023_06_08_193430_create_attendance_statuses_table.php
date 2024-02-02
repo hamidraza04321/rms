@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('short_code');
             $table->string('color');
-            $table->boolean('is_absent')->default('0');
+            $table->enum('type', [ 'present', 'absent', 'leave', 'holiday' ])->default('present');
             $table->boolean('is_active')->default('1');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

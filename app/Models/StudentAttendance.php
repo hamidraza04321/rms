@@ -44,7 +44,7 @@ class StudentAttendance extends Model
     public function attendanceStatus()
     {
         return $this->belongsTo(AttendanceStatus::class)
-            ->select([ 'id', 'name', 'short_code', 'color', 'is_absent' ]);
+            ->select([ 'id', 'name', 'short_code', 'color', 'type' ]);
     }
 
     /**

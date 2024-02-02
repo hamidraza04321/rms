@@ -96,9 +96,7 @@ class AttendanceStatusController extends Controller
         $attendance_status = AttendanceStatus::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($attendance_status) {
-            $data = $request->validated();
-            $data['is_absent'] = $request->is_absent;
-            $attendance_status->update($data);
+            $attendance_status->update($request->validated());
             return response()->successMessage('Attendance Status Updated Successfully!');
         }
 

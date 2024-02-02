@@ -39,18 +39,24 @@
                     <input type="text" name="short_code" id="short-code" class="form-control" placeholder="Enter Short Code">
                   </div>
                   <div class="form-group">
+                    <label>Attendance Type <span class="error">*</span></label>
+                    <select name="type" id="type" class="form-control select2">
+                      <option value="">Select</option>
+                      <option value="present">Present</option>
+                      <option value="absent">Absent</option>
+                      <option value="leave">Leave</option>
+                      <option value="holiday">Holiday</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
                     <label>Color <span class="error">*</span></label>
                     <input type="color" name="color" id="color" class="form-control" value="#2ea4ff">
                   </div>
-                  <div class="form-group">
-                    <div class="form-check">
-                      <input class="form-check-input" name="is_absent" id="is-absent" type="checkbox" value="1">
-                      <label class="form-check-label" for="is-absent">Absent Status</label>
-                    </div>
-                  </div>
-                  <button class="btn btn-success" id="btn-save-attendance-status">Save</button>
-                  <a class="btn btn-danger" href="{{ route('attendance-status.index') }}">Back</a>
                 </form>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-success" id="btn-save-attendance-status">Save</button>
+                <a class="btn btn-danger" href="{{ route('attendance-status.index') }}">Back</a>
               </div>
               <!-- /.card-body -->
             </div>

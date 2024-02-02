@@ -39,18 +39,24 @@
                     <input type="text" name="short_code" id="short-code" class="form-control" placeholder="Enter Short Code" value="{{ $data['attendance_status']->short_code }}">
                   </div>
                   <div class="form-group">
+                    <label>Attendance Type <span class="error">*</span></label>
+                    <select name="type" id="type" class="form-control select2">
+                      <option value="">Select</option>
+                      <option @selected($data['attendance_status']->type == 'present') value="present">Present</option>
+                      <option @selected($data['attendance_status']->type == 'absent') value="absent">Absent</option>
+                      <option @selected($data['attendance_status']->type == 'leave') value="leave">Leave</option>
+                      <option @selected($data['attendance_status']->type == 'holiday') value="holiday">Holiday</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
                     <label>Color <span class="error">*</span></label>
                     <input type="color" name="color" id="color" class="form-control" value="{{ $data['attendance_status']->color }}">
                   </div>
-                  <div class="form-group">
-                    <div class="form-check">
-                      <input name="is_absent" @checked($data['attendance_status']->is_absent) class="form-check-input" id="is-absent" type="checkbox" value="1">
-                      <label class="form-check-label" for="is-absent">Absent Status</label>
-                    </div>
-                  </div>
-                  <button class="btn btn-success" id="btn-update-attendance-status">Update</button>
-                  <a class="btn btn-danger" href="{{ route('attendance-status.index') }}">Back</a>
                 </form>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-success" id="btn-update-attendance-status">Update</button>
+                <a class="btn btn-danger" href="{{ route('attendance-status.index') }}">Back</a>
               </div>
               <!-- /.card-body -->
             </div>

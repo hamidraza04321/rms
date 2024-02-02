@@ -44,6 +44,7 @@
                         <th>S No.</th>
                         <th>Name</th>
                         <th>Short Code</th>
+                        <th>Type</th>
                         <th>Color</th>
                         @can('update-attendance-status')
                           <th>Status</th>
@@ -59,6 +60,7 @@
                           <td>{{ ++$loop->index }}</td>
                           <td>{{ $attendance_status->name }}</td>
                           <td>{{ $attendance_status->short_code }}</td>
+                          <td>{{ ucwords($attendance_status->type) }}</td>
                           <td>
                             <button class="btn-color" style="background-color: {{ $attendance_status->color }};"></button>
                           </td>

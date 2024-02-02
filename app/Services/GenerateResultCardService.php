@@ -43,9 +43,14 @@ class GenerateResultCardService
     private $gradings;
 
     /**
-     * @var $exam_schedules
+     * @var $examSchedules
      */
     private $examSchedules;
+
+    /**
+     * @var $examScheduleCategories
+     */
+    private $examScheduleCategories;
 
     /**
      * @var $resultCards
@@ -77,13 +82,14 @@ class GenerateResultCardService
         $section = Section::find($this->sectionId, [ 'id', 'name' ]);
 
         $this->setGradings($class); // Gradings
-		$this->setExamSchedules(); // Exam Schedules
+        $this->setExamSchedules(); // Exam Schedules
 
         // Alert on exam schedules not found
         if (!count($this->examSchedules)) {
             return $this->alert('examSchedule', $class);
         }
 
+        $this->setExamScheduleCategories(); // Exam Schedules Categories
         $this->setStudentResultCards();
 
         // Alert on students not found
@@ -125,6 +131,22 @@ class GenerateResultCardService
     }
 
     /**
+     * Set exam schedules categories of class.
+     *
+     * @return void
+     */
+    public function setExamScheduleCategories()
+    {
+        $this->examScheduleCategories = $this->examSchedules
+            ->where('type', 'categories')
+            ->flatMap(fn($schedule) => $schedule['categories'])
+            ->pluck('name')
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    /**
      * Set students result card
      *
      * @return void
@@ -135,17 +157,18 @@ class GenerateResultCardService
 			->with([
 				'student' => function($query) {
                     $query->select('id', 'admission_no', 'first_name', 'last_name');
-                },
-                'attendances' => function($query) {
-                    $query->select('id', 'student_session_id', 'attendance_status_id')
-                        ->with([
-                            'attendanceStatus' => function($query) {
-                                $query->select('id', 'is_absent');
-                            }
-                        ])
-                        ->whereIn('attendance_date', $this->getExamDates());
                 }
 			])
+            ->withCount([
+                'attendances as total_attendances',
+                'attendances as total_present_attendances' => function($query) {
+                    $query->whereHas([
+                        'attendanceStatus' => function($query) {
+                            $query->where('type', 'present');
+                        }
+                    ]);
+                }
+            ])
 			->get();
 
         $this->mapStudentResultCardDetails();
@@ -193,6 +216,8 @@ class GenerateResultCardService
             $studentSession->student_name = $studentSession->student->fullName();
             return $studentSession;
         });
+
+        dd($this->resultCards);
     }
 
     /**

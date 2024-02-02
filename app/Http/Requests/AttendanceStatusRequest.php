@@ -43,7 +43,7 @@ class AttendanceStatusRequest extends FormRequest
             'name' => [ 'required', 'string', 'max:30', Rule::unique('attendance_statuses')->whereNull('deleted_at') ],
             'short_code' => [ 'required', 'string', 'max:5', Rule::unique('attendance_statuses')->whereNull('deleted_at') ],
             'color' => 'required|string',
-            'is_absent' => 'nullable|in:1'
+            'type' => 'required|in:present,absent,leave,holiday'
         ];
     }
 
@@ -56,21 +56,7 @@ class AttendanceStatusRequest extends FormRequest
             'name' => [ 'required', 'string', 'max:30', Rule::unique('attendance_statuses')->whereNull('deleted_at')->ignore($this->attendance_status) ],
             'short_code' => [ 'required', 'string', 'max:5', Rule::unique('attendance_statuses')->whereNull('deleted_at')->ignore($this->attendance_status) ],
             'color' => 'required|string',
-            'is_absent' => 'nullable|in:1'
+            'type' => 'required|in:present,absent,leave,holiday'
         ];
-    }
-
-    /**
-     * Handle a passed validation attempt.
-     *
-     * @return void
-     */
-    protected function passedValidation()
-    {
-        if (Route::currentRouteName() == 'attendance-status.update') {
-            $this->merge([
-                'is_absent' => ($this->input('is_absent') == 1) ? 1 : 0
-            ]);
-        }
     }
 }

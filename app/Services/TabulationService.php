@@ -239,7 +239,7 @@ class TabulationService
     public function setGradeRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id, $attendance)
     {
         // Check student is absent
-        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
+        $is_absent = $attendance?->attendanceStatus->type == 'absent';
 
         $data = (Object)[
             'exam_schedule_id' => $exam_schedule->id,
@@ -279,7 +279,7 @@ class TabulationService
     public function setRemarks(&$remarks, $exam_schedule, &$student_is_fail, $gradings, $student_session_id, &$grand_obtain, $attendance)
     {
         // Check student is absent
-        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
+        $is_absent = $attendance?->attendanceStatus->is_absent == 'absent';
         $total_marks = $exam_schedule->total_marks;
 
         $data = (Object)[
@@ -367,7 +367,7 @@ class TabulationService
      */
     public function setCategoryGradeRemarks(&$remarks, $category, $exam_schedule, $gradings, $student_session_id, $attendance)
     {
-        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
+        $is_absent = $attendance?->attendanceStatus->is_absent == 'absent';
 
         $data = (Object)[
             'exam_schedule_id' => $exam_schedule->id,
@@ -401,7 +401,7 @@ class TabulationService
      */
     public function setCategoryMarks(&$remarks, $category, $exam_schedule, &$subject_obtain_marks, $student_session_id, $attendance)
     {
-        $is_absent = ($attendance?->attendanceStatus->is_absent) ? true : false;
+        $is_absent = $attendance?->attendanceStatus->is_absent == 'absent';
 
         $data = (Object)[
             'exam_schedule_id' => $exam_schedule->id,

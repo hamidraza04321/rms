@@ -153,7 +153,7 @@ class MarkSlipService
     {
         return $student_session->attendances
             ->map(function($attendance) {
-                $attendance->is_absent = $attendance->attendanceStatus->is_absent;
+                $attendance->is_absent = $attendance->attendanceStatus->type == 'absent';
                 $attendance->color = $attendance->attendanceStatus->color;
                 $attendance->name = $attendance->attendanceStatus->name;
                 return $attendance;
@@ -180,7 +180,7 @@ class MarkSlipService
             
             $absent_students_count = $markslip->students
                 ->filter(function($student) use($exam_date) {
-                    return $student->attendances?->firstWhere('attendance_date', $exam_date)?->is_absent;
+                    return $student->attendances?->firstWhere('attendance_date', $exam_date)?->type == 'absent';
                 })
                 ->count();
 

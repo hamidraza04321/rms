@@ -9,6 +9,7 @@ $(document).ready(function() {
 		var self = $(this);
 			self_html = self.html();
 			name = $('#name').val();
+			type = $('#type').val();
 			short_code = $('#short-code').val();
 			message = '';
 			flag = true;
@@ -17,6 +18,11 @@ $(document).ready(function() {
 			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
+
+		if (type == '') {
+            $("#type").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
 
 		if (short_code == '') {
 			$("#short-code").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
@@ -38,6 +44,7 @@ $(document).ready(function() {
 				success: function(response) {
 					if (response.status == true) {
 				      	form[0].reset();
+				      	$('.select2').change();
 						toastr.success(response.message);
 					} else {
 						showErrorMessages(response.errors);
@@ -62,6 +69,7 @@ $(document).ready(function() {
 		var self = $(this);
 			self_html = self.html();
 			name = $('#name').val();
+			type = $('#type').val();
 			short_code = $('#short-code').val();
 			message = '';
 			flag = true;
@@ -70,6 +78,11 @@ $(document).ready(function() {
 			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
+
+		if (type == '') {
+            $("#type").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+        }
 
 		if (short_code == '') {
 			$("#short-code").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
