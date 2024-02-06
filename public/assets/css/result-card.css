@@ -19,6 +19,10 @@
     border-bottom-left-radius: 125px;
 }
 
+.mt-10 {
+    margin-top: 10px;
+}
+
 .header-bg {
     height: 95.5%;
     margin: 5px;
