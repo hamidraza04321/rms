@@ -21,6 +21,7 @@ class GradeTableSeeder extends Seeder
         		'percentage_from' => '90',
         		'percentage_to' => '100',
         		'color' => '#0a7aff',
+                'remarks' => 'Has shown commendable efforts',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -29,6 +30,7 @@ class GradeTableSeeder extends Seeder
         		'percentage_from' => '80',
         		'percentage_to' => '89.99',
         		'color' => '#00c05b',
+                'remarks' => 'An excellent set of results',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -37,6 +39,7 @@ class GradeTableSeeder extends Seeder
         		'percentage_from' => '70',
         		'percentage_to' => '79.99',
         		'color' => '#00b6ff',
+                'remarks' => 'Has progressed well',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -45,6 +48,7 @@ class GradeTableSeeder extends Seeder
         		'percentage_from' => '60',
         		'percentage_to' => '69.99',
         		'color' => '#ff9c0c',
+                'remarks' => 'Must invest earnest  efforts to show improvement',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -53,6 +57,7 @@ class GradeTableSeeder extends Seeder
         		'percentage_from' => '50',
         		'percentage_to' => '59.99',
         		'color' => '#d69b0e',
+                'remarks' => 'Must focus on academics seriously to improve',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -61,6 +66,7 @@ class GradeTableSeeder extends Seeder
         		'percentage_from' => '40',
         		'percentage_to' => '49.99',
         		'color' => '#0ec1c6',
+                'remarks' => 'Has shown unsatisfactory progress',
         		'is_default' => 1,
         		'is_fail' => 0
         	],
@@ -69,6 +75,7 @@ class GradeTableSeeder extends Seeder
         		'percentage_from' => '0',
         		'percentage_to' => '39.99',
         		'color' => '#ff0018e3',
+                'remarks' => 'Has shown unsatisfactory progress',
         		'is_default' => 1,
         		'is_fail' => 1
         	]

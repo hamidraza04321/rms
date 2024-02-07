@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('percentage_from', 11);
             $table->string('percentage_to', 11);
             $table->string('color');
+            $table->string('remarks');
             $table->boolean('is_fail')->default('0');
             $table->boolean('is_default')->default('0');
             $table->boolean('is_active')->default('1');

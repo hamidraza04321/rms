@@ -42,10 +42,12 @@ class GradeRequest extends FormRequest
     public function store()
     {
         return [
-            'class_id' => $this->classRule(),
+            'is_default' => 'required|in:0,1',
+            'class_id' => $this->classRule('required_if:is_default,0'),
             'grade' => [ 'required', 'max:4', Rule::unique('grades')->whereNull('deleted_at')->where('class_id', $this->class_id) ],
             'percentage_from' => 'required|numeric',
             'percentage_to' => 'required|numeric|gt:percentage_from',
+            'remarks' => 'required|max:120',
             'color' => 'required|string',
             'is_fail' => 'required|in:0,1'
         ];
@@ -57,10 +59,12 @@ class GradeRequest extends FormRequest
     public function update()
     {
         return [
-            'class_id' => $this->classRule(),
+            'is_default' => 'required|in:0,1',
+            'class_id' => $this->classRule('required_if:is_default,0'),
             'grade' => [ 'required', 'max:4', Rule::unique('grades')->whereNull('deleted_at')->where('class_id', $this->class_id)->ignore(Route::getCurrentRoute()->parameters['grade']) ],
             'percentage_from' => 'required|numeric',
             'percentage_to' => 'required|numeric|gt:percentage_from',
+            'remarks' => 'required|max:120',
             'color' => 'required|string',
             'is_fail' => 'required|in:0,1'
         ];

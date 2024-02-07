@@ -8,16 +8,23 @@ $(document).ready(function() {
 
 		var self = $(this);
 			self_html = self.html();
+			is_default = $('#is-default').val();
 			class_id = $('#class-id').val();
 			grade = $('#grade').val();
 			percentage_from = $('#percentage-from').val();
 			percentage_to = $('#percentage-to').val();
 			color = $('#color').val();
+			remarks = $('#remarks').val();
 			is_fail = $('#is-fail').val();
 			message = '';
 			flag = true;
 
-		if (class_id == '') {
+		if (is_default == '') {
+			$("#is-default").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+		}
+
+		if (class_id == '' && is_default != '1') {
 			$("#class-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
 		}
@@ -36,7 +43,7 @@ $(document).ready(function() {
 			$("#percentage-to").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
 		} else {
-			if (parseInt(percentage_to) <= parseInt(percentage_from)) {
+			if (parseFloat(percentage_to) <= parseFloat(percentage_from)) {
 				$("#percentage-to").addClass('is-invalid').after('<span class="invalid-feedback">The percentage to is must be greater than from percentage !</span>');
 	            flag = false;
 			}
@@ -44,6 +51,11 @@ $(document).ready(function() {
 
 		if (color == '') {
 			$("#color").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+		}
+
+		if (remarks == '') {
+			$("#remarks").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
 		}
 
@@ -91,16 +103,18 @@ $(document).ready(function() {
 
 		var self = $(this);
 			self_html = self.html();
+			is_default = $('#is-default').val();
 			class_id = $('#class-id').val();
 			grade = $('#grade').val();
 			percentage_from = $('#percentage-from').val();
 			percentage_to = $('#percentage-to').val();
 			color = $('#color').val();
+			remarks = $('#remarks').val();
 			is_fail = $('#is-fail').val();
 			message = '';
 			flag = true;
 
-		if (class_id == '') {
+		if (class_id == '' && is_default != '1') {
 			$("#class-id").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
 		}
@@ -119,7 +133,7 @@ $(document).ready(function() {
 			$("#percentage-to").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
 		} else {
-			if (percentage_to <= percentage_from) {
+			if (parseFloat(percentage_to) <= parseFloat(percentage_from)) {
 				$("#percentage-to").addClass('is-invalid').after('<span class="invalid-feedback">The percentage to is must be greater than from percentage !</span>');
 	            flag = false;
 			}
@@ -132,6 +146,11 @@ $(document).ready(function() {
 
 		if (is_fail == '') {
 			$("#is-fail").siblings('span.select2-container').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+            flag = false;
+		}
+
+		if (remarks == '') {
+			$("#remarks").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
             flag = false;
 		}
 
@@ -351,5 +370,18 @@ $(document).ready(function() {
 		 		});
 		 	}
 		 });
+	});
+
+	//---------- ON CHANGE DEFAULT GRADE ----------//
+	$(document).on('change', '#is-default', function(e) {
+		e.preventDefault();
+
+		$('#class-id').val('').change().siblings('span.select2-container').removeClass('is-invalid');
+
+		if ($(this).val() == '1') {
+			$('#class-id').prop('disabled', true);
+		} else {
+			$('#class-id').prop('disabled', false);
+		}
 	});
 });

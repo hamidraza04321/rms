@@ -162,7 +162,11 @@ class GradeController extends Controller
                 return response()->successMessage('Grade Restored Successfully !');
             }
 
-            return response()->errorMessage("The Grade ( {$grade->grade} ) has already exists in class ( {$grade->class->name} ) !");
+            $message = ($grade->is_default)
+                ? "The Grade ( {$grade->grade} ) has already exists in default gradings !"
+                : "The Grade ( {$grade->grade} ) has already exists in class ( {$grade->class->name} ) !";
+
+            return response()->errorMessage($message);
         }
 
         return response()->errorMessage('Grade not Found !');

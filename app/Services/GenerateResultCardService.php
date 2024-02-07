@@ -240,7 +240,10 @@ class GenerateResultCardService
 			->get();
 
         $this->setStudentResultCardDetails();
-        $this->setStudentResultCardRanking();
+
+        if (!$this->has_all_sub_categories_grading) {
+            $this->setStudentResultCardRanking();
+        }
     }
 
     /**

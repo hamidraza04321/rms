@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Scopes\HasClass;
+use App\Models\Scopes\HasClassGrade;
 
 class Grade extends Model
 {
@@ -30,6 +30,7 @@ class Grade extends Model
         'percentage_from',
         'percentage_to',
         'color',
+        'remarks',
         'is_fail',
         'is_default',
         'is_active',
@@ -60,6 +61,6 @@ class Grade extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new HasClass);
+        static::addGlobalScope(new HasClassGrade);
     }
 }

@@ -46,6 +46,7 @@
                         <th>Percentage</th>
                         <th>Color</th>
                         <th>Pass / Fail</th>
+                        <th>Default</th>
                         @can('update-grade-status')
                           <th>Status</th>
                         @endcan
@@ -57,7 +58,7 @@
                     <tbody>
                       @foreach($data['grades'] as $grade)
                         <tr>
-                          <td>{{ $grade->class->name }}</td>
+                          <td>{{ $grade->class->name ?? '--' }}</td>
                           <td>{{ $grade->grade }}</td>
                           <td>{{ $grade->percentage_from }} % to {{ $grade->percentage_to }} %</td>
                           <td>
@@ -68,6 +69,13 @@
                               <button class="btn btn-sm btn-danger">Fail</button>
                             @else
                               <button class="btn btn-sm btn-success">Pass</button>
+                            @endif
+                          </td>
+                          <td>
+                            @if($grade->is_default)
+                              <button class="btn btn-sm btn-success">Yes</button>
+                            @else
+                              <button class="btn btn-sm btn-danger">No</button>
                             @endif
                           </td>
                           @can('update-grade-status')
