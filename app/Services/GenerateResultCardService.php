@@ -225,7 +225,7 @@ class GenerateResultCardService
                 },
                 'attendances' => function($query) {
                     $query->select('id', 'student_session_id', 'attendance_status_id', 'attendance_date')
-                        ->with('attendanceStatus', fn($query) => $query->select('id', 'type'))
+                        ->with('attendanceStatus', fn($query) => $query->select('id', 'type', 'short_code', 'color'))
                         ->whereIn('attendance_date', $this->getExamDates());
                 }
 			])
@@ -310,7 +310,7 @@ class GenerateResultCardService
             $this->exam_schedule = $exam_schedule; // Set exam schedule
 
             // Check student is absent in exam
-            $attendance = $this->student_session->attendances->firstWhere('attendance_date', $exam_schedule->date);
+            $attendance = $this->student_session->attendances->firstWhere('attendance_date', $exam_schedule->date->format('Y-m-d'));
             $this->has_student_absent_in_exam = ($attendance?->attendanceStatus->type == 'absent') ? true : false;
             $this->absent_status = ($this->has_student_absent_in_exam) ? $attendance->attendanceStatus->short_code : '';
             $this->absent_status_color = ($this->has_student_absent_in_exam) ? $attendance->attendanceStatus->color : '';
@@ -362,7 +362,9 @@ class GenerateResultCardService
         $remarks->max_marks = $this->getExamScheduleMaxRemarks();
         $remarks->sub_categories = $this->getExamScheduleSubCategoriesRemarks();
         $remarks->total_marks = $this->exam_schedule->total_marks;        
-        $remarks->obtain_marks = ($this->exam_schedule->has_all_categories_gradings) ? $this->empty_cell_value : array_sum($remarks->sub_categories);
+        $remarks->obtain_marks = ($this->exam_schedule->has_all_categories_gradings) 
+            ? $this->empty_cell_value 
+            : $this->getSubCategoriesSum($remarks->sub_categories);
         
         // student is fail when the attendance is absent in exam day
         $remarks->is_fail = $this->has_student_absent_in_exam;
@@ -377,7 +379,7 @@ class GenerateResultCardService
             // then the student is fail in exam.
             if ($grade) {
                 $remarks->grade = $grade->grade;
-                $remarks->is_fail = ($grade->is_fail && !$this->has_student_absent_in_exam) ? true : false;
+                $remarks->is_fail = ($grade->is_fail || $this->has_student_absent_in_exam) ? true : false;
             }
         }
 
@@ -400,8 +402,12 @@ class GenerateResultCardService
         $remarks->max_marks = $this->getExamScheduleMaxRemarks();
         $remarks->sub_categories = $this->getExamScheduleSubCategoriesRemarks();
         $remarks->total_marks = $this->exam_schedule->total_marks;
+
+        // Get obtain marks of exam
         $obtain_marks = $this->exam_schedule->remarks->firstWhere('student_session_id', $this->student_session->id);
-        $remarks->obtain_marks = ($obtain_marks) ? $obtain_marks->remarks : $this->empty_cell_value;
+        $remarks->obtain_marks = ($obtain_marks) 
+            ? round($obtain_marks->remarks, 2) 
+            : $this->empty_cell_value;
         
         // student is fail when the attendance is absent in exam day
         $remarks->is_fail = $this->has_student_absent_in_exam;
@@ -412,7 +418,7 @@ class GenerateResultCardService
 
         if ($grade) {
             $remarks->grade = $grade->grade;
-            $remarks->is_fail = ($grade->is_fail && !$this->has_student_absent_in_exam) ? true : false;
+            $remarks->is_fail = ($grade->is_fail || $this->has_student_absent_in_exam) ? true : false;
         }
 
         $marks_subjects[] = $remarks;
@@ -457,8 +463,14 @@ class GenerateResultCardService
      */
     public function getExamScheduleSubCategoriesRemarks()
     {
+        // Empty Cell value of table column
+        $empty_cell = (Object)[
+            'has_remarks' => false,
+            'remarks' => $this->empty_cell_value
+        ];
+
         if ($this->exam_schedule->type == 'marks') {
-            return array_map(fn($value) => $this->empty_cell_value, $this->exam_schedule_categories);
+            return array_map(fn($value) => $empty_cell, $this->exam_schedule_categories);
         }
 
         $remarks = [];
@@ -466,14 +478,19 @@ class GenerateResultCardService
             $category = $this->exam_schedule->categories->firstWhere('name', $category);
 
             if ($category) {
-                $remarks[] = ($category->is_grade == 1)
+                $obtain_marks = ($category->is_grade == 1)
                     ? $this->getExamScheduleSubCategoryGradeMarks($category)
                     : $this->getExamScheduleSubCategoryObtainMarks($category);
+
+                $remarks[] = (Object)[
+                    'has_remarks' => true,
+                    'remarks' => $obtain_marks
+                ];
                 
                 continue;
             }
 
-            $remarks[] = $this->empty_cell_value;
+            $remarks[] = $empty_cell;
         }
 
         return $remarks;
@@ -546,7 +563,7 @@ class GenerateResultCardService
         $obtain_marks = $category->remarks->firstWhere('student_session_id', $this->student_session->id);
 
         if ($obtain_marks) {
-            return $obtain_marks->remarks;
+            return round($obtain_marks->remarks, 2);
         }
 
         return $this->empty_cell_value;
@@ -562,7 +579,7 @@ class GenerateResultCardService
     {
         $total_marks = (is_numeric($total_marks)) ? round($total_marks, 2) : 0;
         $obtain_marks = (is_numeric($obtain_marks)) ? round($obtain_marks, 2) : 0;
-        $percentage = ($obtain_marks) ? ($obtain_marks * 100) / $total_marks : 0;
+        $percentage = ($obtain_marks && $total_marks) ? ($obtain_marks * 100) / $total_marks : 0;
 
         return $this->getGradeByPercentage($percentage);
     }
@@ -633,6 +650,19 @@ class GenerateResultCardService
     }
 
     /**
+     * Get sub categories sum
+     *
+     * @param $sub_categories  array
+     * @return int
+     */
+    public function getSubCategoriesSum($sub_categories)
+    {
+        return collect($sub_categories)
+            ->filter(fn($category) => is_numeric($category->remarks))
+            ->sum('remarks');
+    }
+
+    /**
      * Where conditions
      * 
      * @param $for  string
@@ -660,7 +690,7 @@ class GenerateResultCardService
             ];
 
             // Add Group when exists
-            if ($this->group_id) $where['groupId'] = $this->group_id;
+            if ($this->group_id) $where['group_id'] = $this->group_id;
         }
 
         return $where;

@@ -58,13 +58,13 @@
                           <tr>
                             <td width="100%" class="subject-name">{{ $marks_subject->subject }}</td>
                             <td class="obt-marks text-bold">Obt. Marks</td>
-                            @foreach($marks_subject->sub_categories as $remarks)
-                              <td>{{ $remarks }}</td>
+                            @foreach($marks_subject->sub_categories as $category)
+                              @if($marks_subject->is_absent && $category->has_remarks)
+                                <td style="color: {{ $marks_subject->absent_status_color }};">{{ $marks_subject->absent_status }}</td>
+                              @else
+                                <td>{{ $category->remarks }}</td>
+                              @endif
                             @endforeach
-                            @if(!$data['has_all_sub_categories_gradings'])
-                              <td>--</td>
-                              <td>{{ $marks_subject->obtain_marks }}</td>
-                            @endif
                           </tr>
                         @else
                           <tr>
@@ -78,11 +78,20 @@
                           </tr>
                           <tr>
                             <td class="obt-marks">Obt. Marks</td>
-                            @foreach($marks_subject->sub_categories as $remarks)
-                              <td>{{ $remarks }}</td>
+                            @foreach($marks_subject->sub_categories as $category)
+                              @if($marks_subject->is_absent && $category->has_remarks)
+                                <td style="color: {{ $marks_subject->absent_status_color }};">{{ $marks_subject->absent_status }}</td>
+                              @else
+                                <td>{{ $category->remarks }}</td>
+                              @endif
                             @endforeach
-                            <td>{{ $marks_subject->grade }}</td>
-                            <td>{{ $marks_subject->obtain_marks }}</td>
+                            @if($marks_subject->is_absent)
+                              <td>--</td>
+                              <td style="color: {{ $marks_subject->absent_status_color }};">{{ $marks_subject->absent_status }}</td>
+                            @else
+                              <td>{{ $marks_subject->grade }}</td>
+                              <td @class([ 'color-red' => $marks_subject->is_fail ])>{{ $marks_subject->obtain_marks }}</td>
+                            @endif
                           </tr>
                         @endif
                       @endforeach
@@ -138,7 +147,11 @@
                           @foreach($result_card->result->grading_subjects as $grading_subject)
                             <tr>
                               <td>{{ $grading_subject->subject }}</td>
-                              <td>{{ $grading_subject->obtain_grade }}</td>
+                              @if($grading_subject->is_absent)
+                                <td style="color: {{ $grading_subject->absent_status_color }};">{{ $grading_subject->absent_status }}</td>
+                              @else
+                                <td>{{ $grading_subject->obtain_grade }}</td>
+                              @endif
                             </tr>
                           @endforeach
                         </tbody>
