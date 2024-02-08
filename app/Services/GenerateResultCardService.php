@@ -268,11 +268,11 @@ class GenerateResultCardService
      */
     public function setGradings($class)
     {
-        $this->gradings = $class->gradings;
+        $this->gradings = $class->grades;
 
         // Apply Default Gradings where grade not exists in class
         if (!count($class->grades)) {
-            $this->gradings = Grade::withoutGlobalScopes()->where('is_default', 1)->get();
+            $this->gradings = Grade::where('is_default', 1)->get();
         }
     }
 

@@ -5,7 +5,7 @@
         <div class="card-header">
           <div class="card-title"><i class="fa fa-file"></i> Result Cards</div>
           <div class="card-tools">
-            <button class="btn btn-success" id="btn-print-result-card"><i class="fa fa-print"></i> Print Result Cards</button>
+            <button class="btn btn-success btn-print-result-card"><i class="fa fa-print"></i> Print Result Cards</button>
           </div>
         </div>
         <div class="card-body" style="width: 100%; overflow: auto;">
@@ -182,6 +182,9 @@
           @endforeach
         </div>
         <!-- /.card-body -->
+        <div class="card-footer">
+          <button style="float: right;" class="btn btn-success btn-print-result-card"><i class="fa fa-print"></i> Print Result Cards</button>
+        </div>
       </div>
     @else
       <div class="alert alert-danger text-center">

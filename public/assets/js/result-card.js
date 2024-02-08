@@ -223,7 +223,7 @@ $(document).ready(function() {
     });
 
     //---------- ON CLICK PRINT RESULT CARDS ----------//
-    $(document).on('click', '#btn-print-result-card', function(e) {
+    $(document).on('click', '.btn-print-result-card', function(e) {
         e.preventDefault();
         var result_body = '';
             result_cards = $('.result-card').length;
@@ -246,7 +246,7 @@ $(document).ready(function() {
               <link rel="stylesheet" href="${base_url}/assets/dist/css/adminlte.min.css">
               <link rel="stylesheet" href="${base_url}/assets/css/result-card.css">
             </head>
-            <body>
+            <body onload="window.print()">
                 ${result_body}
             </body>
             </html>

@@ -63,13 +63,13 @@
                     @foreach($data['exam_schedules'] as $exam_schedule)
                       <th class="text-center" @if($exam_schedule->has_colspan) colspan="{{ $exam_schedule->colspan }}" @endif>{{ $exam_schedule->subject->name }}</th>
                     @endforeach
-                    @if(!$data['has_all_gradings'])
+                    @if(!$data['has_all_gradings'] && !$data['has_all_category_gradings'])
                       <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
                     @else
-                      <th>Result</th>
+                      <th>{{ ($data['has_all_gradings']) ? 'Result' : '' }}</th>
                     @endif
                   </tr>
                   @if(!$data['has_all_gradings'])
@@ -96,11 +96,15 @@
                           @break
                         @endswitch
                       @endforeach
-                      <th class="rotate text-center">Grand Total</th>
+                      @if(!$data['has_all_gradings'] && !$data['has_all_category_gradings'])
+                        <th class="rotate text-center">Grand Total</th>
+                      @endif
                       <th class="rotate text-center">Result</th>
-                      <th class="rotate text-center">Grade</th>
-                      <th class="rotate text-center">Percentage %</th>
-                      <th class="rotate text-center">Rank</th>
+                      @if(!$data['has_all_gradings'] && !$data['has_all_category_gradings'])
+                        <th class="rotate text-center">Grade</th>
+                        <th class="rotate text-center">Percentage %</th>
+                        <th class="rotate text-center">Rank</th>
+                      @endif
                     </tr>
                     @if(!$data['has_all_category_gradings'])
                       <tr>

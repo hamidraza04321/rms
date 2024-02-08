@@ -27,7 +27,7 @@ class TabulationService
 
         // If gradings are empty run default gradings
         if (!count($class->grades)) {
-            $gradings = Grade::withoutGlobalScopes()->where('is_default', 1)->get();
+            $gradings = Grade::where('is_default', 1)->get();
         }
 
         $exam_class = $this->getExamClass($request);
