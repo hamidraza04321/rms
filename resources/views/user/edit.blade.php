@@ -129,11 +129,13 @@
                         </div>
                       </div>
                     </div>
-                    <button class="btn btn-success" id="btn-update-user">Update</button>
-                    <a class="btn btn-danger" href="{{ route('user.index') }}">Back</a>
                   </form>
                 </div>
                 <!-- /.card-body -->
+                <div class="card-footer">
+                  <button class="btn btn-success" id="btn-update-user">Update</button>
+                  <a class="btn btn-danger" href="{{ route('user.index') }}">Back</a>
+                </div>
               </div>
             @else
               <div class="alert alert-warning w-100">

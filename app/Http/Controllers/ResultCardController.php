@@ -13,6 +13,12 @@ use App\Models\Exam;
 
 class ResultCardController extends Controller
 {
+    function __construct()
+    {
+        parent::__construct();
+        $this->middleware('permission:print-result-card', [ 'only' => [ 'print', 'getResultCards' ] ]);
+    }
+
 	/**
 	 * Print result card
 	 * 

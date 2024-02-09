@@ -399,6 +399,13 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 12,
 	        	'name' => 'Tabulation Sheet',
 	        	'permission' => 'tabulation-sheet'
+	        ],
+
+	        // RESULT CARD MODULE
+	        [
+	        	'module_id' => 13,
+	        	'name' => 'Print',
+	        	'permission' => 'print-result-card'
 	        ]
     	];
 

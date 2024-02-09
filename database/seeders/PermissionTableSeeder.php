@@ -126,7 +126,10 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'edit-mark-slip' ],
             [ 'name' => 'delete-mark-slip' ],
             [ 'name' => 'print-mark-slip' ],
-            [ 'name' => 'tabulation-sheet' ]
+            [ 'name' => 'tabulation-sheet' ],
+
+            // RESULT CARD
+            [ 'name' => 'print-result-card' ]
         ];
 
         // TIMESTAMPS

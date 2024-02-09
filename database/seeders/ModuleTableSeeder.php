@@ -63,6 +63,10 @@ class ModuleTableSeeder extends Seeder
             [
                 'name' => 'Mark Slip',
                 'order_level' => 12
+            ],
+            [
+                'name' => 'Result Card',
+                'order_level' => 13
             ]
         ];
 

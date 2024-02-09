@@ -1,5 +1,12 @@
 @extends('layout.app')
 @section('page-title', $data['page_title'])
+@section('styles')
+<style>
+  .form-check-label {
+    font-size: 12px;
+  }
+</style>
+@endsection
 @section('main-content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -82,11 +89,13 @@
                         </div>
                       </div>
                     </div>
-                    <button class="btn btn-success" id="btn-update-role">Update</button>
-                    <a class="btn btn-danger" href="{{ route('role.index') }}">Back</a>
                   </form>
                 </div>
                 <!-- /.card-body -->
+                <div class="card-footer">
+                  <button class="btn btn-success" id="btn-update-role">Update</button>
+                  <a class="btn btn-danger" href="{{ route('role.index') }}">Back</a>
+                </div>
               </div>
             @else
               <div class="alert alert-warning w-100">
