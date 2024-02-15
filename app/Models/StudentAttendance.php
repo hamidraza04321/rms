@@ -41,6 +41,11 @@ class StudentAttendance extends Model
     	'updated_at'
     ];
 
+    public function studentSession()
+    {
+        return $this->belongsTo(StudentSession::class);
+    }
+
     public function attendanceStatus()
     {
         return $this->belongsTo(AttendanceStatus::class)
