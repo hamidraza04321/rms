@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\DashboardRequest;
 use App\Models\Scopes\ActiveScope;
 use App\Models\StudentSession;
 use App\Services\DashboardService;
@@ -30,7 +30,7 @@ class DashboardController extends Controller
         // Get Graph data
         $from_date = date('Y-m-01');
         $to_date = date('Y-m-t');
-        $student_attendances = (new DashboardService)->getAttendaceGraphData($from_date, $to_date);
+        $student_attendances = (new DashboardService)->getAttendanceGraphData($from_date, $to_date);
 
     	$data = [
     		'total_users' => $total_users,
@@ -43,5 +43,22 @@ class DashboardController extends Controller
         ];
 
     	return view('dashboard', compact('data'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param \App\Http\Requests\DashboardRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getAttendanceGraphData(DashboardRequest $request)
+    {
+        $from_date = date('Y-m-d', strtotime($request->from_date));
+        $to_date = date('Y-m-d', strtotime($request->to_date));
+        $student_attendances = (new DashboardService)->getAttendanceGraphData($from_date, $to_date);
+
+        return response()->success([
+            'student_attendances' => $student_attendances
+        ]);
     }
 }

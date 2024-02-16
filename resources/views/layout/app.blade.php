@@ -22,8 +22,6 @@
   <link rel="stylesheet" href="{{ url('/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ url('/assets/plugins/select2/css/select2.min.css') }}">
-  <!-- Apexcharts -->
-  <link rel="stylesheet" href="{{ url('/assets/plugins/apexcharts/css/apexcharts.css') }}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -100,8 +98,6 @@
 <script src="{{ url('/assets/plugins/select2/js/select2.min.js') }}"></script>
 <!-- Toastr -->
 <script src="{{ url('/assets/plugins/toastr/toastr.min.js') }}"></script>
-<!-- Apexcarts -->
-<script src="{{ url('/assets/plugins/apexcharts/js/apexcharts.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ url('/assets/dist/js/adminlte.js') }}"></script>
 <!-- AdminLTE for demo purposes -->

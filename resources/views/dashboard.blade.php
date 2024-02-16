@@ -1,5 +1,29 @@
 @extends('layout.app')
 @section('page-title', $data['page_title'])
+@section('styles')
+<style type="text/css">
+  /* Media query for dark mode */
+  @media (prefers-color-scheme: dark) {
+    .dark-mode .apexcharts-text {
+      fill: #fff;
+    }
+    .dark-mode .apexcharts-tooltip,
+    .dark-mode .apexcharts-tooltip-title {
+      background-color: #333 !important;
+      color: #fff !important;
+      border: 1px solid #555 !important;
+    }
+    .dark-mode .apexcharts-legend-text {
+      color: #fff !important;
+      border: 1px solid #555 !important;
+    }
+  }
+</style>
+<!-- Apexcharts -->
+<link rel="stylesheet" href="{{ url('/assets/plugins/apexcharts/css/apexcharts.css') }}">
+<!-- daterange picker -->
+<link rel="stylesheet" href="{{ url('/assets/plugins/daterangepicker/daterangepicker.css') }}">
+@endsection
 @section('main-content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -83,13 +107,25 @@
         <div class="row">
           <div class="col-lg-6">
             <div class="card">
-              <div class="card-header border-0">
+              <div class="card-header">
                 <div class="d-flex justify-content-between">
                   <h3 class="card-title">Attendance Graph</h3>
                 </div>
               </div>
               <div class="card-body">
                 <div class="position-relative mb-4">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="far fa-calendar-alt"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-control float-right" id="attendance-date-range" style="margin-right: 10px;">
+                      <button class="btn btn-primary" id="btn-load-attendance-graph" data-url="{{ route('dashboard.get.attendance.graph.data') }}">Load Graph</button>
+                    </div>
+                    <!-- /.input group -->
+                  </div>
                   <div id="attendance-chart"></div>
                 </div>
               </div>
@@ -123,7 +159,7 @@
           <!-- /.col-md-6 -->
           <div class="col-lg-6">
             <div class="card">
-              <div class="card-header border-0">
+              <div class="card-header">
                 <div class="d-flex justify-content-between">
                   <h3 class="card-title">Total Students</h3>
                 </div>
@@ -141,8 +177,15 @@
   </div>
 @endsection
 @section('scripts')
+<!-- Apexcarts -->
+<script src="{{ url('/assets/plugins/apexcharts/js/apexcharts.min.js') }}"></script>
+<!-- date-range-picker -->
+<script src="{{ url('/assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<!-- Dashboard JS --> 
+<script src="{{ url('/assets/js/dashboard.js') }}"></script>
 <script>
   $(document).ready(function() {
+
     var attendances = @json($data['student_attendances']);
     var series = [];
 
@@ -156,42 +199,42 @@
     var options = {
       series: series,
       chart: {
-      type: 'bar',
-      height: 350
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: '55%',
-        endingShape: 'rounded'
+        type: 'bar',
+        height: 350
       },
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ['transparent']
-    },
-    xaxis: {
-      categories: attendances.categories,
-    },
-    yaxis: {
-      title: {
-        text: 'Percentage %'
-      }
-    },
-    fill: {
-      opacity: 1
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return val + " %"
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      xaxis: {
+        categories: attendances.categories,
+      },
+      yaxis: {
+        title: {
+          text: 'Percentage %'
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return val + " %"
+          }
         }
       }
-    }
     };
 
     var chart = new ApexCharts(document.querySelector("#attendance-chart"), options);

@@ -19,8 +19,8 @@ class StudentAttendanceTableSeeder extends Seeder
     {
     	// Create Attendance from date to date
     	$dates = [];
-        $from_date = date('Y-m-d', strtotime('-2 days'));
-        $to_date = date('Y-m-t', strtotime('+2 days'));
+        $from_date = date('Y-m-d', strtotime('-10 days'));
+        $to_date = date('Y-m-t', strtotime('+10 days'));
 
         $period = CarbonPeriod::between($from_date, $to_date);
         foreach ($period as $date) {

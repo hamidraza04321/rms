@@ -18,7 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
 	
 	//---------- DASHBOARD ROUTES ----------//
-	Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard.index');
+	Route::controller(DashboardController::class)->group(function(){
+		Route::get('/', 'index')->name('dashboard.index');
+		Route::post('/get-attendance-graph-data', 'getAttendanceGraphData')->name('dashboard.get.attendance.graph.data');
+	});
 
 	//---------- SESSION ROUTES ----------//
 	Route::resource('/session', SessionController::class, ['except' => ['show']]);

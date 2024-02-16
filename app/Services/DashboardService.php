@@ -15,7 +15,7 @@ class DashboardService
 	 * @param $to_date 		string
 	 * @return 				array
 	 */
-	public function getAttendaceGraphData($from_date, $to_date)
+	public function getAttendanceGraphData($from_date, $to_date)
 	{
 		$graph_data = [];
 
