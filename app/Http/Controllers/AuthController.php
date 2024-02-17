@@ -30,7 +30,14 @@ class AuthController extends Controller
      */
     public function attemptLogin(AuthRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        // Check field type is email or username
+        $field_type = filter_var($request->login , FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        // Set credentails according to field type
+        $credentials = [
+            $field_type => $request->login,
+            'password' => $request->password
+        ];
 
     	if (Auth::attempt($credentials, $request->has('remember'))) {
     		return response()->success([

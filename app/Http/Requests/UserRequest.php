@@ -41,8 +41,12 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => [ 'required', 'string', 'max:60', Rule::unique('users')->whereNull('deleted_at') ],
+            'username' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at') ],
             'email' => [ 'required', 'string', 'email', Rule::unique('users')->whereNull('deleted_at') ],
             'password' => 'required|min:6|string',
+            'phone_no' => 'nullable|string',
+            'designation' => 'nullable|string',
+            'image' => 'nullable|image',
             'role_id' => 'required|exists:roles,id|not_in:1', // Ignore Super Admin
             'class_id.*' => 'nullable|exists:classes,id',
             'class_section_id.*' => 'nullable|exists:class_sections,id',
@@ -58,7 +62,11 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => [ 'required', 'string', 'max:60', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
+            'username' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
             'email' => [ 'required', 'string', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user) ],
+            'phone_no' => 'nullable|string',
+            'designation' => 'nullable|string',
+            'image' => 'nullable|image',
             'password' => 'nullable|min:6|string',
             'role_id' => 'required|exists:roles,id|not_in:1', // Ignore Super Admin
             'class_id.*' => 'nullable|exists:classes,id',

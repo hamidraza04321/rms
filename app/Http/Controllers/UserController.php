@@ -60,10 +60,21 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        // Upload user image
+        $file_name = '';
+        if ($request->image) {
+            $file_name = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('uploads/users'), $file_name);
+        }
+
         // Create User
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
+            'phone_no' => $request->phone_no,
+            'designation' => $request->designation,
+            'image' => $file_name,
             'password' => bcrypt($request->password)
         ]);
 
@@ -141,9 +152,25 @@ class UserController extends Controller
         $user = User::withoutGlobalScope(ActiveScope::class)->find($id);
 
         if ($user) {
+            // Default Image
+            $file_name = $user->image;
+
+            if ($request->image) {
+                // Unlink Image
+                $image_path = public_path('uploads/users/'.$user->image);
+                if (is_file($image_path)) unlink($image_path);
+                
+                $file_name = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('uploads/users'), $file_name);
+            }
+
             $data = [
                 'name' => $request->name,
-                'email' => $request->email
+                'username' => $request->username,
+                'email' => $request->email,
+                'phone_no' => $request->phone_no,
+                'designation' => $request->designation,
+                'image' => $file_name
             ];
 
             // If password exists in request update password

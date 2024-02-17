@@ -13,20 +13,14 @@ $(document).ready(function() {
 		$('.input-group').addClass('mb-3');
 
 		var self = $(this);
-			email = $('#email').val();
+			login = $('#login').val();
 			password = $('#password').val();
 			flag = true;
 
-		if (email == '') {
-			$('#email').addClass('is-invalid');
-			$('#email').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The field is required !</span>');
+		if (login == '') {
+			$('#login').addClass('is-invalid');
+			$('#login').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The field is required !</span>');
 			flag = false;
-		} else {
-			if (!isValidEmail(email)) {
-				$('#email').addClass('is-invalid');
-				$('#email').parents('.input-group').removeClass('mb-3').after('<span class="invalid-feedback"> The email is not valid !</span>');
-				flag = false;
-			}
 		}
 
 		if (password == '') {

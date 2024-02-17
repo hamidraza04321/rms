@@ -61,6 +61,7 @@ $(document).ready(function() {
 		var self = $(this);
 			self_html = self.html();
 			name = $('#name').val();
+			username = $('#username').val();
 			email = $('#email').val();
 			password = $('#password').val();
 			role_id = $('#role-id').val();
@@ -69,6 +70,11 @@ $(document).ready(function() {
 
 		if (name == '') {
 			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (username == '') {
+			$("#username").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
@@ -93,12 +99,16 @@ $(document).ready(function() {
 			
 			var form = $('#create-user-form');
 				url = form.attr('action');
-				formData = form.serialize();
+				formData = new FormData(form[0]);
 			
 			$.ajax({
 				url: url,
 				type: 'POST',
 				data: formData,
+				enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
 				success: function (response) {
 					if (response.status == true) {
 						form[0].reset();
@@ -132,6 +142,7 @@ $(document).ready(function() {
 		var self = $(this);
 			self_html = self.html();
 			name = $('#name').val();
+			username = $('#username').val();
 			email = $('#email').val();
 			role_id = $('#role-id').val();
 			message = '';
@@ -139,6 +150,11 @@ $(document).ready(function() {
 
 		if (name == '') {
 			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (username == '') {
+			$("#username").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
@@ -158,12 +174,16 @@ $(document).ready(function() {
 			
 			var form = $('#update-user-form');
 				url = form.attr('action');
-				formData = form.serialize();
+				formData = new FormData(form[0]);
 			
 			$.ajax({
 				url: url,
-				type: 'PUT',
+				type: 'POST',
 				data: formData,
+				enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
 				success: function (response) {
 					if (response.status == true) {
 						if (password != '') $('#password').val('');

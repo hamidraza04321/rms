@@ -29,27 +29,33 @@
                 <div class="card-title"><i class="fa fa-user-plus"></i> {{ $data['page_title'] }}</div>
               </div>
               <div class="card-body">
-                <form action="{{ route('user.store') }}" id="create-user-form">
+                <form action="{{ route('user.store') }}" id="create-user-form" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label>Name <span class="error">*</span></label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="Enter Name">
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>User Name <span class="error">*</span></label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label>Email <span class="error">*</span></label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email">
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label>Password <span class="error">*</span></label>
                         <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password">
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label>Role <span class="error">*</span></label>
                         <select name="role_id" id="role-id" class="form-control select2">
@@ -58,6 +64,24 @@
                             <option value="{{ $role->id }}">{{ $role->name }}</option>
                           @endforeach
                         </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Phone No</label>
+                        <input type="text" name="phone_no" id="phone-no" class="form-control" placeholder="Enter Phone No">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Designation</label>
+                        <input type="text" name="designation" id="designation" class="form-control" placeholder="Enter Designation">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>User Image</label>
+                        <input type="file" name="image" id="image" class="form-control">
                       </div>
                     </div>
                   </div>
