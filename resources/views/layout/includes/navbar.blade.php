@@ -22,7 +22,7 @@
     </li>
     <li class="nav-item">
       <a data-url="{{ route('logout') }}" class="nav-link" id="btn-logout" role="button">
-        <i class="fas fa-power-off"></i>
+        <i class="fas fa-power-off"></i> &nbsp; Logout
       </a>
     </li>
   </ul>

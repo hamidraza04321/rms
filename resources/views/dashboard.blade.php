@@ -46,62 +46,64 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Info boxes -->
+        <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-calendar"></i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Current Session</span>
-                <span class="info-box-number">{{ $data['session']->name }}</span>
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ $data['session']->name }}</h3>
+                <p>Current Session</p>
               </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Total Users</span>
-                <span class="info-box-number">{{ $data['total_users'] }}</span>
+              <div class="icon">
+                <i class="fas fa-calendar"></i>
               </div>
-              <!-- /.info-box-content -->
+              <a href="{{ route('general.settings') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box -->
           </div>
-          <!-- /.col -->
-
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-graduation-cap"></i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Total Students</span>
-                <span class="info-box-number">{{ $data['total_students'] }}</span>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{ $data['total_users'] }}</h3>
+                <p>Total Users</p>
               </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-friends"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Active Students</span>
-                <span class="info-box-number">{{ $data['active_students'] }}</span>
+              <div class="icon">
+                <i class="fas fa-users"></i>
               </div>
-              <!-- /.info-box-content -->
+              <a href="{{ route('user.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box -->
           </div>
-          <!-- /.col -->
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{ $data['total_students'] }}</h3>
+                <p>Total Students</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <a href="{{ route('student.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{ $data['active_students'] }}</h3>
+                <p>Active Students</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user-friends"></i>
+              </div>
+              <a href="{{ route('student.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
         </div>
         <!-- /.row -->
         <div class="row">
@@ -128,30 +130,6 @@
                   </div>
                   <div id="attendance-chart"></div>
                 </div>
-              </div>
-            </div>
-            <!-- /.card -->
-
-            <div class="card">
-              <div class="card-header border-0">
-                <h3 class="card-title">New Users</h3>
-              </div>
-              <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-valign-middle">
-                  <thead>
-                  <tr>
-                    <th>User Name</th>
-                    <th>Login Id</th>
-                    <th>Role</th>
-                    <th>Action</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td colspan="4" class="text-center">No record found!</td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
             </div>
             <!-- /.card -->
@@ -239,6 +217,87 @@
 
     var chart = new ApexCharts(document.querySelector("#attendance-chart"), options);
     chart.render();
+
+    var options = {
+        series: [{
+        name: 'Total Students',
+        data: @json($data['total_students_graph_data']['series'])
+      }],
+        chart: {
+        height: 350,
+        type: 'bar',
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          dataLabels: {
+            position: 'top', // top, center, bottom
+          },
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+          return val;
+        },
+        offsetY: -20,
+        style: {
+          fontSize: '12px',
+          colors: ["#304758"]
+        }
+      },
+      
+      xaxis: {
+        categories: @json($data['total_students_graph_data']['categories']),
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          fill: {
+            type: 'gradient',
+            gradient: {
+              colorFrom: '#D8E3F0',
+              colorTo: '#BED1E6',
+              stops: [0, 100],
+              opacityFrom: 0.4,
+              opacityTo: 0.5,
+            }
+          }
+        },
+        tooltip: {
+          enabled: true,
+        }
+      },
+      yaxis: {
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: false,
+          formatter: function (val) {
+            return val;
+          }
+        }
+      
+      },
+      title: {
+        text: 'Total Students in Classes, {{ $data['session']->name }}',
+        align: 'center',
+        style: {
+          color: '#444',
+          fontWeight: 'normal'
+        }
+      }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#total-students"), options);
+      chart.render();
   });
 </script>
 @endsection

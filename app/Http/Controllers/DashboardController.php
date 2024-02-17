@@ -31,12 +31,14 @@ class DashboardController extends Controller
         $from_date = date('Y-m-01');
         $to_date = date('Y-m-t');
         $student_attendances = (new DashboardService)->getAttendanceGraphData($from_date, $to_date);
+        $total_students_graph_data = (new DashboardService)->getTotalStudentsGraphData();
 
     	$data = [
     		'total_users' => $total_users,
     		'total_students' => $total_students,
     		'active_students' => $active_students,
             'student_attendances' => $student_attendances,
+            'total_students_graph_data' => $total_students_graph_data,
     		'session' => $session,
             'page_title' => 'Dashboard',
             'menu' => 'Index'

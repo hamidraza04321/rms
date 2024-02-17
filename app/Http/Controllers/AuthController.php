@@ -8,6 +8,11 @@ use Auth;
 
 class AuthController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function login()
     {
         $data = [
@@ -17,9 +22,17 @@ class AuthController extends Controller
     	return view('auth.login', compact('data'));
     }
 
+    /**
+     * Login Attempt
+     *
+     * @param  \App\Http\Requests\AuthRequest  $request
+     * @return \Illuminate\Http\Response
+     */
     public function attemptLogin(AuthRequest $request)
     {
-    	if (Auth::attempt($request->validated())) {
+        $credentials = $request->only('email', 'password');
+
+    	if (Auth::attempt($credentials, $request->has('remember'))) {
     		return response()->success([
                 'message' => 'Login Successcully !',
                 'redirect' => url('/')
@@ -29,9 +42,15 @@ class AuthController extends Controller
     	return response()->errorMessage('Invalid Email or Password !');
     }
 
+    /**
+     * User Logout
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function logout()
     {
         Auth::logout();
+
         return response()->success([
             'redirect' => route('login')
         ]);

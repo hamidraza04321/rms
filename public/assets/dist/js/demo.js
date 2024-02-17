@@ -60,7 +60,7 @@
   // Checkboxes
 
   $container.append(
-    '<h5>Customize AdminLTE</h5><hr class="mb-2"/>'
+    '<h5>Customize</h5><hr class="mb-2"/>'
   )
 
   var theme = localStorage.getItem("theme")
@@ -694,193 +694,193 @@
 
   // Navbar Variants
 
-  $container.append('<h6>Navbar Variants</h6>')
+  // $container.append('<h6>Navbar Variants</h6>')
 
-  var $navbar_variants = $('<div />', {
-    class: 'd-flex'
-  })
-  var navbar_all_colors = navbar_dark_skins.concat(navbar_light_skins)
-  var $navbar_variants_colors = createSkinBlock(navbar_all_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var $main_header = $('.main-header')
-    $main_header.removeClass('navbar-dark').removeClass('navbar-light')
-    navbar_all_colors.forEach(function (color) {
-      $main_header.removeClass(color)
-    })
+  // var $navbar_variants = $('<div />', {
+  //   class: 'd-flex'
+  // })
+  // var navbar_all_colors = navbar_dark_skins.concat(navbar_light_skins)
+  // var $navbar_variants_colors = createSkinBlock(navbar_all_colors, function () {
+  //   var color = $(this).find('option:selected').attr('class')
+  //   var $main_header = $('.main-header')
+  //   $main_header.removeClass('navbar-dark').removeClass('navbar-light')
+  //   navbar_all_colors.forEach(function (color) {
+  //     $main_header.removeClass(color)
+  //   })
 
-    $(this).removeClass().addClass('custom-select mb-3 text-light border-0 ')
+  //   $(this).removeClass().addClass('custom-select mb-3 text-light border-0 ')
 
-    if (navbar_dark_skins.indexOf(color) > -1) {
-      $main_header.addClass('navbar-dark')
-      $(this).addClass(color).addClass('text-light')
-    } else {
-      $main_header.addClass('navbar-light')
-      $(this).addClass(color)
-    }
+  //   if (navbar_dark_skins.indexOf(color) > -1) {
+  //     $main_header.addClass('navbar-dark')
+  //     $(this).addClass(color).addClass('text-light')
+  //   } else {
+  //     $main_header.addClass('navbar-light')
+  //     $(this).addClass(color)
+  //   }
 
-    $main_header.addClass(color)
-  })
+  //   $main_header.addClass(color)
+  // })
 
-  var active_navbar_color = null
-  $('.main-header')[0].classList.forEach(function (className) {
-    if (navbar_all_colors.indexOf(className) > -1 && active_navbar_color === null) {
-      active_navbar_color = className.replace('navbar-', 'bg-')
-    }
-  })
+  // var active_navbar_color = null
+  // $('.main-header')[0].classList.forEach(function (className) {
+  //   if (navbar_all_colors.indexOf(className) > -1 && active_navbar_color === null) {
+  //     active_navbar_color = className.replace('navbar-', 'bg-')
+  //   }
+  // })
 
-  $navbar_variants_colors.find('option.' + active_navbar_color).prop('selected', true)
-  $navbar_variants_colors.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_navbar_color)
+  // $navbar_variants_colors.find('option.' + active_navbar_color).prop('selected', true)
+  // $navbar_variants_colors.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_navbar_color)
 
-  $navbar_variants.append($navbar_variants_colors)
+  // $navbar_variants.append($navbar_variants_colors)
 
-  $container.append($navbar_variants)
+  // $container.append($navbar_variants)
 
-  // Sidebar Colors
+  // // Sidebar Colors
 
-  $container.append('<h6>Accent Color Variants</h6>')
-  var $accent_variants = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($accent_variants)
-  $container.append(createSkinBlock(accent_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var $body = $('body')
-    accent_colors.forEach(function (skin) {
-      $body.removeClass(skin)
-    })
+  // $container.append('<h6>Accent Color Variants</h6>')
+  // var $accent_variants = $('<div />', {
+  //   class: 'd-flex'
+  // })
+  // $container.append($accent_variants)
+  // $container.append(createSkinBlock(accent_colors, function () {
+  //   var color = $(this).find('option:selected').attr('class')
+  //   var $body = $('body')
+  //   accent_colors.forEach(function (skin) {
+  //     $body.removeClass(skin)
+  //   })
 
-    var accent_color_class = color.replace('bg-', 'accent-')
+  //   var accent_color_class = color.replace('bg-', 'accent-')
 
-    $body.addClass(accent_color_class)
-  }, true))
+  //   $body.addClass(accent_color_class)
+  // }, true))
 
-  var active_accent_color = null
-  $('body')[0].classList.forEach(function (className) {
-    if (accent_colors.indexOf(className) > -1 && active_accent_color === null) {
-      active_accent_color = className.replace('navbar-', 'bg-')
-    }
-  })
+  // var active_accent_color = null
+  // $('body')[0].classList.forEach(function (className) {
+  //   if (accent_colors.indexOf(className) > -1 && active_accent_color === null) {
+  //     active_accent_color = className.replace('navbar-', 'bg-')
+  //   }
+  // })
 
-  // $accent_variants.find('option.' + active_accent_color).prop('selected', true)
-  // $accent_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_accent_color)
+  // // $accent_variants.find('option.' + active_accent_color).prop('selected', true)
+  // // $accent_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_accent_color)
 
-  $container.append('<h6>Dark Sidebar Variants</h6>')
-  var $sidebar_variants_dark = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($sidebar_variants_dark)
-  var $sidebar_dark_variants = createSkinBlock(sidebar_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var sidebar_class = 'sidebar-dark-' + color.replace('bg-', '')
-    var $sidebar = $('.main-sidebar')
-    sidebar_skins.forEach(function (skin) {
-      $sidebar.removeClass(skin)
-      $sidebar_light_variants.removeClass(skin.replace('sidebar-dark-', 'bg-')).removeClass('text-light')
-    })
+  // $container.append('<h6>Dark Sidebar Variants</h6>')
+  // var $sidebar_variants_dark = $('<div />', {
+  //   class: 'd-flex'
+  // })
+  // $container.append($sidebar_variants_dark)
+  // var $sidebar_dark_variants = createSkinBlock(sidebar_colors, function () {
+  //   var color = $(this).find('option:selected').attr('class')
+  //   var sidebar_class = 'sidebar-dark-' + color.replace('bg-', '')
+  //   var $sidebar = $('.main-sidebar')
+  //   sidebar_skins.forEach(function (skin) {
+  //     $sidebar.removeClass(skin)
+  //     $sidebar_light_variants.removeClass(skin.replace('sidebar-dark-', 'bg-')).removeClass('text-light')
+  //   })
 
-    $(this).removeClass().addClass('custom-select mb-3 text-light border-0').addClass(color)
+  //   $(this).removeClass().addClass('custom-select mb-3 text-light border-0').addClass(color)
 
-    $sidebar_light_variants.find('option').prop('selected', false)
-    $sidebar.addClass(sidebar_class)
-    $('.sidebar').removeClass('os-theme-dark').addClass('os-theme-light')
-  }, true)
-  $container.append($sidebar_dark_variants)
+  //   $sidebar_light_variants.find('option').prop('selected', false)
+  //   $sidebar.addClass(sidebar_class)
+  //   $('.sidebar').removeClass('os-theme-dark').addClass('os-theme-light')
+  // }, true)
+  // $container.append($sidebar_dark_variants)
 
-  var active_sidebar_dark_color = null
-  $('.main-sidebar')[0].classList.forEach(function (className) {
-    var color = className.replace('sidebar-dark-', 'bg-')
-    if (sidebar_colors.indexOf(color) > -1 && active_sidebar_dark_color === null) {
-      active_sidebar_dark_color = color
-    }
-  })
+  // var active_sidebar_dark_color = null
+  // $('.main-sidebar')[0].classList.forEach(function (className) {
+  //   var color = className.replace('sidebar-dark-', 'bg-')
+  //   if (sidebar_colors.indexOf(color) > -1 && active_sidebar_dark_color === null) {
+  //     active_sidebar_dark_color = color
+  //   }
+  // })
 
-  $sidebar_dark_variants.find('option.' + active_sidebar_dark_color).prop('selected', true)
-  $sidebar_dark_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_sidebar_dark_color)
+  // $sidebar_dark_variants.find('option.' + active_sidebar_dark_color).prop('selected', true)
+  // $sidebar_dark_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_sidebar_dark_color)
 
-  $container.append('<h6>Light Sidebar Variants</h6>')
-  var $sidebar_variants_light = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($sidebar_variants_light)
-  var $sidebar_light_variants = createSkinBlock(sidebar_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var sidebar_class = 'sidebar-light-' + color.replace('bg-', '')
-    var $sidebar = $('.main-sidebar')
-    sidebar_skins.forEach(function (skin) {
-      $sidebar.removeClass(skin)
-      $sidebar_dark_variants.removeClass(skin.replace('sidebar-light-', 'bg-')).removeClass('text-light')
-    })
+  // $container.append('<h6>Light Sidebar Variants</h6>')
+  // var $sidebar_variants_light = $('<div />', {
+  //   class: 'd-flex'
+  // })
+  // $container.append($sidebar_variants_light)
+  // var $sidebar_light_variants = createSkinBlock(sidebar_colors, function () {
+  //   var color = $(this).find('option:selected').attr('class')
+  //   var sidebar_class = 'sidebar-light-' + color.replace('bg-', '')
+  //   var $sidebar = $('.main-sidebar')
+  //   sidebar_skins.forEach(function (skin) {
+  //     $sidebar.removeClass(skin)
+  //     $sidebar_dark_variants.removeClass(skin.replace('sidebar-light-', 'bg-')).removeClass('text-light')
+  //   })
 
-    $(this).removeClass().addClass('custom-select mb-3 text-light border-0').addClass(color)
+  //   $(this).removeClass().addClass('custom-select mb-3 text-light border-0').addClass(color)
 
-    $sidebar_dark_variants.find('option').prop('selected', false)
-    $sidebar.addClass(sidebar_class)
-    $('.sidebar').removeClass('os-theme-light').addClass('os-theme-dark')
-  }, true)
-  $container.append($sidebar_light_variants)
+  //   $sidebar_dark_variants.find('option').prop('selected', false)
+  //   $sidebar.addClass(sidebar_class)
+  //   $('.sidebar').removeClass('os-theme-light').addClass('os-theme-dark')
+  // }, true)
+  // $container.append($sidebar_light_variants)
 
-  var active_sidebar_light_color = null
-  $('.main-sidebar')[0].classList.forEach(function (className) {
-    var color = className.replace('sidebar-light-', 'bg-')
-    if (sidebar_colors.indexOf(color) > -1 && active_sidebar_light_color === null) {
-      active_sidebar_light_color = color
-    }
-  })
+  // var active_sidebar_light_color = null
+  // $('.main-sidebar')[0].classList.forEach(function (className) {
+  //   var color = className.replace('sidebar-light-', 'bg-')
+  //   if (sidebar_colors.indexOf(color) > -1 && active_sidebar_light_color === null) {
+  //     active_sidebar_light_color = color
+  //   }
+  // })
 
-  if (active_sidebar_light_color !== null) {
-    $sidebar_light_variants.find('option.' + active_sidebar_light_color).prop('selected', true)
-    $sidebar_light_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_sidebar_light_color)
-  }
+  // if (active_sidebar_light_color !== null) {
+  //   $sidebar_light_variants.find('option.' + active_sidebar_light_color).prop('selected', true)
+  //   $sidebar_light_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_sidebar_light_color)
+  // }
 
-  var logo_skins = navbar_all_colors
-  $container.append('<h6>Brand Logo Variants</h6>')
-  var $logo_variants = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($logo_variants)
-  var $clear_btn = $('<a />', {
-    href: '#'
-  }).text('clear').on('click', function (e) {
-    e.preventDefault()
-    var $logo = $('.brand-link')
-    logo_skins.forEach(function (skin) {
-      $logo.removeClass(skin)
-    })
-  })
+  // var logo_skins = navbar_all_colors
+  // $container.append('<h6>Brand Logo Variants</h6>')
+  // var $logo_variants = $('<div />', {
+  //   class: 'd-flex'
+  // })
+  // $container.append($logo_variants)
+  // var $clear_btn = $('<a />', {
+  //   href: '#'
+  // }).text('clear').on('click', function (e) {
+  //   e.preventDefault()
+  //   var $logo = $('.brand-link')
+  //   logo_skins.forEach(function (skin) {
+  //     $logo.removeClass(skin)
+  //   })
+  // })
 
-  var $brand_variants = createSkinBlock(logo_skins, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var $logo = $('.brand-link')
+  // var $brand_variants = createSkinBlock(logo_skins, function () {
+  //   var color = $(this).find('option:selected').attr('class')
+  //   var $logo = $('.brand-link')
 
-    if (color === 'navbar-light' || color === 'navbar-white') {
-      $logo.addClass('text-black')
-    } else {
-      $logo.removeClass('text-black')
-    }
+  //   if (color === 'navbar-light' || color === 'navbar-white') {
+  //     $logo.addClass('text-black')
+  //   } else {
+  //     $logo.removeClass('text-black')
+  //   }
 
-    logo_skins.forEach(function (skin) {
-      $logo.removeClass(skin)
-    })
+  //   logo_skins.forEach(function (skin) {
+  //     $logo.removeClass(skin)
+  //   })
 
-    if (color) {
-      $(this).removeClass().addClass('custom-select mb-3 border-0').addClass(color).addClass(color !== 'navbar-light' && color !== 'navbar-white' ? 'text-light' : '')
-    } else {
-      $(this).removeClass().addClass('custom-select mb-3 border-0')
-    }
+  //   if (color) {
+  //     $(this).removeClass().addClass('custom-select mb-3 border-0').addClass(color).addClass(color !== 'navbar-light' && color !== 'navbar-white' ? 'text-light' : '')
+  //   } else {
+  //     $(this).removeClass().addClass('custom-select mb-3 border-0')
+  //   }
 
-    $logo.addClass(color)
-  }, true).append($clear_btn)
-  $container.append($brand_variants)
+  //   $logo.addClass(color)
+  // }, true).append($clear_btn)
+  // $container.append($brand_variants)
 
-  var active_brand_color = null
-  $('.brand-link')[0].classList.forEach(function (className) {
-    if (logo_skins.indexOf(className) > -1 && active_brand_color === null) {
-      active_brand_color = className.replace('navbar-', 'bg-')
-    }
-  })
+  // var active_brand_color = null
+  // $('.brand-link')[0].classList.forEach(function (className) {
+  //   if (logo_skins.indexOf(className) > -1 && active_brand_color === null) {
+  //     active_brand_color = className.replace('navbar-', 'bg-')
+  //   }
+  // })
 
-  if (active_brand_color) {
-    $brand_variants.find('option.' + active_brand_color).prop('selected', true)
-    $brand_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_brand_color)
-  }
+  // if (active_brand_color) {
+  //   $brand_variants.find('option.' + active_brand_color).prop('selected', true)
+  //   $brand_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_brand_color)
+  // }
 })(jQuery)
