@@ -14,6 +14,18 @@ use App\Models\ClassSubject;
 
 class UserController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:view-user', [ 'only' => 'index' ]);
+        $this->middleware('permission:create-user', [ 'only' => [ 'create', 'store' ]]);
+        $this->middleware('permission:edit-user',   [ 'only' => [ 'edit', 'update' ]]);
+        $this->middleware('permission:delete-user', [ 'only' => 'destroy' ]);
+        $this->middleware('permission:update-user-status', [ 'only' => 'updateUserStatus' ]);
+        $this->middleware('permission:view-user-trash', [ 'only' => 'trash' ]);
+        $this->middleware('permission:restore-user', [ 'only' => 'restore' ]);
+        $this->middleware('permission:permanent-delete-user', [ 'only' => 'delete' ]);
+    }
+
     /**
      * Display a listing of the resource.
      *

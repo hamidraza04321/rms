@@ -28,8 +28,12 @@
               <div class="card-header">
                 <div class="card-title"><i class="fa fa-users"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  <a href="{{ route('user.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create User</a>
-                  <a href="{{ route('user.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @can('create-user')
+                    <a href="{{ route('user.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create User</a>
+                  @endcan
+                  @can('view-user-trash')
+                    <a href="{{ route('user.trash') }}" class="btn btn-sm btn-primary"> <i class="fa fa-eye"></i> View Trash</a>
+                  @endcan
                 </div>
               </div>
               <div class="card-body">
@@ -40,8 +44,12 @@
                         <th>S No.</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        @can('update-user-status')
+                          <th>Status</th>
+                        @endcan
+                        @canany([ 'edit-user', 'delete-user' ])
+                          <th>Action</th>
+                        @endcanany
                       </tr>
                     </thead>
                     <tbody>
@@ -50,21 +58,29 @@
                           <td>{{ ++$loop->index }}</td>
                           <td>{{ $user->name }}</td>
                           <td>{{ $user->email }}</td>
-                          <td>
-                            @if(!$user->hasRole('Super Admin'))
-                              @if($user->is_active)
-                                <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                              @else
-                                <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                          @can('update-user-status')
+                            <td>
+                              @if(!$user->hasRole('Super Admin'))
+                                @if($user->is_active)
+                                  <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                                @else
+                                  <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
+                                @endif
                               @endif
-                            @endif
-                          </td>
-                          <td>
-                            @if(!$user->hasRole('Super Admin'))
-                              <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                              <button class="btn btn-sm btn-danger btn-destroy-user" data-url="{{ route('user.destroy', $user->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                            @endif
-                          </td>
+                            </td>
+                          @endcan
+                          @canany([ 'edit-user', 'delete-user' ])
+                            <td>
+                              @if(!$user->hasRole('Super Admin'))
+                                @can('edit-user')
+                                  <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                @endcan
+                                @can('delete-user')
+                                  <button class="btn btn-sm btn-danger btn-destroy-user" data-url="{{ route('user.destroy', $user->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                                @endcan
+                              @endif
+                            </td>
+                          @endcanany
                         </tr>
                       @endforeach
                     </tbody>

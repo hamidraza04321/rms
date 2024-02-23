@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
 	//---------- DASHBOARD ROUTES ----------//
 	Route::controller(DashboardController::class)->group(function(){
 		Route::get('/', 'index')->name('dashboard.index');
+		Route::get('/profile', 'profile')->name('dashboard.profile');
 		Route::post('/get-attendance-graph-data', 'getAttendanceGraphData')->name('dashboard.get.attendance.graph.data');
 	});
 
@@ -150,28 +151,24 @@ Route::middleware('auth')->group(function () {
 		Route::post('/result-card/get-result-cards', 'getResultCards')->name('get.result.cards');
 	});
 
-	//---------- SUPER ADMIN ROUTES ----------//
-	Route::middleware('is.super.admin')->group(function () {
-		//---------- USER ROLES ROUTES ----------//
-		Route::resource('/role', RoleController::class, ['except' => ['show']]);
-		
-		//---------- USER ROUTES ----------//
-		Route::resource('/user', UserController::class, ['except' => ['show']]);
-		Route::controller(UserController::class)->group(function(){
-			Route::get('/user/trash', 'trash')->name('user.trash');
-			Route::put('/user/restore/{id}', 'restore')->name('user.restore');
-			Route::put('/user/update-status/{id}', 'updateUserStatus')->name('user.update.status');
-			Route::delete('/user/delete/{id}', 'delete')->name('user.delete');
-		});
-
-		//---------- USER ROUTES ----------//
-		Route::controller(SettingController::class)->group(function(){
-			Route::get('/general/settings', 'generalSettings')->name('general.settings');
-			Route::post('/settings/update-logo', 'updateLogo')->name('settings.update.logo');
-			Route::put('/settings/update', 'update')->name('settings.update');
-		});
+	//---------- USER ROLES ROUTES ----------//
+	Route::resource('/role', RoleController::class, ['except' => ['show']]);
+	
+	//---------- USER ROUTES ----------//
+	Route::resource('/user', UserController::class, ['except' => ['show']]);
+	Route::controller(UserController::class)->group(function(){
+		Route::get('/user/trash', 'trash')->name('user.trash');
+		Route::put('/user/restore/{id}', 'restore')->name('user.restore');
+		Route::put('/user/update-status/{id}', 'updateUserStatus')->name('user.update.status');
+		Route::delete('/user/delete/{id}', 'delete')->name('user.delete');
 	});
 
+	//---------- USER ROUTES ----------//
+	Route::controller(SettingController::class)->group(function(){
+		Route::get('/general/settings', 'generalSettings')->name('general.settings');
+		Route::post('/settings/update-logo', 'updateLogo')->name('settings.update.logo');
+		Route::put('/settings/update', 'update')->name('settings.update');
+	});
 });
 
 //---------- AUTHENTICATION ROUTES ----------//

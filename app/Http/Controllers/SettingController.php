@@ -10,6 +10,8 @@ class SettingController extends Controller
 {
     public function __construct(GeneralSettings $settings)
     {
+        $this->middleware('permission:general-settings-view', [ 'only' => 'generalSettings' ]);
+        $this->middleware('permission:general-settings-edit', [ 'only' => [ 'updateLogo', 'update' ] ]);
         $this->settings = $settings;
     }
 

@@ -37,7 +37,9 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Deleted At</th>
-                        <th>Action</th>
+                        @canany([ 'restore-user', 'permanent-delete-user' ])
+                          <th>Action</th>
+                        @endcanany
                       </tr>
                     </thead>
                     <tbody>
@@ -47,10 +49,16 @@
                           <td>{{ $user->name }}</td>
                           <td>{{ $user->email }}</td>
                           <td>{{ $user->deleted_at->diffForHumans() }}</td>
-                          <td>
-                            <button class="btn btn-sm btn-success btn-restore-user" data-url="{{ route('user.restore', $user->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
-                            <button class="btn btn-sm btn-danger btn-delete-user" data-url="{{ route('user.delete', $user->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
-                          </td>
+                          @canany([ 'restore-user', 'permanent-delete-user' ])
+                            <td>
+                              @can('restore-user')
+                                <button class="btn btn-sm btn-success btn-restore-user" data-url="{{ route('user.restore', $user->id) }}"><i class="fa fa-trash-restore"> Restore</i></button>
+                              @endcan
+                              @can('permanent-delete-user')
+                                <button class="btn btn-sm btn-danger btn-delete-user" data-url="{{ route('user.delete', $user->id) }}"><i class="fa fa-trash"></i> Permanent Delete</button>
+                              @endcan
+                            </td>
+                          @endcanany
                         </tr>
                       @endforeach
                     </tbody>

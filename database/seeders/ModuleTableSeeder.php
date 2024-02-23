@@ -67,6 +67,18 @@ class ModuleTableSeeder extends Seeder
             [
                 'name' => 'Result Card',
                 'order_level' => 13
+            ],
+            [
+                'name' => 'Role',
+                'order_level' => 14
+            ],
+            [
+                'name' => 'User',
+                'order_level' => 15
+            ],
+            [
+                'name' => 'Settings',
+                'order_level' => 16
             ]
         ];
 

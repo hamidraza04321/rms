@@ -13,7 +13,7 @@
         <img src="{{ url(auth()->user()->image ? '/uploads/users/' . auth()->user()->image : '/assets/dist/img/avatar.jpg') }}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+        <a href="{{ route('dashboard.profile') }}" class="d-block">{{ auth()->user()->name }}</a>
       </div>
     </div>
 
@@ -432,8 +432,10 @@
             </ul>
           </li>
         @endcan
-        @role('Super Admin')
+        @canany(['view-role', 'create-role', 'view-user', 'create-user'])
           <li class="nav-header">User Management</li>
+        @endcanany
+        @canany(['view-role', 'create-role'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'role.index', 'role.create', 'role.edit' ]))) active @endif">
               <i class="nav-icon fas fa-user-shield"></i>
@@ -443,20 +445,26 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('role.index') }}" class="nav-link @if(Route::currentRouteName() == 'role.index') active @endif">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Manage</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('role.create') }}" class="nav-link @if(Route::currentRouteName() == 'role.create') active @endif">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Create</p>
-                </a>
-              </li>
+              @can('view-role')
+                <li class="nav-item">
+                  <a href="{{ route('role.index') }}" class="nav-link @if(Route::currentRouteName() == 'role.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-role')
+                <li class="nav-item">
+                  <a href="{{ route('role.create') }}" class="nav-link @if(Route::currentRouteName() == 'role.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
             </ul>
           </li>
+        @endcanany
+        @canany(['view-user', 'create-user'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create', 'user.edit', 'user.trash' ]))) active @endif">
               <i class="nav-icon fas fa-users"></i>
@@ -466,21 +474,29 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('user.index') }}" class="nav-link @if(Route::currentRouteName() == 'user.index') active @endif">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Manage</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('user.create') }}" class="nav-link @if(Route::currentRouteName() == 'user.create') active @endif">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Create</p>
-                </a>
-              </li>
+              @can('view-user')
+                <li class="nav-item">
+                  <a href="{{ route('user.index') }}" class="nav-link @if(Route::currentRouteName() == 'user.index') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage</p>
+                  </a>
+                </li>
+              @endcan
+              @can('create-user')
+                <li class="nav-item">
+                  <a href="{{ route('user.create') }}" class="nav-link @if(Route::currentRouteName() == 'user.create') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create</p>
+                  </a>
+                </li>
+              @endcan
             </ul>
           </li>
+        @endcanany
+        @canany(['general-settings-view'])
           <li class="nav-header">System Settings</li>
+        @endcanany
+        @canany(['general-settings-view'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'general.settings' ]))) menu-open @endif">
             <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'general.settings' ]))) active @endif">
               <i class="nav-icon fas fa-cogs"></i>
@@ -490,15 +506,17 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('general.settings') }}" class="nav-link @if(Route::currentRouteName() == 'general.settings') active @endif">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>General Settings</p>
-                </a>
-              </li>
+              @can('general-settings-view')
+                <li class="nav-item">
+                  <a href="{{ route('general.settings') }}" class="nav-link @if(Route::currentRouteName() == 'general.settings') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>General Settings</p>
+                  </a>
+                </li>
+              @endcanany
             </ul>
           </li>
-        @endrole
+        @endcanany
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

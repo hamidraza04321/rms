@@ -406,6 +406,72 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 13,
 	        	'name' => 'Print',
 	        	'permission' => 'print-result-card'
+	        ],
+
+	        // ROLE MODULE
+	        [
+	        	'module_id' => 14,
+	        	'name' => 'View',
+	        	'permission' => 'view-role'
+	        ], [
+	        	'module_id' => 14,
+	        	'name' => 'Create',
+	        	'permission' => 'create-role'
+	        ], [
+	        	'module_id' => 14,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-role'
+	        ], [
+	        	'module_id' => 14,
+	        	'name' => 'Delete',
+				'permission' => 'delete-role'
+	        ],
+
+	        // USER MODULE
+        	[
+	        	'module_id' => 15,
+	        	'name' => 'View',
+	        	'permission' => 'view-user'
+	        ], [
+	        	'module_id' => 15,
+	        	'name' => 'Create',
+	        	'permission' => 'create-user'
+	        ], [
+	        	'module_id' => 15,
+	        	'name' => 'Edit',
+	        	'permission' => 'edit-user'
+	        ], [
+	        	'module_id' => 15,
+	        	'name' => 'Delete',
+	        	'permission' => 'delete-user'
+	        ], [
+	        	'module_id' => 15,
+	        	'name' => 'Update Status',
+	        	'permission' => 'update-user-status'
+	        ], [
+	        	'module_id' => 15,
+	        	'name' => 'View Trash',
+	        	'permission' => 'view-user-trash'
+	        ], [
+	        	'module_id' => 15,
+	        	'name' => 'Restore',
+	        	'permission' => 'restore-user'
+	        ], [
+	        	'module_id' => 15,
+	        	'name' => 'Permanent Delete',
+	        	'permission' => 'permanent-delete-user'
+	        ], 
+
+	        // SETTINGS MODULE
+	        [
+	        	'module_id' => 16,
+	        	'name' => 'View General Settings',
+	        	'permission' => 'general-settings-view'
+	        ],
+	        [
+	        	'module_id' => 16,
+	        	'name' => 'Edit General Settings',
+	        	'permission' => 'general-settings-edit'
 	        ]
     	];
 

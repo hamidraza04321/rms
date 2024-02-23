@@ -28,7 +28,9 @@
               <div class="card-header">
                 <div class="card-title"><i class="fa fa-user-shield"></i> {{ $data['page_title'] }}</div>
                 <div class="card-tools">
-                  <a href="{{ route('role.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Role</a>
+                  @can('create-role')
+                    <a href="{{ route('role.create') }}" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Create Role</a>
+                  @endcan
                 </div>
               </div>
               <div class="card-body">
@@ -38,7 +40,9 @@
                       <tr>
                         <th>S No.</th>
                         <th>Name</th>
-                        <th>Action</th>
+                        @canany([ 'edit-role', 'delete-role' ])
+                          <th>Action</th>
+                        @endcanany
                       </tr>
                     </thead>
                     <tbody>
@@ -46,12 +50,18 @@
                         <tr>
                           <td>{{ ++$loop->index }}</td>
                           <td>{{ $role->name }}</td>
-                          <td>
-                            @if($role->name != 'Super Admin')
-                              <a href="{{ route('role.edit', $role->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                              <a class="btn btn-sm btn-danger btn-delete-role" data-url="{{ route('role.destroy', $role->id) }}"><i class="fa fa-trash"></i> Delete</a>
-                            @endif
-                          </td>
+                          @canany([ 'edit-role', 'delete-role' ])
+                            <td>
+                              @if($role->name != 'Super Admin')
+                                @can('edit-role')
+                                  <a href="{{ route('role.edit', $role->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                @endcan
+                                @can('delete-role')
+                                  <a class="btn btn-sm btn-danger btn-delete-role" data-url="{{ route('role.destroy', $role->id) }}"><i class="fa fa-trash"></i> Delete</a>
+                                @endcan
+                              @endif
+                            </td>
+                          @endcanany
                         </tr>
                       @endforeach
                     </tbody>

@@ -27,9 +27,11 @@
 				          </div>
 				        </div>
               </div>
-              <div class="card-footer text-center">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-logo-modal"><i class="fas fa-camera"></i> Edit Logo</button>
-						  </div>
+              @can('general-settings-edit')
+                <div class="card-footer text-center">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-logo-modal"><i class="fas fa-camera"></i> Edit Logo</button>
+  						  </div>
+              @endcan
             </div>
           </div>
           <div class="col-9">
@@ -39,7 +41,9 @@
                   <i class="fa fa-cogs"></i> General Settings
                 </div>
                 <div class="card-tools">
-                  <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-settings-modal"><i class="fa fa-edit"></i> Edit</button>
+                  @can('general-settings-edit')
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-settings-modal"><i class="fa fa-edit"></i> Edit</button>
+                  @endcan
                 </div>
               </div>
               <div class="card-body">
@@ -87,122 +91,124 @@
     </section>
   </div>
 
-  <!-- EDIT LOGO MODAL -->
-  <div class="modal fade" id="edit-logo-modal" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Logo</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form action="{{ route('settings.update.logo') }}" id="update-logo-form">
-            <div class="form-group">
-              <div class="input-group">
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" name="app_logo" id="app-logo">
-                  <label class="custom-file-label" for="app-logo">Choose file</label>
+  @can('general-settings-edit')
+    <!-- EDIT LOGO MODAL -->
+    <div class="modal fade" id="edit-logo-modal" style="display: none;" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Logo</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="{{ route('settings.update.logo') }}" id="update-logo-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="app_logo" id="app-logo">
+                    <label class="custom-file-label" for="app-logo">Choose file</label>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" id="btn-update-logo">Update</button>
+          </div>
         </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" id="btn-update-logo">Update</button>
-        </div>
+        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-content -->
+      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-  </div>
 
-  <!-- EDIT SETTINGS MODAL -->
-  <div class="modal fade" id="edit-settings-modal" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title"><i class="fa fa-cogs"></i> Edit Settings</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
+    <!-- EDIT SETTINGS MODAL -->
+    <div class="modal fade" id="edit-settings-modal" style="display: none;" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title"><i class="fa fa-cogs"></i> Edit Settings</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="{{ route('settings.update') }}" id="update-settings-form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>School Name <span class="error">*</span></label>
+                    <input type="text" name="school_name" id="school-name" class="form-control" placeholder="Enter School Name" value="{{ $settings->school_name }}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>School Name In Short <span class="error">*</span></label>
+                    <input type="text" name="school_name_in_short" id="school-name-in-short" class="form-control" placeholder="Enter School Name In Short" value="{{ $settings->school_name_in_short }}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Email <span class="error">*</span></label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email" value="{{ $settings->email }}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Phone No <span class="error">*</span></label>
+                    <input type="text" name="phone_no" id="phone-no" class="form-control" placeholder="Enter Phone No" value="{{ $settings->phone_no }}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Current Session <span class="error">*</span></label>
+                    <select name="current_session_id" id="current-session-id" class="form-control select2">
+                      <option value="">Select</option>
+                      @foreach($data['sessions'] as $session)
+                        <option @selected($session->id == $settings->current_session_id) value="{{ $session->id }}">{{ $session->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Date Format <span class="error">*</span></label>
+                    <input type="text" name="date_format" id="date-format" class="form-control" value="{{ $settings->date_format }}">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Date Format In JS <span class="error">*</span></label>
+                    <input type="text" name="date_format_in_js" id="date-format-in-js" class="form-control" value="{{ $settings->date_format_in_js }}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Address</label>
+                    <textarea class="form-control" name="school_address" id="school-address">{{ $settings->school_address }}</textarea>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" id="btn-update-settings">Update</button>
+          </div>
         </div>
-        <div class="modal-body">
-          <form action="{{ route('settings.update') }}" id="update-settings-form">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>School Name <span class="error">*</span></label>
-                  <input type="text" name="school_name" id="school-name" class="form-control" placeholder="Enter School Name" value="{{ $settings->school_name }}">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>School Name In Short <span class="error">*</span></label>
-                  <input type="text" name="school_name_in_short" id="school-name-in-short" class="form-control" placeholder="Enter School Name In Short" value="{{ $settings->school_name_in_short }}">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Email <span class="error">*</span></label>
-                  <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email" value="{{ $settings->email }}">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Phone No <span class="error">*</span></label>
-                  <input type="text" name="phone_no" id="phone-no" class="form-control" placeholder="Enter Phone No" value="{{ $settings->phone_no }}">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Current Session <span class="error">*</span></label>
-                  <select name="current_session_id" id="current-session-id" class="form-control select2">
-                    <option value="">Select</option>
-                    @foreach($data['sessions'] as $session)
-                      <option @selected($session->id == $settings->current_session_id) value="{{ $session->id }}">{{ $session->name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Date Format <span class="error">*</span></label>
-                  <input type="text" name="date_format" id="date-format" class="form-control" value="{{ $settings->date_format }}">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Date Format In JS <span class="error">*</span></label>
-                  <input type="text" name="date_format_in_js" id="date-format-in-js" class="form-control" value="{{ $settings->date_format_in_js }}">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Address</label>
-                  <textarea class="form-control" name="school_address" id="school-address">{{ $settings->school_address }}</textarea>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" id="btn-update-settings">Update</button>
-        </div>
+        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-content -->
+      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-  </div>
+  @endcan
 @endsection
 @section('scripts')
 <script src="{{ url('/assets/js/settings.js') }}"></script>

@@ -41,7 +41,7 @@ class DashboardController extends Controller
             'total_students_graph_data' => $total_students_graph_data,
     		'session' => $session,
             'page_title' => 'Dashboard',
-            'menu' => 'Index'
+            'menu' => 'Home'
         ];
 
     	return view('dashboard', compact('data'));
@@ -62,5 +62,20 @@ class DashboardController extends Controller
         return response()->success([
             'student_attendances' => $student_attendances
         ]);
+    }
+
+    /**
+     * Authenticate user profile
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        $data = [
+            'page_title' => 'Profile',
+            'menu' => 'Home'
+        ];
+
+        return view('profile', compact('data'));
     }
 }

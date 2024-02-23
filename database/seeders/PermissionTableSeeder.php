@@ -129,7 +129,27 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'tabulation-sheet' ],
 
             // RESULT CARD
-            [ 'name' => 'print-result-card' ]
+            [ 'name' => 'print-result-card' ],
+
+            // ROLE
+            [ 'name' => 'view-role' ],
+            [ 'name' => 'create-role' ],
+            [ 'name' => 'edit-role' ],
+            [ 'name' => 'delete-role' ],
+
+            // USER
+            [ 'name' => 'view-user' ],
+            [ 'name' => 'create-user' ],
+            [ 'name' => 'edit-user' ],
+            [ 'name' => 'delete-user' ],
+            [ 'name' => 'update-user-status' ],
+            [ 'name' => 'view-user-trash' ],
+            [ 'name' => 'restore-user' ],
+            [ 'name' => 'permanent-delete-user' ],
+
+            // SETTINGS
+            [ 'name' => 'general-settings-view' ],
+            [ 'name' => 'general-settings-edit' ]
         ];
 
         // TIMESTAMPS
