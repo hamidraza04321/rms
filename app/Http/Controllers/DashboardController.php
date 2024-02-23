@@ -8,6 +8,7 @@ use App\Models\StudentSession;
 use App\Services\DashboardService;
 use App\Models\Session;
 use App\Models\User;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -71,11 +72,25 @@ class DashboardController extends Controller
      */
     public function profile()
     {
+        $user = Auth::user();
+
         $data = [
+            'user' => $user,
             'page_title' => 'Profile',
             'menu' => 'Home'
         ];
 
         return view('profile', compact('data'));
+    }
+
+    /**
+     * Update authenticate user profile
+     *
+     * @param \App\Http\Requests\DashboardRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(DashboardRequest $request)
+    {
+        dd($request->all());
     }
 }

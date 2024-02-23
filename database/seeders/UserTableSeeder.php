@@ -27,9 +27,11 @@ class UserTableSeeder extends Seeder
             'user_id' => $user->id,
             'phone_no' => '+92 3043035679',
             'designation' => 'Administrator',
-            'address' => '8665 Johanna Ranch Suite 966, Johnstonbury, North Dakota',
+            'address' => '8888 Cummings Vista Apt. 101, Susanbury, NY 95473',
             'age' => '18',
-            'date_of_birth' => '2024-06-13'
+            'date_of_birth' => date('Y-m-d'),
+            'location' => 'Karachi, Pakistan',
+            'skills' => 'PHP, Laravel, jQuery, AJAX and more.'
         ]);
 
         $user->assignRole('Super Admin');

@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserDetail extends Model
 {
-    use HasFactory,
-    	SoftDeletes;
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -28,6 +26,8 @@ class UserDetail extends Model
         'designation',
         'phone_no',
         'image',
+        'age',
+        'date_of_birth',
         'address',
         'education',
     	'location',

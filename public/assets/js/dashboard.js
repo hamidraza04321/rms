@@ -98,4 +98,50 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	//------------- ON CLICK UPDATE PROFILE ----------------//
+	$(document).on('click', '#btn-update-profile', function(e) {
+		e.preventDefault();
+		removeErrorMessages();
+
+		var self = $(this);
+			self_html = self.html();
+			name = $('#name').val();
+			message = '';
+			flag = true;
+
+		if (name == '') {
+			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (flag) {
+			// Button Loading
+			self.addClass('disabled').html('<div class="spinner-border"></div>');
+
+			var form = $('#update-profile-form');
+			    url = form.attr('action');
+			    formData = form.serialize();
+
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: formData,
+				success: function(response) {
+					if (response.status == true) {
+						toastr.success(response.message);
+					} else {
+						showErrorMessages(response.errors);
+					}
+				},
+				error: function() {
+					message = errorMessage();
+				},
+				complete: function() {
+					if (message != '') showAlertInTop(message);
+					self.removeClass('disabled').html(self_html);
+				}
+			});
+		}
+	});
 });

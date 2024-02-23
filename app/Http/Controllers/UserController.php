@@ -11,6 +11,8 @@ use App\Models\UserClass;
 use App\Models\ClassSection;
 use App\Models\ClassGroup;
 use App\Models\ClassSubject;
+use App\Models\UserDetail;
+use DB;
 
 class UserController extends Controller
 {
@@ -79,26 +81,49 @@ class UserController extends Controller
             $request->image->move(public_path('uploads/users'), $file_name);
         }
 
-        // Create User
-        $user = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'phone_no' => $request->phone_no,
-            'designation' => $request->designation,
-            'image' => $file_name,
-            'password' => bcrypt($request->password)
-        ]);
+        // Begin database transaction
+        DB::transaction(function() use($request, $file_name) {
+            // Create User
+            $user = User::create([
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => bcrypt($request->password)
+            ]);
 
-        // Assign Role to User
-        $role_name = Role::findById($request->role_id)->name;
-        $user->assignRole($role_name);
+            // Set Socail media links
+            $social_media_links = json_encode([
+                'facebook' => $request->facebook_link,
+                'instagram' => $request->instagram_link,
+                'twitter' => $request->twitter_link,
+                'youtube' => $request->youtube_link,
+            ]);
 
-        // Attach Class section, subject, group to user
-        $user->classes()->attach($request->class_id);
-        $user->classSections()->attach($request->class_section_id);
-        $user->classSubjects()->attach($request->class_subject_id);
-        $user->classGroups()->attach($request->class_group_id);
+            // Update or create user details
+            UserDetail::create([
+                'user_id' => $user->id,
+                'phone_no' => $request->phone_no,
+                'image' => $file_name,
+                'designation' => $request->designation,
+                'age' => $request->age,
+                'date_of_birth' => date('Y-m-d', strtotime($request->date_of_birth)),
+                'education' => $request->education,
+                'location' => $request->location,
+                'address' => $request->address,
+                'skills' => $request->skills,
+                'social_media_links' => $social_media_links
+            ]);
+
+            // Assign Role to User
+            $role_name = Role::findById($request->role_id)->name;
+            $user->assignRole($role_name);
+
+            // Attach Class section, subject, group to user
+            $user->classes()->attach($request->class_id);
+            $user->classSections()->attach($request->class_section_id);
+            $user->classSubjects()->attach($request->class_subject_id);
+            $user->classGroups()->attach($request->class_group_id);
+        });
 
         return response()->successMessage('User Created Successfully!');
     }
@@ -176,34 +201,78 @@ class UserController extends Controller
                 $request->image->move(public_path('uploads/users'), $file_name);
             }
 
-            $data = [
-                'name' => $request->name,
-                'username' => $request->username,
-                'email' => $request->email,
-                'phone_no' => $request->phone_no,
-                'designation' => $request->designation,
-                'image' => $file_name
-            ];
+            // Begin database transaction
+            DB::transaction(function() use($request, $user, $file_name) {
+                // Update user data
+                $data = [
+                    'name' => $request->name,
+                    'username' => $request->username,
+                    'email' => $request->email
+                ];
 
-            // If password exists in request update password
-            if ($request->password) $data['password'] = bcrypt($request->password);
+                // If password exists in request update password
+                if ($request->password) $data['password'] = bcrypt($request->password);
 
-            // Update User
-            $user->update($data);
+                // Update User
+                $user->update($data);
 
-            // Sync User Role
-            $user->syncRoles($request->role_id);
+                // Set Socail media links
+                $social_media_links = json_encode([
+                    'facebook' => $request->facebook_link,
+                    'instagram' => $request->instagram_link,
+                    'twitter' => $request->twitter_link,
+                    'youtube' => $request->youtube_link,
+                ]);
 
-            // Sync Class section, subject, group to user
-            $user->classes()->sync($request->class_id);
-            $user->classSections()->sync($request->class_section_id);
-            $user->classSubjects()->sync($request->class_subject_id);
-            $user->classGroups()->sync($request->class_group_id);
+                // Update or create user detail
+                UserDetail::updateOrCreate([
+                    'user_id' => $user->id
+                ], [
+                    'phone_no' => $request->phone_no,
+                    'image' => $file_name,
+                    'designation' => $request->designation,
+                    'age' => $request->age,
+                    'date_of_birth' => date('Y-m-d', strtotime($request->date_of_birth)),
+                    'education' => $request->education,
+                    'location' => $request->location,
+                    'address' => $request->address,
+                    'skills' => $request->skills,
+                    'social_media_links' => $social_media_links
+                ]);
+
+                // Sync User Role
+                $user->syncRoles($request->role_id);
+
+                // Sync Class section, subject, group to user
+                $user->classes()->sync($request->class_id);
+                $user->classSections()->sync($request->class_section_id);
+                $user->classSubjects()->sync($request->class_subject_id);
+                $user->classGroups()->sync($request->class_group_id);
+            });
 
             return response()->successMessage('User Updated Successfully!');
         }
 
         return response()->errorMessage('User not Found !');
+    }
+
+    /**
+     * View user profile
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function profile($id)
+    {
+        $user = User::findOrFail($id);
+
+        $data = [
+            'user' => $user,
+            'page_title' => 'User Profile',
+            'menu' => 'User'
+        ];
+
+        return view('user.profile', compact('data'));
     }
 
     /**

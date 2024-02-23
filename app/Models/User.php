@@ -23,9 +23,6 @@ class User extends Authenticatable
         'name',
         'username',
         'email',
-        'designation',
-        'phone_no',
-        'image',
         'password',
         'is_active'
     ];
@@ -51,7 +48,7 @@ class User extends Authenticatable
 
     public function userDetail()
     {
-        return $this->belongsTo(UserDetail::class);
+        return $this->belongsTo(UserDetail::class, 'id', 'user_id');
     }
 
     public function classes()

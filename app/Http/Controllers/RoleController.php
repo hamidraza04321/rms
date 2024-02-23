@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\RoleRequest;
 use App\Models\Module;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {

@@ -47,9 +47,7 @@
                         @can('update-user-status')
                           <th>Status</th>
                         @endcan
-                        @canany([ 'edit-user', 'delete-user' ])
-                          <th>Action</th>
-                        @endcanany
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -71,6 +69,7 @@
                           @endcan
                           @canany([ 'edit-user', 'delete-user' ])
                             <td>
+                              <a href="{{ route('user.profile', $user->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i> View Profile</a>
                               @if(!$user->hasRole('Super Admin'))
                                 @can('edit-user')
                                   <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>

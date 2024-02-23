@@ -466,7 +466,7 @@
         @endcanany
         @canany(['view-user', 'create-user'])
           <li class="nav-item @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create' ]))) menu-open @endif">
-            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create', 'user.edit', 'user.trash' ]))) active @endif">
+            <a href="#" class="nav-link @if((in_array(Route::currentRouteName(), [ 'user.index', 'user.create', 'user.edit', 'user.trash', 'user.profile' ]))) active @endif">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 User

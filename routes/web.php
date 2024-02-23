@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
 	Route::controller(DashboardController::class)->group(function(){
 		Route::get('/', 'index')->name('dashboard.index');
 		Route::get('/profile', 'profile')->name('dashboard.profile');
+		Route::post('/profile/update', 'updateProfile')->name('dashboard.profile.update');
 		Route::post('/get-attendance-graph-data', 'getAttendanceGraphData')->name('dashboard.get.attendance.graph.data');
 	});
 
@@ -157,6 +158,7 @@ Route::middleware('auth')->group(function () {
 	//---------- USER ROUTES ----------//
 	Route::resource('/user', UserController::class, ['except' => ['show']]);
 	Route::controller(UserController::class)->group(function(){
+		Route::get('/user/profile/{id}', 'profile')->name('user.profile');
 		Route::get('/user/trash', 'trash')->name('user.trash');
 		Route::put('/user/restore/{id}', 'restore')->name('user.restore');
 		Route::put('/user/update-status/{id}', 'updateUserStatus')->name('user.update.status');

@@ -29,7 +29,8 @@ class DashboardRequest extends FormRequest
     public function rules()
     {
         return match(Route::currentRouteName()) {
-            'dashboard.get.attendance.graph.data' => $this->getAttendanceGraphData()
+            'dashboard.get.attendance.graph.data' => $this->getAttendanceGraphData(),
+            'dashboard.profile.update' => $this->updateProfile()
         };
     }
 
@@ -41,6 +42,16 @@ class DashboardRequest extends FormRequest
         return [
             'from_date' => 'required|date',
             'to_date' => 'required|date'
+        ];
+    }
+
+    /**
+     * Validate Rules for update profile Request
+     */
+    public function updateProfile()
+    {
+        return [
+            //
         ];
     }
 }
