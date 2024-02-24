@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::withoutGlobalScope(ActiveScope::class)->get();
+        $users = User::withoutGlobalScope(ActiveScope::class)->with('roles')->get();
 
         $data = [
             'users' => $users,
@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::where('name', '!=', 'Super Admin')->get();
+        $roles = Role::get();
         $classes = $this->getClasses();
 
         $data = [
@@ -118,11 +118,15 @@ class UserController extends Controller
             $role_name = Role::findById($request->role_id)->name;
             $user->assignRole($role_name);
 
-            // Attach Class section, subject, group to user
-            $user->classes()->attach($request->class_id);
-            $user->classSections()->attach($request->class_section_id);
-            $user->classSubjects()->attach($request->class_subject_id);
-            $user->classGroups()->attach($request->class_group_id);
+            // Role is not super admin because super admin
+            // contain all permission by default
+            if ($role_name != 'Super Admin') {
+                // Attach Class section, subject, group to user
+                $user->classes()->attach($request->class_id);
+                $user->classSections()->attach($request->class_section_id);
+                $user->classSubjects()->attach($request->class_subject_id);
+                $user->classGroups()->attach($request->class_group_id);
+            }
         });
 
         return response()->successMessage('User Created Successfully!');
@@ -138,7 +142,7 @@ class UserController extends Controller
     {
         $user = User::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
         $role_id = $user->roles->first()?->id;
-        $roles = Role::where('name', '!=', 'Super Admin')->get();
+        $roles = Role::get();
         $classes = $this->getClasses();
 
         // Get user Class section, subject and group id
@@ -170,6 +174,7 @@ class UserController extends Controller
             'user_class_subjects' => $user_class_subjects,
             'user_class_groups' => $user_class_groups,
             'has_all_permissions' => $has_all_permissions,
+            'has_super_admin' => $user->hasRole('Super Admin'),
             'page_title' => 'Edit User',
             'menu' => 'User'
         ];
@@ -190,12 +195,14 @@ class UserController extends Controller
 
         if ($user) {
             // Default Image
-            $file_name = $user->image;
+            $file_name = $user->userDetail->image;
 
             if ($request->image) {
                 // Unlink Image
-                $image_path = public_path('uploads/users/'.$user->image);
-                if (is_file($image_path)) unlink($image_path);
+                $image_path = public_path('uploads/users/' . $file_name);
+
+                if (is_file($image_path))
+                    unlink($image_path);
                 
                 $file_name = time() . '.' . $request->image->extension();
                 $request->image->move(public_path('uploads/users'), $file_name);
@@ -241,13 +248,18 @@ class UserController extends Controller
                 ]);
 
                 // Sync User Role
-                $user->syncRoles($request->role_id);
+                $role = Role::findById($request->role_id);
+                $user->syncRoles($role->id);
 
-                // Sync Class section, subject, group to user
-                $user->classes()->sync($request->class_id);
-                $user->classSections()->sync($request->class_section_id);
-                $user->classSubjects()->sync($request->class_subject_id);
-                $user->classGroups()->sync($request->class_group_id);
+                // Role is not super admin because super admin
+                // contain all permission by default
+                if ($role->name != 'Super Admin') {
+                    // Sync Class section, subject, group to user
+                    $user->classes()->sync($request->class_id);
+                    $user->classSections()->sync($request->class_section_id);
+                    $user->classSubjects()->sync($request->class_subject_id);
+                    $user->classGroups()->sync($request->class_group_id);
+                }
             });
 
             return response()->successMessage('User Updated Successfully!');

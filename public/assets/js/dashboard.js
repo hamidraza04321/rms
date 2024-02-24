@@ -1,11 +1,5 @@
 
 $(document).ready(function() {
-	
-	//------------- DATE RANGE PICKER -----------//	
-	$('#attendance-date-range').daterangepicker({
-      startDate: moment().startOf('month'),
-      endDate: moment().endOf('month')
-    });
 
 	//------------- ON CLICK LOAD ATTENDANCE GRAPH -----------//
 	$(document).on('click', '#btn-load-attendance-graph', function(e) {
@@ -107,11 +101,23 @@ $(document).ready(function() {
 		var self = $(this);
 			self_html = self.html();
 			name = $('#name').val();
+			email = $('#email').val();
+			username = $('#username').val();
 			message = '';
 			flag = true;
 
 		if (name == '') {
 			$("#name").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (username == '') {
+			$("#username").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+			flag = false;
+		}
+
+		if (email == '') {
+			$("#email").addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
 			flag = false;
 		}
 
@@ -121,14 +127,44 @@ $(document).ready(function() {
 
 			var form = $('#update-profile-form');
 			    url = form.attr('action');
-			    formData = form.serialize();
+			    formData = new FormData(form[0]);
 
 			$.ajax({
 				url: url,
 				type: 'POST',
 				data: formData,
+				enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
 				success: function(response) {
 					if (response.status == true) {
+
+						// Update text 
+						var user = response.user;
+						$('.profile-name').text(user.name);
+						$('.profile-designation').text(user.designation);
+						$('.profile-user-name').text(user.username);
+						$('.profile-email').text(user.email);
+						$('.profile-phone-no').text(user.phone_no);
+						$('.profile-age').text(user.age);
+						$('.profile-date-of-birth').text(user.date_of_birth);
+						$('.profile-address').text(user.address);
+						$('.profile-education').text(user.education);
+						$('.profile-location').text(user.location);
+						$('.profile-skills').text(user.skills);
+
+						// Update image
+						$('.profile-user-img').attr('src', `/uploads/users/${user.image}?${Math.random()}`);
+
+						// Update social media links
+						var social_media_links = JSON.parse(user.social_media_links);
+						$('.profile-facebook-link').attr('href', social_media_links.facebook);
+						$('.profile-twitter-link').attr('href', social_media_links.twitter);
+						$('.profile-instagram-link').attr('href', social_media_links.instagram);
+						$('.profile-youtube-link').attr('href', social_media_links.youtube);
+
+						$('#edit-profile-modal').modal('hide');
 						toastr.success(response.message);
 					} else {
 						showErrorMessages(response.errors);
@@ -144,4 +180,23 @@ $(document).ready(function() {
 			});
 		}
 	});
+
+	//---------- ON CHANGE USER IMAGE ----------//
+    $(document).on('change', '#user-image', function(e) {
+        e.preventDefault();
+        var preview = $(this).parent('.avatar-edit').siblings('.avatar-preview').find('.image-preview');
+        readURL(this, preview); 
+    });
+
+    function readURL(input, preview) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.css(`background-image`, `url(${e.target.result})`);
+                preview.hide();
+                preview.fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 });

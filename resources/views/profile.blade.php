@@ -55,10 +55,10 @@
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle" src="{{ url($data['user']->image ? '/uploads/users/' . $data['user']->image : '/assets/dist/img/avatar.jpg') }}" alt="User profile picture">
+                  <img class="profile-user-img img-fluid img-circle" src="{{ ($data['user']->userDetail->image) ? url('/uploads/users/' . $data['user']->userDetail->image) : url('/assets/dist/img/avatar.jpg') }}" alt="User profile picture">
                 </div>
-                <h3 class="profile-username text-center">{{ $data['user']->name }}</h3>
-                <p class="text-muted text-center">{{ $data['user']->userDetail->designation }}</p>
+                <h3 class="profile-name text-center">{{ $data['user']->name }}</h3>
+                <p class="profile-designation text-muted text-center">{{ $data['user']->userDetail->designation }}</p>
               </div>
               <!-- /.card-body -->
             </div>
@@ -72,15 +72,15 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <strong><i class="fas fa-book mr-1"></i> Education</strong>
-                <p class="text-muted">
+                <p class="text-muted profile-education">
                   {{ $data['user']->userDetail->education ?? '--' }}
                 </p>
                 <hr>
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
-                <p class="text-muted">{{ $data['user']->userDetail->location ?? '--' }}</p>
+                <p class="text-muted profile-location">{{ $data['user']->userDetail->location ?? '--' }}</p>
                 <hr>
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
-                <p class="text-muted">
+                <p class="text-muted profile-skills">
                   {{ $data['user']->userDetail->skills ?? '--' }}
                 </p>
               </div>
@@ -104,7 +104,7 @@
                   <tbody>
                     <tr>
                       <td><strong>User Name</strong></td>
-                      <td>{{ $data['user']->username }}</td>
+                      <td class="profile-user-name">{{ $data['user']->username }}</td>
                     </tr>
                     <tr>
                       <td><strong>Role</strong></td>
@@ -112,31 +112,31 @@
                     </tr>
                     <tr>
                       <td><strong>Email</strong></td>
-                      <td>{{ $data['user']->email }}</td>
+                      <td class="profile-email">{{ $data['user']->email }}</td>
                     </tr>
                     <tr>
                       <td><strong>Phone No</strong></td>
-                      <td>{{ $data['user']->userDetail->phone_no ?? '--' }}</td>
+                      <td class="profile-phone-no">{{ $data['user']->userDetail->phone_no ?? '--' }}</td>
                     </tr>
                     <tr>
                       <td><strong>Age</strong></td>
-                      <td>{{ $data['user']->userDetail->age ?? '--' }}</td>
+                      <td class="profile-age">{{ $data['user']->userDetail->age ?? '--' }}</td>
                     </tr>
                     <tr>
                       <td><strong>Date of Birth</strong></td>
-                      <td>{{ date($settings->date_format, strtotime($data['user']->userDetail->date_of_birth)) ?? '--' }}</td>
+                      <td class="profile-date-of-birth">{{ date($settings->date_format, strtotime($data['user']->userDetail->date_of_birth)) ?? '--' }}</td>
                     </tr>
                     <tr>
                       <td><strong>Address</strong></td>
-                      <td>{{ $data['user']->userDetail->address ?? '--' }}</td>
+                      <td class="profile-address">{{ $data['user']->userDetail->address ?? '--' }}</td>
                     </tr>
                     <tr>
                       <td><strong>Social Media links</strong></td>
                       <td>
-                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->facebook ?? '#' }}" target="_blank" class="text-black"><i class="fab fa-facebook"></i></a> &nbsp; | &nbsp;
-                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->instagram ?? '#' }}" target="_blank" class="text-black"><i class="fab fa-instagram"></i></a> &nbsp; | &nbsp;
-                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->twitter ?? '#' }}" target="_blank" class="text-black"><i class="fab fa-twitter"></i></a> &nbsp; | &nbsp;
-                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->youtube ?? '#' }}" target="_blank" class="text-black"><i class="fab fa-youtube"></i></a>
+                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->facebook ?? '#' }}" target="_blank" class="text-black profile-facebook-link"><i class="fab fa-facebook"></i></a> &nbsp; | &nbsp;
+                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->instagram ?? '#' }}" target="_blank" class="text-black profile-instagram-link"><i class="fab fa-instagram"></i></a> &nbsp; | &nbsp;
+                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->twitter ?? '#' }}" target="_blank" class="text-black profile-twitter-link"><i class="fab fa-twitter"></i></a> &nbsp; | &nbsp;
+                        <a href="{{ json_decode($data['user']->userDetail->social_media_links)?->youtube ?? '#' }}" target="_blank" class="text-black profile-youtube-link"><i class="fab fa-youtube"></i></a>
                       </td>
                     </tr>
                   </tbody>
@@ -164,28 +164,49 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{{ route('dashboard.profile.update') }}" id="update-profile-form">
+          <form action="{{ route('dashboard.profile.update') }}" id="update-profile-form" enctype="multipart/form-data">
             <div class="row">
+              <div class="col-md-4">
+                <label>User Image</label>
+                <div class="avatar-upload">
+                  <div class="avatar-edit">
+                    <input type="file" name="image" id="user-image" accept=".png, .jpg, .jpeg" />
+                    <label for="user-image"><i class="fas fa-camera"></i></label>
+                  </div>
+                  <div class="avatar-preview">
+                    <div class="image-preview" style="background-image: url({{ ($data['user']->userDetail->image) ? url('/uploads/users/' . $data['user']->userDetail->image) : url('/assets/dist/img/avatar.jpg') }});">
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Name <span class="error">*</span></label>
                   <input type="text" name="name" id="name" class="form-control" placeholder="Enter Your Name" value="{{ $data['user']->name }}">
                 </div>
+                <div class="form-group">
+                  <label>Email <span class="error">*</span></label>
+                  <input type="email" name="email" id="email" class="form-control" placeholder="Enter Your Email" value="{{ $data['user']->email }}">
+                </div>
               </div>
               <div class="col-md-4">
+                <div class="form-group">
+                  <label>User Name <span class="error">*</span></label>
+                  <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username" value="{{ $data['user']->username }}">
+                </div>
                 <div class="form-group">
                   <label>Designation</label>
                   <input type="text" name="designation" id="designation" class="form-control" placeholder="Enter Designation" value="{{ $data['user']->userDetail->designation }}">
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Phone No</label>
                   <input type="text" name="phone_no" id="phone-no" class="form-control" placeholder="Enter Phone No" value="{{ $data['user']->userDetail->phone_no }}">
                 </div>
               </div>
-            </div>
-            <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Age</label>
@@ -198,21 +219,21 @@
                   <input type="text" name="date_of_birth" id="date-of-birth" class="form-control date-picker" placeholder="Enter Date of Birth" value="{{ ($data['user']->userDetail->date_of_birth) ? date($settings->date_format, strtotime($data['user']->userDetail->date_of_birth)) : '' }}">
                 </div>
               </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Education</label>
+                  <input type="text" name="education" id="education" class="form-control" placeholder="Enter Education" value="{{ $data['user']->userDetail->education }}">
+                </div>
+              </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Location</label>
                   <input type="text" name="location" id="location" class="form-control" placeholder="Enter Location" value="{{ $data['user']->userDetail->location }}">
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Education</label>
-                  <input type="text" name="education" id="education" class="form-control" placeholder="Enter Education" value="{{ $data['user']->userDetail->education }}">
-                </div>
-              </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>Skills</label>
                   <input type="text" name="skills" id="skills" class="form-control" placeholder="Enter Skills" value="{{ $data['user']->userDetail->skills }}">
@@ -249,5 +270,5 @@
   </div>
 @endsection
 @section('scripts')
-<script style="{{ url('/assets/js/dashboard.js') }}"></script>
+<script src="{{ url('/assets/js/dashboard.js') }}"></script>
 @endsection

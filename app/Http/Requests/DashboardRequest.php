@@ -51,7 +51,22 @@ class DashboardRequest extends FormRequest
     public function updateProfile()
     {
         return [
-            //
+            'name' => [ 'required', 'string', 'max:60', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
+            'username' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
+            'email' => [ 'required', 'string', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
+            'phone_no' => 'nullable|string',
+            'designation' => 'nullable|string',
+            'image' => 'nullable|image',
+            'age' => 'nullable|string',
+            'date_of_birth' => 'nullable|date',
+            'education' => 'nullable|string',
+            'location' => 'nullable|string',
+            'address' => 'nullable|string',
+            'skills' => 'nullable|string',
+            'facebook_link' => 'nullable|url',
+            'instagram_link' => 'nullable|url',
+            'twitter_link' => 'nullable|url',
+            'youtube_link' => 'nullable|url'
         ];
     }
 }

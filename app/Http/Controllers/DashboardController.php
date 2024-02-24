@@ -8,6 +8,7 @@ use App\Models\StudentSession;
 use App\Services\DashboardService;
 use App\Models\Session;
 use App\Models\User;
+use App\Models\UserDetail;
 use Auth;
 
 class DashboardController extends Controller
@@ -91,6 +92,62 @@ class DashboardController extends Controller
      */
     public function updateProfile(DashboardRequest $request)
     {
-        dd($request->all());
+        $user = Auth::user();
+
+        if ($user) {
+            // Default Image
+            $file_name = $user->userDetail->image;
+
+            if ($request->image) {
+                // Unlink Image
+                $image_path = public_path('uploads/users/' . $file_name);
+
+                if (is_file($image_path))
+                    unlink($image_path);
+
+                $file_name = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('uploads/users'), $file_name);
+            }
+
+            // Update user data
+            $data = [
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email
+            ];
+
+            $user->update($data);
+
+            // Set Socail media links
+            $social_media_links = json_encode([
+                'facebook' => $request->facebook_link,
+                'instagram' => $request->instagram_link,
+                'twitter' => $request->twitter_link,
+                'youtube' => $request->youtube_link,
+            ]);
+
+            // Update or create user detail
+            $user_detail = [
+                'phone_no' => $request->phone_no,
+                'image' => $file_name,
+                'designation' => $request->designation,
+                'age' => $request->age,
+                'date_of_birth' => date('Y-m-d', strtotime($request->date_of_birth)),
+                'education' => $request->education,
+                'location' => $request->location,
+                'address' => $request->address,
+                'skills' => $request->skills,
+                'social_media_links' => $social_media_links
+            ];
+
+            UserDetail::updateOrCreate([ 'user_id' => $user->id ], $user_detail);
+
+            return response()->success([
+                'user' => array_merge($data, $user_detail),
+                'message' => 'User Updated Successfully!'
+            ]);
+        }
+
+        return response()->errorMessage('User not Found !');
     }
 }

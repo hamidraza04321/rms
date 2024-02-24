@@ -44,6 +44,7 @@
                         <th>S No.</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Role</th>
                         @can('update-user-status')
                           <th>Status</th>
                         @endcan
@@ -56,28 +57,25 @@
                           <td>{{ ++$loop->index }}</td>
                           <td>{{ $user->name }}</td>
                           <td>{{ $user->email }}</td>
+                          <td>{{ $user->roles->first()->name }}</td>
                           @can('update-user-status')
                             <td>
-                              @if(!$user->hasRole('Super Admin'))
-                                @if($user->is_active)
-                                  <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
-                                @else
-                                  <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
-                                @endif
+                              @if($user->is_active)
+                                <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-success btn-update-status">Active</button>
+                              @else
+                                <button data-url="{{ route('user.update.status', $user->id) }}" class="btn btn-sm btn-danger btn-update-status">Deactive</button>
                               @endif
                             </td>
                           @endcan
                           @canany([ 'edit-user', 'delete-user' ])
                             <td>
                               <a href="{{ route('user.profile', $user->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i> View Profile</a>
-                              @if(!$user->hasRole('Super Admin'))
-                                @can('edit-user')
-                                  <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                @endcan
-                                @can('delete-user')
-                                  <button class="btn btn-sm btn-danger btn-destroy-user" data-url="{{ route('user.destroy', $user->id) }}"><i class="fa fa-trash"></i> Delete</button>
-                                @endcan
-                              @endif
+                              @can('edit-user')
+                                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                              @endcan
+                              @can('delete-user')
+                                <button class="btn btn-sm btn-danger btn-destroy-user" data-url="{{ route('user.destroy', $user->id) }}"><i class="fa fa-trash"></i> Delete</button>
+                              @endcan
                             </td>
                           @endcanany
                         </tr>

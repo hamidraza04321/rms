@@ -57,7 +57,7 @@ class UserRequest extends FormRequest
             'instagram_link' => 'nullable|url',
             'twitter_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
-            'role_id' => 'required|exists:roles,id|not_in:1', // Ignore Super Admin
+            'role_id' => 'required|exists:roles,id',
             'class_id.*' => 'nullable|exists:classes,id',
             'class_section_id.*' => 'nullable|exists:class_sections,id',
             'class_subject_id.*' => 'nullable|exists:class_subjects,id',
@@ -88,7 +88,7 @@ class UserRequest extends FormRequest
             'twitter_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
             'password' => 'nullable|min:6|string',
-            'role_id' => 'required|exists:roles,id|not_in:1', // Ignore Super Admin
+            'role_id' => 'required|exists:roles,id',
             'class_id.*' => 'nullable|exists:classes,id',
             'class_section_id.*' => 'nullable|exists:class_sections,id',
             'class_subject_id.*' => 'nullable|exists:class_subjects,id',

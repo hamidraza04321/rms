@@ -164,6 +164,12 @@
 <script>
   $(document).ready(function() {
 
+    //------------- DATE RANGE PICKER -----------// 
+    $('#attendance-date-range').daterangepicker({
+      startDate: moment().startOf('month'),
+      endDate: moment().endOf('month')
+    });
+
     var attendances = @json($data['student_attendances']);
     var series = [];
 
