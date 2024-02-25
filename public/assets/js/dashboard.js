@@ -181,6 +181,69 @@ $(document).ready(function() {
 		}
 	});
 
+	//---------- ON CLICK CHANGE PASSWORD ----------//
+    $(document).on('click', '#btn-change-password', function(e) {
+        e.preventDefault();
+        removeErrorMessages();
+
+        var self = $(this);
+        	self_html = self.html();
+        	old_password = $('#old-password').val();
+        	new_password = $('#new-password').val();
+        	retype_password = $('#retype-password').val();
+        	message = '';
+        	flag = true;
+
+        if (old_password == '') {
+        	$('#old-password').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+        	flag = false;
+        }
+
+        if (new_password == '') {
+        	$('#new-password').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+        	flag = false;
+        }
+
+        if (retype_password == '') {
+        	$('#retype-password').addClass('is-invalid').after('<span class="invalid-feedback">The field is required !</span>');
+        	flag = false;
+        } else if(new_password != retype_password) {
+        	$('#retype-password').addClass('is-invalid').after('<span class="invalid-feedback">The retype password does not match with new password !</span>');
+        	flag = false;
+        }
+
+        if (flag) {
+        	// Button Loading
+			self.addClass('disabled').html('<div class="spinner-border"></div>');
+
+			var form = $('#change-password-form');
+			    url = form.attr('action');
+			    formData = form.serialize();
+
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: formData,
+				success: function(response) {
+					if (response.status == true) {
+				      	form[0].reset();
+				      	$('#change-password-modal').modal('hide');
+						toastr.success(response.message);
+					} else {
+						showErrorMessages(response.errors);
+					}
+				},
+				error: function() {
+					message = errorMessage();
+				},
+				complete: function() {
+					if (message != '') showAlertInTop(message);
+					self.removeClass('disabled').html(self_html);
+				}
+			});
+        }
+    });
+
 	//---------- ON CHANGE USER IMAGE ----------//
     $(document).on('change', '#user-image', function(e) {
         e.preventDefault();

@@ -96,6 +96,7 @@
                   <i class="fas fa-user"></i> User Profile
                 </div>
                 <div class="card-tools">
+                  <button class="btn btn-warning" data-toggle="modal" data-target="#change-password-modal"><i class="fa fa-key"></i> Change Password</button>
                   <button class="btn btn-primary" data-toggle="modal" data-target="#edit-profile-modal"><i class="fa fa-edit"></i> Edit</button>
                 </div>
               </div><!-- /.card-header -->
@@ -153,6 +154,47 @@
     <!-- /.content -->
   </div>
 
+  <!-- CHANGE PASSWORD MODAL -->
+  <div class="modal fade" id="change-password-modal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fa fa-key"></i> Change Password</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ route('dashboard.profile.change.password') }}" id="change-password-form">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Old Password</label>
+                  <input type="password" name="old_password" id="old-password" class="form-control" placeholder="Enter Old Password">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" name="new_password" id="new-password" class="form-control" placeholder="Enter New Password">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Retype Password</label>
+                  <input type="password" name="retype_password" id="retype-password" class="form-control" placeholder="Retype Password">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" id="btn-change-password">Change Password</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- EDIT PROFILE MODAL -->
   <div class="modal fade" id="edit-profile-modal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg">

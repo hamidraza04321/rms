@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
 		Route::get('/', 'index')->name('dashboard.index');
 		Route::get('/profile', 'profile')->name('dashboard.profile');
 		Route::post('/profile/update', 'updateProfile')->name('dashboard.profile.update');
+		Route::post('/profile/change-password', 'changePassword')->name('dashboard.profile.change.password');
 		Route::post('/get-attendance-graph-data', 'getAttendanceGraphData')->name('dashboard.get.attendance.graph.data');
 	});
 

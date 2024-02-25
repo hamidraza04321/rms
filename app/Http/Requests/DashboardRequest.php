@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Traits\FailedValidationTrait;
+use App\Rules\MatchOldPassword;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
@@ -30,7 +31,8 @@ class DashboardRequest extends FormRequest
     {
         return match(Route::currentRouteName()) {
             'dashboard.get.attendance.graph.data' => $this->getAttendanceGraphData(),
-            'dashboard.profile.update' => $this->updateProfile()
+            'dashboard.profile.update' => $this->updateProfile(),
+            'dashboard.profile.change.password' => $this->changePassword()
         };
     }
 
@@ -67,6 +69,18 @@ class DashboardRequest extends FormRequest
             'instagram_link' => 'nullable|url',
             'twitter_link' => 'nullable|url',
             'youtube_link' => 'nullable|url'
+        ];
+    }
+
+    /**
+     * Validate Rules for change password Request
+     */
+    public function changePassword()
+    {
+        return [
+            'old_password' => [ 'required', new MatchOldPassword() ],
+            'new_password' => 'required|min:6',
+            'retype_password' => 'required|same:new_password'
         ];
     }
 }

@@ -150,4 +150,25 @@ class DashboardController extends Controller
 
         return response()->errorMessage('User not Found !');
     }
+
+    /**
+     * Change authenticate user password
+     *
+     * @param \App\Http\Requests\DashboardRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(DashboardRequest $request)
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            $user->update([
+                'password' => bcrypt($request->retype_password)
+            ]);
+
+            return response()->successMessage('Password Changed Successfully !');
+        }
+
+        return response()->errorMessage('User not Found !');
+    }
 }
