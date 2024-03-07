@@ -54,8 +54,8 @@ class DashboardRequest extends FormRequest
     {
         return [
             'name' => [ 'required', 'string', 'max:60', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
-            'username' => [ 'required', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
-            'email' => [ 'required', 'string', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
+            'username' => [ 'nullable', 'string', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
+            'email' => [ 'nullable', 'string', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore(auth()->id()) ],
             'phone_no' => 'nullable|string',
             'designation' => 'nullable|string',
             'image' => 'nullable|image',

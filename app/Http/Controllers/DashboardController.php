@@ -13,6 +13,14 @@ use Auth;
 
 class DashboardController extends Controller
 {
+    function __construct()
+    {
+        parent::__construct();
+        $this->middleware('permission:view-profile', [ 'only' => 'profile' ]);
+        $this->middleware('permission:edit-profile', [ 'only' => 'updateProfile' ]);
+        $this->middleware('permission:profile-change-password', [ 'only' => 'changePassword' ]);
+    }
+
 	/**
      * Display a listing of the resource.
      *
@@ -110,11 +118,13 @@ class DashboardController extends Controller
             }
 
             // Update user data
-            $data = [
-                'name' => $request->name,
-                'username' => $request->username,
-                'email' => $request->email
-            ];
+            $data = [ 'name' => $request->name ];
+
+            // Has user update credentials
+            if ($user->can('profile-update-credentials')) {
+                $data['username'] = $request->username;
+                $data['email'] = $request->email;
+            }
 
             $user->update($data);
 

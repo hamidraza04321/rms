@@ -472,6 +472,28 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 16,
 	        	'name' => 'Edit General Settings',
 	        	'permission' => 'general-settings-edit'
+	        ],
+
+	        // USER PROFILE
+	        [
+	        	'module_id' => 17,
+	        	'name' => 'View',
+	        	'permission' => 'view-profile'
+	        ],
+	        [
+	        	'module_id' => 17,
+	        	'name' => 'Edit Profile',
+	        	'permission' => 'edit-profile'
+	        ],
+	        [
+	        	'module_id' => 17,
+	        	'name' => 'Change Password',
+	        	'permission' => 'profile-change-password'
+	        ],
+	        [
+	        	'module_id' => 17,
+	        	'name' => 'Update Credentials',
+	        	'permission' => 'profile-update-credentials'
 	        ]
     	];
 

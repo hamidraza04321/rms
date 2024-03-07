@@ -13,7 +13,7 @@
         <img src="{{ (auth()->user()->userDetail->image) ? url('/uploads/users/' . auth()->user()->userDetail->image) : url('/assets/dist/img/avatar.jpg') }}" class="img-circle elevation-2 profile-user-img" alt="User Image">
       </div>
       <div class="info">
-        <a href="{{ route('dashboard.profile') }}" class="d-block profile-name">{{ auth()->user()->name }}</a>
+        <a href="{{ auth()->user()->can('view-profile') ? route('dashboard.profile') : '#' }}" class="d-block profile-name">{{ auth()->user()->name }}</a>
       </div>
     </div>
 

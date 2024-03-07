@@ -149,7 +149,13 @@ class PermissionTableSeeder extends Seeder
 
             // SETTINGS
             [ 'name' => 'general-settings-view' ],
-            [ 'name' => 'general-settings-edit' ]
+            [ 'name' => 'general-settings-edit' ],
+
+            // USER PROFILE
+            [ 'name' => 'view-profile' ],
+            [ 'name' => 'edit-profile' ],
+            [ 'name' => 'profile-change-password' ],
+            [ 'name' => 'profile-update-credentials' ]
         ];
 
         // TIMESTAMPS

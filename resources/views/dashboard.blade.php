@@ -8,7 +8,9 @@
       fill: #fff;
     }
     .dark-mode .apexcharts-tooltip,
-    .dark-mode .apexcharts-tooltip-title {
+    .dark-mode .apexcharts-tooltip-title,
+    .dark-mode .apexcharts-title-text,
+    .dark-mode .apexcharts-menu-item {
       background-color: #333 !important;
       color: #fff !important;
       border: 1px solid #555 !important;
