@@ -155,7 +155,12 @@ class PermissionTableSeeder extends Seeder
             [ 'name' => 'view-profile' ],
             [ 'name' => 'edit-profile' ],
             [ 'name' => 'profile-change-password' ],
-            [ 'name' => 'profile-update-credentials' ]
+            [ 'name' => 'profile-update-credentials' ],
+
+            // DASHBOARD
+            [ 'name' => 'dashboard-widgets' ],
+            [ 'name' => 'dashboard-attendance-graph' ],
+            [ 'name' => 'dashboard-total-students-graph' ]
         ];
 
         // TIMESTAMPS

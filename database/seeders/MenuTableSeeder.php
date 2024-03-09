@@ -494,6 +494,23 @@ class MenuTableSeeder extends Seeder
 	        	'module_id' => 17,
 	        	'name' => 'Update Credentials',
 	        	'permission' => 'profile-update-credentials'
+	        ],
+
+	        // DASHBOARD
+	        [
+	        	'module_id' => 18,
+	        	'name' => 'Dashbaord Widgets',
+	        	'permission' => 'dashboard-widgets'
+	        ],
+	        [
+	        	'module_id' => 18,
+	        	'name' => 'Attendance Graph',
+	        	'permission' => 'dashboard-attendance-graph'
+	        ],
+	        [
+	        	'module_id' => 18,
+	        	'name' => 'Total Students Graph',
+	        	'permission' => 'dashboard-total-students-graph'
 	        ]
     	];
 

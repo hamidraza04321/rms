@@ -83,6 +83,10 @@ class ModuleTableSeeder extends Seeder
             [
                 'name' => 'User Profile',
                 'order_level' => 17
+            ],
+            [
+                'name' => 'Dashboard',
+                'order_level' => 18
             ]
         ];
 
