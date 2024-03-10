@@ -156,7 +156,7 @@ class ClassController extends Controller
     public function destroy($id)
     {
         $class = Classes::withoutGlobalScope(ActiveScope::class)->find($id);
-        
+
         if ($class) {
             $class->delete();
             return response()->successMessage('Class Deleted Successfully !');

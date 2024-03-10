@@ -55,7 +55,7 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>{{ $data['session']->name }}</h3>
+                  <h3>{{ $data['session']->name ?? '###' }}</h3>
                   <p>Current Session</p>
                 </div>
                 <div class="icon">
@@ -302,7 +302,7 @@
       
       },
       title: {
-        text: 'Total Students in Classes, {{ $data['session']->name }}',
+        text: 'Total Students in Classes, {{ $data['session']->name ?? '' }}',
         align: 'center',
         style: {
           color: '#444',

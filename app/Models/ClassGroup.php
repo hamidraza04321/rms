@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Scopes\HasGroup;
 use App\Models\Scopes\HasUserClassGroup;
@@ -13,7 +12,6 @@ use Awobaz\Compoships\Compoships;
 class ClassGroup extends Model
 {
     use HasFactory,
-    	SoftDeletes,
         Compoships;
 
     /**

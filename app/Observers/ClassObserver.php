@@ -3,6 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Classes;
+use App\Models\ClassSection;
+use App\Models\ClassGroup;
+use App\Models\ClassSubject;
 use Auth;
 
 class ClassObserver
@@ -37,9 +40,7 @@ class ClassObserver
      */
     public function deleted(Classes $class)
     {
-        $class->sections->each->delete();   
-        $class->groups->each->delete();
-        $class->subjects->each->delete();
+        //
     }
 
     /**
@@ -50,9 +51,7 @@ class ClassObserver
      */
     public function restored(Classes $class)
     {
-        $class->sections()->withTrashed()->restore();   
-        $class->groups()->withTrashed()->restore();
-        $class->subjects()->withTrashed()->restore();
+        //
     }
 
     /**
@@ -63,8 +62,6 @@ class ClassObserver
      */
     public function forceDeleted(Classes $class)
     {
-        $class->sections->each->forceDelete();   
-        $class->groups->each->forceDelete();
-        $class->subjects->each->forceDelete();
+        //
     }
 }

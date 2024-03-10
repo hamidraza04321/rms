@@ -47,21 +47,18 @@ class Classes extends Model
     public function sections()
     {
     	return $this->belongsToMany(ClassSection::class, 'class_sections', 'class_id', 'section_id')
-            ->withSoftDeletes()
             ->withTimestamps();
     }
 
     public function groups()
     {
     	return $this->belongsToMany(ClassGroup::class, 'class_groups', 'class_id', 'group_id')
-            ->withSoftDeletes()
             ->withTimestamps();
     }
 
     public function subjects()
     {
         return $this->belongsToMany(ClassSubject::class, 'class_subjects', 'class_id', 'subject_id')
-            ->withSoftDeletes()
             ->withTimestamps();
     }
 

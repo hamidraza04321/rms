@@ -58,11 +58,13 @@
                       @endforeach
                     </select>
                   </div>
-                  <button class="btn btn-success" id="btn-save-class">Save</button>
-                  <a class="btn btn-danger" href="{{ route('class.index') }}">Back</a>
                 </form>
               </div>
               <!-- /.card-body -->
+              <div class="card-footer">
+                <button class="btn btn-success" id="btn-save-class">Save</button>
+                <a class="btn btn-danger" href="{{ route('class.index') }}">Back</a>
+              </div>
             </div>
             <!-- /.card -->
           </div>

@@ -34,11 +34,13 @@
                     <label>Name <span class="error">*</span></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Subject Name" value="{{ $data['subject']->name }}">
                   </div>
-                  <button class="btn btn-success" id="btn-update-subject">Update</button>
-                  <a class="btn btn-danger" href="{{ route('subject.index') }}">Back</a>
                 </form>
               </div>
               <!-- /.card-body -->
+              <div class="card-footer">
+                <button class="btn btn-success" id="btn-update-subject">Update</button>
+                <a class="btn btn-danger" href="{{ route('subject.index') }}">Back</a>
+              </div>
             </div>
             <!-- /.card -->
           </div>

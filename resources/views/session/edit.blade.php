@@ -42,9 +42,11 @@
                     <label>End Date <span class="error">*</span></label>
                     <input type="text" name="end_date" id="end-date" class="form-control date-picker" value="{{ $data['session']->end_date->format($settings->date_format) }}">
                   </div>
-                  <button class="btn btn-success" id="btn-update-session">Update</button>
-                  <a class="btn btn-danger" href="{{ route('session.index') }}">Back</a>
                 </form>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-success" id="btn-update-session">Update</button>
+                <a class="btn btn-danger" href="{{ route('session.index') }}">Back</a>
               </div>
               <!-- /.card-body -->
             </div>
