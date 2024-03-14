@@ -327,8 +327,8 @@ class GenerateResultCardService
 
         if (!$this->has_all_sub_categories_grading) {
             $result->is_fail = $this->checkStudentIsFail($marks_subjects, $grading_subjects);
-            $result->grand_total = collect($marks_subjects)->sum('total_marks');
-            $result->obtain_grand_total = collect($marks_subjects)->sum('obtain_marks');
+            $result->grand_total = collect($marks_subjects)->sum(fn($marks) => (int)$marks->total_marks);
+            $result->obtain_grand_total = collect($marks_subjects)->sum(fn($marks) => (int)$marks->obtain_marks);
 
             // Set percentage from grand total and obtain
             $percentage = 0.00;

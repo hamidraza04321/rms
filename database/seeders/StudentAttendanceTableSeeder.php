@@ -43,6 +43,8 @@ class StudentAttendanceTableSeeder extends Seeder
 			}
 		}
 
-		StudentAttendance::insert($attendances);
+		foreach (array_chunk($attendances, 1000) as $attendance) {
+			StudentAttendance::insert($attendance);
+		}
     }
 }

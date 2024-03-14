@@ -15,7 +15,7 @@
                 <div class="header-bg d-flex">
                   <div class="col-3">
                     <div class="disk">
-                      <img src="{{ url('/assets/dist/img/logo.png') }}">
+                      <img src="{{ url($settings->school_logo ) }}">
                     </div>
                   </div>
                   <div class="col-9 text-center">
