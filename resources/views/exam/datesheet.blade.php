@@ -104,60 +104,62 @@
       </table>
     </div>
     {!! $data['datesheet']->exam->datesheet_note !!}
-    <p style="page-break-after: always;"></p>
-    <div class="row m-15 justify-content-center">
-      <img src="{{ url($settings->school_logo) }}" class="logo" width="150px">
-      <div class="text-center">
-        <h2 class="school-name"><strong>{{ $settings->school_name }}</strong></h2>
-        <h4 class="exam-name">{{ $data['datesheet']->exam->name }} ( {{ $data['datesheet']->exam->session->name }} )</h4>
-        <h4>{{ $data['datesheet']->from_to_class_group }}</h4>
+    @if(count($data['datesheet']->group_classes))
+      <p style="page-break-after: always;"></p>
+      <div class="row m-15 justify-content-center">
+        <img src="{{ url($settings->school_logo) }}" class="logo" width="150px">
+        <div class="text-center">
+          <h2 class="school-name"><strong>{{ $settings->school_name }}</strong></h2>
+          <h4 class="exam-name">{{ $data['datesheet']->exam->name }} ( {{ $data['datesheet']->exam->session->name }} )</h4>
+          <h4>{{ $data['datesheet']->from_to_class_group }}</h4>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <table class="table table-bordered table-hover no-wrap">
-        <thead>
-          <tr>
-            <th rowspan="2">Date</th>
-            <th rowspan="2">Day</th>
-            <th rowspan="2">Time</th>
-            @foreach($data['datesheet']->group_classes as $class_name => $class_groups)
-              <th class="text-center" colspan="{{ count($class_groups) }}">{{ $class_name }}</th>
-            @endforeach
-          </tr>
-          <tr>
-            @foreach($data['datesheet']->group_classes as $class_name => $class_groups)
-              @foreach($class_groups as $class_group)
-                <th class="text-center">{{ $class_group->group->name }}</th>
+      <div class="row">
+        <table class="table table-bordered table-hover no-wrap">
+          <thead>
+            <tr>
+              <th rowspan="2">Date</th>
+              <th rowspan="2">Day</th>
+              <th rowspan="2">Time</th>
+              @foreach($data['datesheet']->group_classes as $class_name => $class_groups)
+                <th class="text-center" colspan="{{ count($class_groups) }}">{{ $class_name }}</th>
               @endforeach
-            @endforeach
-          </tr>
-          <tbody>
-            @foreach($data['datesheet']->exam_schedules_group as $exam_schedule_group)
-              @foreach($exam_schedule_group->timings as $time => $classes)
-                <tr>
-                  @if($loop->first)
-                    <td rowspan="{{ $exam_schedule_group->timings_count }}">{{ date($settings->date_format, strtotime($exam_schedule_group->date)) }}</td>
-                    <td rowspan="{{ $exam_schedule_group->timings_count }}">{{ date('l', strtotime($exam_schedule_group->date)) }}</td>
-                  @endif
-                  <td>{{ $time }}</td>
-                  @foreach($classes as $groups)
-                    @foreach($groups as $subjects)
-                      <td class="text-center">
-                        {!! (!empty($subjects)) ? implode('<br>', $subjects) : '--' !!}
-                      </td>
+            </tr>
+            <tr>
+              @foreach($data['datesheet']->group_classes as $class_name => $class_groups)
+                @foreach($class_groups as $class_group)
+                  <th class="text-center">{{ $class_group->group->name }}</th>
+                @endforeach
+              @endforeach
+            </tr>
+            <tbody>
+              @foreach($data['datesheet']->exam_schedules_group as $exam_schedule_group)
+                @foreach($exam_schedule_group->timings as $time => $classes)
+                  <tr>
+                    @if($loop->first)
+                      <td rowspan="{{ $exam_schedule_group->timings_count }}">{{ date($settings->date_format, strtotime($exam_schedule_group->date)) }}</td>
+                      <td rowspan="{{ $exam_schedule_group->timings_count }}">{{ date('l', strtotime($exam_schedule_group->date)) }}</td>
+                    @endif
+                    <td>{{ $time }}</td>
+                    @foreach($classes as $groups)
+                      @foreach($groups as $subjects)
+                        <td class="text-center">
+                          {!! (!empty($subjects)) ? implode('<br>', $subjects) : '--' !!}
+                        </td>
+                      @endforeach
                     @endforeach
-                  @endforeach
-                </tr>
+                  </tr>
+                @endforeach
               @endforeach
-            @endforeach
+            </tbody>
+          </thead>
+          <tbody>
+            
           </tbody>
-        </thead>
-        <tbody>
-          
-        </tbody>
-      </table>
-    </div>
-    {!! $data['datesheet']->exam->datesheet_note !!}
+        </table>
+      </div>
+      {!! $data['datesheet']->exam->datesheet_note !!}
+    @endif
   </div>
 </body>
 </html>

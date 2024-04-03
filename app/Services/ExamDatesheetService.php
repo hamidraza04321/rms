@@ -47,8 +47,8 @@ class ExamDatesheetService
 			return 'Datesheet for ' . $classes->first()->name;
 		}
 
-		$from_class = $classes->first()->name;
-		$to_class = $classes->last()->name;
+		$from_class = $classes->first()?->name;
+		$to_class = $classes->last()?->name;
 
 		return 'Datesheet from '. $from_class .' to '. $to_class;
 	}

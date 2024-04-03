@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             StudentTableSeeder::class,
             AttendanceStatusTableSeeder::class,
-            StudentAttendanceTableSeeder::class,
+            // StudentAttendanceTableSeeder::class,
             ExamTableSeeder::class,
             ExamClassTableSeeder::class,
             ExamScheduleTableSeeder::class,

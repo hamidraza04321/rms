@@ -342,7 +342,7 @@
                                 <textarea name="current_address" id="current-address" class="form-control" placeholder="Enter Current Address"></textarea>
                               </div>
                               <div class="col-md-6">
-                                <label>Permenant Address</label>
+                                <label>Permanent Address</label>
                                 <textarea name="permenant_address" id="permenant-address" class="form-control" placeholder="Enter Permenant Address"></textarea>
                               </div>
                             </div>

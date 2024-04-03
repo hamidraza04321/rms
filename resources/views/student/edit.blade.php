@@ -54,7 +54,7 @@
                                   </div>
                                   <div class="avatar-preview">
                                     @if($data['student_session']->student->student_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->student_image }});">
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads/student/' . $data['student_session']->student->student_image) }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
@@ -203,7 +203,7 @@
                                   </div>
                                   <div class="avatar-preview">
                                     @if($data['student_session']->student->father_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->father_image }});">
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads/student/' . $data['student_session']->student->father_image) }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
@@ -250,7 +250,7 @@
                                   </div>
                                   <div class="avatar-preview">
                                     @if($data['student_session']->student->mother_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->mother_image }});">
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads/student/' . $data['student_session']->student->mother_image) }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
@@ -317,7 +317,7 @@
                                   </div>
                                   <div class="avatar-preview">
                                     @if($data['student_session']->student->guardian_image)
-                                      <div class="image-preview" style="background-image: url({{ url('/uploads') . '/' . $data['student_session']->student->guardian_image }});">
+                                      <div class="image-preview" style="background-image: url({{ url('/uploads/student/' . $data['student_session']->student->guardian_image) }});">
                                       </div>
                                     @else
                                       <div class="image-preview" style="background-image: url({{ url('/assets/dist/img/avatar.jpg') }});">
